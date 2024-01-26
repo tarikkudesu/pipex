@@ -54,6 +54,7 @@ struct	s_pipex
 	char	**av;
 };
 
+char		**ft_error(char **tab);
 void		done(void);
 void		*_error_(char *s);
 size_t		ft_strlen(const char *str);

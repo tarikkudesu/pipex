@@ -70,6 +70,10 @@ int	pipe_it(t_pipex **pipex)
 
 void	_exit_pipex(t_pipex **pipex, int err)
 {
+	if ((*pipex)->cmd1)
+		ft_error((*pipex)->cmd1);
+	if ((*pipex)->cmd2)
+		ft_error((*pipex)->cmd1);
 	if (pipex)
 		free(*pipex);
 	exit(err);
@@ -98,5 +102,6 @@ int	main(int ac, char **av, char **env)
 		_exit_pipex(&pipex, 1);
 	if (pipe_it(&pipex))
 		_exit_pipex(&pipex, 1);
+	free(pipex);
 	done();
 }

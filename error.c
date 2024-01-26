@@ -19,6 +19,7 @@ void	done(void)
 	ft_putstr_fd(COMPILED, STDOUT_FILENO);
 	ft_putstr_fd(LINE_, STDOUT_FILENO);
 	ft_putstr_fd(GREEN, STDOUT_FILENO);
+	ft_putstr_fd(RESET, STDOUT_FILENO);
 }
 
 void	*_error_(char *s)

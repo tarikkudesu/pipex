@@ -78,7 +78,7 @@ char	**find_cmd(char *cmd_string, t_pipex *pipex)
 	cmd = check_cmd(cmd, path);
 	if (!cmd)
 		return (free(path), NULL);
-	free(path);
+	ft_error(path);
 	return (cmd);
 }
 
