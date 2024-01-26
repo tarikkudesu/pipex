@@ -6,7 +6,7 @@
 /*   By: tamehri <tamehri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:57:13 by tamehri           #+#    #+#             */
-/*   Updated: 2024/01/25 20:48:14 by tamehri          ###   ########.fr       */
+/*   Updated: 2024/01/26 20:24:53 by tamehri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,10 @@ char	**check_cmd(char **cmd, char **path)
 		tmp_cmd = ft_strjoin(*(path + i), *cmd);
 		if (!tmp_cmd)
 			return (_error_(ERR_MAL));
-		if (access(tmp_cmd, F_OK) == 0)
+		if (access(tmp_cmd, F_OK) == 0 || access(tmp_cmd, X_OK) == 0)
 		{
 			tmp = *cmd;
-			*cmd = ft_strjoin(*(path + i), *cmd);
+			*cmd = tmp_cmd;
 			return (free(tmp), cmd);
 		}
 		free(tmp_cmd);
@@ -87,9 +87,13 @@ int	parcing(t_pipex *pipex)
 	pipex->infile = open(pipex->av[1], O_RDONLY);
 	if (pipex->infile == -1)
 		return (_error(ERR_OPEN));
-	pipex->outfile = open(pipex->av[4], O_CREAT | O_WRONLY | O_TRUNC , 0777);
+	pipex->outfile = open(pipex->av[4], O_WRONLY | O_TRUNC | O_CREAT, 0666);
 	if (pipex->outfile == -1)
 		return (_error(ERR_OPEN));
+	if (-1 == access(pipex->av[1], R_OK))
+		return (_error(ERR_PERM));
+	if (-1 == access(pipex->av[4], W_OK))
+		return (_error(ERR_PERM));
 	pipex->cmd1 = find_cmd(pipex->av[2], pipex);
 	if (!pipex->cmd1)
 		return (1);
