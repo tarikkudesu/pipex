@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "pipex.h"
+#include <errno.h>
 
 void	*child1_process(t_pipex **pipex)
 {
@@ -59,7 +60,8 @@ int	pipe_it(t_pipex **pipex)
 	if (0 == child2)
 		if (!child2_process(pipex))
 			return (1);
-	close((*pipex)->infile);
+	if (close((*pipex)->infile) < 0)
+		perror(strerror(errno));
 	close((*pipex)->outfile);
 	close((*pipex)->pipe_fd[READ_END]);
 	close((*pipex)->pipe_fd[WRITE_END]);
@@ -83,8 +85,6 @@ int	main(int ac, char **av, char **env)
 {
 	t_pipex	*pipex;
 
-	(void)ac;
-	(void)av;
 	if (ac != 5)
 	{
 		_error(ERR_ARG);
@@ -99,9 +99,9 @@ int	main(int ac, char **av, char **env)
 	pipex->av = av;
 	pipex->env = env;
 	if (parcing(pipex))
-		_exit_pipex(&pipex, 1);
+		_exit_pipex(&pipex, 2);
 	if (pipe_it(&pipex))
-		_exit_pipex(&pipex, 1);
-	free(pipex);
+		_exit_pipex(&pipex, 2);
 	done();
+	_exit_pipex(&pipex, 0);
 }

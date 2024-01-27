@@ -48,12 +48,14 @@ struct	s_pipex
 	int		pipe_fd[2];
 	int		outfile;
 	int		infile;
+	char	**paths;
 	char	**cmd1;
 	char	**cmd2;
 	char	**env;
 	char	**av;
 };
 
+void		_exit_pipex(t_pipex **pipex, int err);
 char		**ft_error(char **tab);
 void		done(void);
 void		*_error_(char *s);

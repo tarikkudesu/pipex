@@ -40,8 +40,8 @@ char	**check_cmd(char **cmd, char **path)
 	char	*tmp;
 	char	*tmp_cmd;
 
-	i = 0;
-	while (*(path + i))
+	i = -1;
+	while (*(path + ++i))
 	{
 		tmp_cmd = ft_strjoin(*(path + i), *cmd);
 		if (!tmp_cmd)
@@ -53,7 +53,6 @@ char	**check_cmd(char **cmd, char **path)
 			return (free(tmp), cmd);
 		}
 		free(tmp_cmd);
-		i++;
 	}
 	return (_error_(CMD_NOT_FOUND));
 }
@@ -69,15 +68,24 @@ char	**find_cmd(char *cmd_string, t_pipex *pipex)
 		return (NULL);
 	cmd = ft_split(cmd_string, ' ');
 	if (!cmd)
-		return (free(path), _error_(ERR_MAL));
+	{
+		ft_error(path);
+		return (_error_(ERR_MAL));
+	}
 	tmp = *cmd;
 	*cmd = ft_strjoin("/", *cmd);
 	free(tmp);
 	if (!*cmd)
-		return (free(path), _error_(ERR_MAL));
+	{
+		ft_error(path);
+		return (_error_(ERR_MAL));
+	}
 	cmd = check_cmd(cmd, path);
 	if (!cmd)
-		return (free(path), NULL);
+	{
+		ft_error(path);
+		return (NULL);
+	}
 	ft_error(path);
 	return (cmd);
 }
@@ -90,15 +98,6 @@ int	parcing(t_pipex *pipex)
 	pipex->outfile = open(pipex->av[4], O_WRONLY | O_TRUNC | O_CREAT, 0666);
 	if (pipex->outfile == -1)
 		return (_error(ERR_OPEN));
-	if (-1 == access(pipex->av[1], R_OK))
-		return (_error(ERR_PERM));
-	if (-1 == access(pipex->av[4], W_OK))
-		return (_error(ERR_PERM));
-	pipex->cmd1 = find_cmd(pipex->av[2], pipex);
-	if (!pipex->cmd1)
-		return (1);
-	pipex->cmd2 = find_cmd(pipex->av[3], pipex);
-	if (!pipex->cmd2)
-		return (1);
 	return (0);
+	// exit(EXIT_SUCCESS);
 }
