@@ -103,6 +103,5 @@ int	parcing(t_pipex *pipex)
 		return (1);
 	pipex->cmd1 = ft_split(pipex->av[2], ' ');
 	pipex->cmd2 = ft_split(pipex->av[3], ' ');
-	printf("0_0\n");
 	return (0);
 }

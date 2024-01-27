@@ -19,6 +19,7 @@ int	find_cmd1(t_pipex *pipex, char *cmd, char **path)
 	int		i;
 
 	i = -1;
+	printf("--- %s\n ---", cmd);
 	while (*(path + ++i))
 	{
 		tmp = ft_strjoin(*(path + i), cmd);
@@ -43,8 +44,9 @@ int	check_cmd1(t_pipex *pipex)
 	tmp = ft_strjoin("/", pipex->cmd1[0]);
 	if (!tmp)
 		return (_error(ERR_MAL));
-	if (find_cmd1(pipex, tmp, pipex->paths))
-		return (1);
+	printf("---- %s\n", tmp);
+	// if (find_cmd1(pipex, tmp, pipex->paths))
+	// 	return (1);
 	free(tmp);
 	return (0);
 }
@@ -63,7 +65,7 @@ int	find_cmd2(t_pipex *pipex, char *cmd, char **path)
 		if (access(tmp, F_OK) && access(tmp, X_OK))
 		{
 			tmp = ft_strjoin(*(path + i), cmd);
-		free(pipex->cmd2[0]);
+			free(pipex->cmd2[0]);
 			pipex->cmd2[0] = tmp;
 			break ;
 		}
@@ -113,6 +115,7 @@ void	*child2_process(t_pipex *pipex)
 	close(pipex->pipe_fd[READ_END]);
 	if (check_cmd2(pipex))
 		return (NULL);
+	printf("--- %s\n", pipex->cmd2[0]);
 	execve(pipex->cmd2[0], pipex->cmd2, pipex->env);
 	return (_error_(ERR_EXECVE));
 }
@@ -145,7 +148,7 @@ int	pipe_it(t_pipex *pipex)
 			return (1);
 	child2 = fork();
 	if (-1 == child2)
-		return (_error(ERR_FORK));
+		return (_error(ERR_FORK))
 	if (0 == child2)
 		if (!child2_process(pipex))
 			return (1);
@@ -156,10 +159,14 @@ int	pipe_it(t_pipex *pipex)
 	return (0);
 }
 
-void print_array_of_strings(char **array) {
-    int i = 0;
-	while (*(array + i)) {
-        printf("%s\n", array[i]);
+void	print_array_of_strings(char **array)
+{
+	int	i;
+
+	i = 0;
+	while (*(array + i))
+	{
+		printf("%s\n", array[i]);
 		i++;
 	}
 }
@@ -180,8 +187,6 @@ int	main(int ac, char **av, char **env)
 	pipex.paths = NULL;
 	if (parcing(&pipex))
 		_exit_pipex(pipex, 2);
-	// print_array_of_strings(pipex.cmd1);
-	// print_array_of_strings(pipex.cmd2);
 	if (pipe_it(&pipex))
 		_exit_pipex(pipex, 2);
 	done();
