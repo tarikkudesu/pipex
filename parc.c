@@ -90,18 +90,19 @@ char	**find_path(char **env)
 	return (path);
 }
 
-int	parcing(t_pipex **pipex)
+int	parcing(t_pipex *pipex)
 {
-	(*pipex)->infile = open((*pipex)->av[1], O_RDONLY);
-	if ((*pipex)->infile == -1)
+	pipex->infile = open(pipex->av[1], O_RDONLY);
+	if (pipex->infile == -1)
 		return (_error(ERR_OPEN));
-	(*pipex)->outfile = open((*pipex)->av[4], O_WRONLY | O_TRUNC | O_CREAT, 0666);
-	if ((*pipex)->outfile == -1)
+	pipex->outfile = open(pipex->av[4], O_WRONLY | O_TRUNC | O_CREAT, 0666);
+	if (pipex->outfile == -1)
 		return (_error(ERR_OPEN));
-	(*pipex)->paths = find_path((*pipex)->env);
-	if (!(*pipex)->paths)
+	pipex->paths = find_path(pipex->env);
+	if (!pipex->paths)
 		return (1);
-	(*pipex)->cmd1 = ft_split((*pipex)->av[2], ' ');
-	(*pipex)->cmd2 = ft_split((*pipex)->av[3], ' ');
+	pipex->cmd1 = ft_split(pipex->av[2], ' ');
+	pipex->cmd2 = ft_split(pipex->av[3], ' ');
+	printf("0_0\n");
 	return (0);
 }

@@ -56,7 +56,7 @@ struct	s_pipex
 	char	**av;
 };
 
-void		_exit_pipex(t_pipex **pipex, int err);
+void		_exit_pipex(t_pipex pipex, int err);
 char		**ft_error(char **tab);
 void		done(void);
 void		*_error_(char *s);
@@ -65,12 +65,12 @@ char		*ft_strjoin(char const *s1, char const *s2);
 char		**ft_split(char const *s, char c);
 int			ft_strncmp(const char *s1, const char *s2, size_t n);
 char		**find_path(char **env);
-int			parcing(t_pipex **pipex);
+int			parcing(t_pipex *pipex);
 int			_error(char *s);
 void		ft_putstr_fd(char *s, int fd);
-void		*child1_process(t_pipex **pipex);
-void		*child2_process(t_pipex **pipex);
-int			pipe_it(t_pipex **pipex);
+void		*child1_process(t_pipex *pipex);
+void		*child2_process(t_pipex *pipex);
+int			pipe_it(t_pipex *pipex);
 
 
 #endif
