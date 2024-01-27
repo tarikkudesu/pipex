@@ -13,6 +13,14 @@
 #include "pipex.h"
 #include <errno.h>
 
+
+int	check_cmd(t_pipex *pipex)
+{
+	char	*tmp;
+
+	tmp = ft_strjoin("/", (*));
+}
+
 void	*child1_process(t_pipex **pipex)
 {
 	close((*pipex)->outfile);
@@ -23,6 +31,7 @@ void	*child1_process(t_pipex **pipex)
 		return (_error_(ERR_DUP));
 	close((*pipex)->infile);
 	close((*pipex)->pipe_fd[WRITE_END]);
+	check_cmd(*pipex);
 	execve((*pipex)->cmd1[0], (*pipex)->cmd1, (*pipex)->env);
 	return (_error_(ERR_EXECVE));
 }
@@ -37,8 +46,34 @@ void	*child2_process(t_pipex **pipex)
 		return (_error_(ERR_DUP));
 	close((*pipex)->outfile);
 	close((*pipex)->pipe_fd[READ_END]);
+
 	execve((*pipex)->cmd2[0], (*pipex)->cmd2, (*pipex)->env);
 	return (_error_(ERR_EXECVE));
+}
+
+int	close_fds(t_pipex **pipex)
+{
+	if (close((*pipex)->infile) == -1)
+	{
+		free_struct(pipex);
+		perror(ERR_CLOSE);
+	}
+	if (close((*pipex)->outfile) == -1)
+	{
+		free_struct(pipex);
+		perror(ERR_CLOSE);
+	}
+	if (close((*pipex)->pipe_fd[READ_END]) == -1)
+	{
+		free_struct(pipex);
+		perror(ERR_CLOSE);
+	}
+	if (close((*pipex)->pipe_fd[WRITE_END]) == -1)
+	{
+		free_struct(pipex);
+		perror(ERR_CLOSE);
+	}
+	return (1);
 }
 
 int	pipe_it(t_pipex **pipex)
@@ -60,25 +95,19 @@ int	pipe_it(t_pipex **pipex)
 	if (0 == child2)
 		if (!child2_process(pipex))
 			return (1);
-	if (close((*pipex)->infile) < 0)
-		perror(strerror(errno));
-	close((*pipex)->outfile);
-	close((*pipex)->pipe_fd[READ_END]);
-	close((*pipex)->pipe_fd[WRITE_END]);
+	if (!close_fds(pipex))
+		return (1);
 	waitpid(child1, NULL, 0);
 	waitpid(child2, NULL, 0);
 	return (0);
 }
 
-void	_exit_pipex(t_pipex **pipex, int err)
-{
-	if ((*pipex)->cmd1)
-		ft_error((*pipex)->cmd1);
-	if ((*pipex)->cmd2)
-		ft_error((*pipex)->cmd1);
-	if (pipex)
-		free(*pipex);
-	exit(err);
+void print_array_of_strings(char **array) {
+    int i = 0;
+	while (*(array + i)) {
+        printf("%s\n", array[i]);
+		i++;
+	}
 }
 
 int	main(int ac, char **av, char **env)
@@ -98,10 +127,11 @@ int	main(int ac, char **av, char **env)
 	}
 	pipex->av = av;
 	pipex->env = env;
-	if (parcing(pipex))
+	if (parcing(&pipex))
 		_exit_pipex(&pipex, 2);
-	if (pipe_it(&pipex))
-		_exit_pipex(&pipex, 2);
+	print_array_of_strings(pipex->cmd1);
+	print_array_of_strings(pipex->cmd2);
+	// if (pipe_it(&pipex))
+	// 	_exit_pipex(&pipex, 2);
 	done();
-	_exit_pipex(&pipex, 0);
 }

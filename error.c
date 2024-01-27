@@ -12,14 +12,22 @@
 
 #include "pipex.h"
 
-void	done(void)
+void	free_struct(t_pipex **pipex)
 {
-	ft_putstr_fd(GREEN, STDOUT_FILENO);
-	ft_putstr_fd(LINE_, STDOUT_FILENO);
-	ft_putstr_fd(COMPILED, STDOUT_FILENO);
-	ft_putstr_fd(LINE_, STDOUT_FILENO);
-	ft_putstr_fd(GREEN, STDOUT_FILENO);
-	ft_putstr_fd(RESET, STDOUT_FILENO);
+	if ((*pipex)->paths)
+		free((*pipex)->paths);
+	if ((*pipex)->cmd1)
+		ft_error((*pipex)->cmd1);
+	if ((*pipex)->cmd2)
+		ft_error((*pipex)->cmd1);
+	if (*pipex)
+		free(*pipex);
+}
+
+void	_exit_pipex(t_pipex **pipex, int err)
+{
+	free_struct(pipex);
+	exit(err);
 }
 
 void	*_error_(char *s)
@@ -40,4 +48,14 @@ int	_error(char *s)
 	ft_putstr_fd(LINE_, STDERR_FILENO);
 	ft_putstr_fd(RESET, STDERR_FILENO);
 	return (1);
+}
+
+void	done(void)
+{
+	ft_putstr_fd(GREEN, STDOUT_FILENO);
+	ft_putstr_fd(LINE_, STDOUT_FILENO);
+	ft_putstr_fd(COMPILED, STDOUT_FILENO);
+	ft_putstr_fd(LINE_, STDOUT_FILENO);
+	ft_putstr_fd(GREEN, STDOUT_FILENO);
+	ft_putstr_fd(RESET, STDOUT_FILENO);
 }
