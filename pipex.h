@@ -73,4 +73,11 @@ void		*child2_process(t_pipex *pipex);
 int			pipe_it(t_pipex *pipex);
 
 
+
+/* FUNCTIONS */
+int	find_cmd1(t_pipex *pipex, char *cmd, char **path);
+int	check_cmd1(t_pipex *pipex);
+int	find_cmd2(t_pipex *pipex, char *cmd, char **path);
+int	check_cmd2(t_pipex *pipex);
+
 #endif
