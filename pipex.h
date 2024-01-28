@@ -57,11 +57,12 @@ struct	s_pipex
 	char	**av;
 };
 
+void		free_struct(t_pipex *pipex);
 int			find_cmd1(t_pipex *pipex, char *cmd, char **path);
 int			check_cmd1(t_pipex *pipex);
 int			find_cmd2(t_pipex *pipex, char *cmd, char **path);
 int			check_cmd2(t_pipex *pipex);
-void		_exit_pipex(t_pipex pipex, int err);
+void		_exit_pipex(t_pipex *pipex, int err);
 char		**ft_error(char **tab);
 void		done(void);
 void		*_error_(char *s);
