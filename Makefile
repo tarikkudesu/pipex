@@ -6,12 +6,12 @@
 #    By: tamehri <tamehri@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/24 12:01:11 by tamehri           #+#    #+#              #
-#    Updated: 2024/01/28 17:07:05 by tamehri          ###   ########.fr        #
+#    Updated: 2024/01/28 18:28:18 by tamehri          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-SRC		=	pipex.c libft.c pars.c split.c error.c proc.c
-SRC_B	=	pipex_bonus.c libft.c split_bonus.c error_bonus.c
+SRC		=	pipex.c pars.c libft.c split.c error.c utils.c
+SRC_B	=	pipex_bonus.c pars_bonus.c libft.c split.c error.c
 
 OBJ		=	$(SRC:.c=.o)
 OBJ_B	=	$(SRC:.c=.o)

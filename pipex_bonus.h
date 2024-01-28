@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: tamehri <tamehri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/28 16:59:46 by tamehri           #+#    #+#             */
-/*   Updated: 2024/01/28 17:01:03 by tamehri          ###   ########.fr       */
+/*   Created: 2024/01/28 19:26:39 by tamehri           #+#    #+#             */
+/*   Updated: 2024/01/28 19:26:40 by tamehri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,14 +46,23 @@ typedef struct s_pipex	t_pipex;
 
 struct	s_pipex
 {
-	int		pipe_fd[2];
-	int		outfile;
+	int		argc;
 	int		infile;
+	int		outfile;
+	int		cmd_num;
+	char	**argv;
 	char	**paths;
-	char	**cmd1;
-	char	**cmd2;
-	char	**env;
-	char	**av;
+	char	**environ;
 };
+
+size_t		ft_strlen(const char *str);
+char		*ft_strjoin(char const *s1, char const *s2);
+char		**ft_split(char const *s, char c);
+int			ft_strncmp(const char *s1, const char *s2, size_t n);
+
+void		free_struct(t_pipex *pipex);
+void		_exit_pipex(t_pipex *pipex, int err);
+void		*_error_(char *s);
+int			_error(char *s);
 
 #endif

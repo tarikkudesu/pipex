@@ -6,7 +6,7 @@
 /*   By: tamehri <tamehri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 12:01:24 by tamehri           #+#    #+#             */
-/*   Updated: 2024/01/28 16:59:03 by tamehri          ###   ########.fr       */
+/*   Updated: 2024/01/28 18:14:05 by tamehri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,22 +56,20 @@ struct	s_pipex
 	char	**av;
 };
 
-void		free_struct(t_pipex *pipex);
 int			find_cmd1(t_pipex *pipex, char *cmd, char **path);
 int			check_cmd1(t_pipex *pipex);
 int			find_cmd2(t_pipex *pipex, char *cmd, char **path);
 int			check_cmd2(t_pipex *pipex);
+void		free_struct(t_pipex *pipex);
 void		_exit_pipex(t_pipex *pipex, int err);
-char		**ft_error(char **tab);
-void		done(void);
 void		*_error_(char *s);
+int			_error(char *s);
 size_t		ft_strlen(const char *str);
 char		*ft_strjoin(char const *s1, char const *s2);
 char		**ft_split(char const *s, char c);
 int			ft_strncmp(const char *s1, const char *s2, size_t n);
 char		**find_path(char **env);
 int			parsing(t_pipex *pipex);
-int			_error(char *s);
 void		ft_putstr_fd(char *s, int fd);
 void		*child1_process(t_pipex *pipex);
 void		*child2_process(t_pipex *pipex);

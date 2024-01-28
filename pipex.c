@@ -6,7 +6,7 @@
 /*   By: tamehri <tamehri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 12:01:15 by tamehri           #+#    #+#             */
-/*   Updated: 2024/01/28 17:02:10 by tamehri          ###   ########.fr       */
+/*   Updated: 2024/01/28 18:41:32 by tamehri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,14 @@
 
 void	*child2_process(t_pipex *pipex)
 {
-	if (check_cmd2(pipex))
-		return (NULL);
 	close(pipex->infile);
 	close(pipex->pipe_fd[WRITE_END]);
 	if (-1 == dup2(pipex->outfile, STDOUT_FILENO))
 		return (_error_(ERR_DUP));
 	if (-1 == dup2(pipex->pipe_fd[READ_END], STDIN_FILENO))
 		return (_error_(ERR_DUP));
+	if (check_cmd2(pipex))
+		return (NULL);
 	execve(pipex->cmd2[0], pipex->cmd2, pipex->env);
 	return (_error_(ERR_EXECVE));
 }
@@ -57,6 +57,8 @@ int	pipe_it(t_pipex *pipex)
 {
 	pid_t	child1;
 	pid_t	child2;
+	pid_t	status1;
+	pid_t	status2;
 
 	if (pipe(pipex->pipe_fd) == -1)
 		return (_error(ERR_PIPE));
@@ -74,10 +76,11 @@ int	pipe_it(t_pipex *pipex)
 			return (1);
 	if (!close_fds(*pipex))
 		return (1);
-	waitpid(child1, NULL, 0);
-	waitpid(child2, NULL, 0);
+	waitpid(child1, &status1, 0);
+	waitpid(child2, &status2, 0);
 	return (0);
 }
+// void f(void) {system("lsof -c pipex");}
 
 int	main(int ac, char **av, char **environ)
 {
@@ -88,6 +91,7 @@ int	main(int ac, char **av, char **environ)
 		_error(ERR_ARG);
 		exit(1);
 	}
+	// atexit(f);
 	pipex.av = av;
 	pipex.env = environ;
 	pipex.cmd1 = NULL;
@@ -98,5 +102,4 @@ int	main(int ac, char **av, char **environ)
 	if (pipe_it(&pipex))
 		_exit_pipex(&pipex, 2);
 	free_struct(&pipex);
-	done();
 }

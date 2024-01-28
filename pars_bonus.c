@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pars.c                                             :+:      :+:    :+:   */
+/*   pars_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tamehri <tamehri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/24 15:57:13 by tamehri           #+#    #+#             */
-/*   Updated: 2024/01/28 18:42:27 by tamehri          ###   ########.fr       */
+/*   Created: 2024/01/28 18:28:28 by tamehri           #+#    #+#             */
+/*   Updated: 2024/01/28 18:30:43 by tamehri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "pipex_bonus.h"
 
 char	**find_path(char **env)
 {
@@ -36,16 +36,14 @@ char	**find_path(char **env)
 
 int	parsing(t_pipex *pipex)
 {
-	pipex->infile = open(pipex->av[1], O_RDONLY);
+	pipex->infile = open(pipex->argv[1], O_RDONLY);
 	if (pipex->infile == -1)
 		return (_error(ERR_OPEN));
-	pipex->outfile = open(pipex->av[4], O_WRONLY | O_TRUNC | O_CREAT, 0666);
+	pipex->outfile = open(pipex->argv[pipex->argc - 1], O_WRONLY | O_TRUNC | O_CREAT, 0666);
 	if (pipex->outfile == -1)
 		return (_error(ERR_OPEN));
-	pipex->paths = find_path(pipex->env);
+	pipex->paths = find_path(pipex->environ);
 	if (!pipex->paths)
 		return (1);
-	pipex->cmd1 = ft_split(pipex->av[2], ' ');
-	pipex->cmd2 = ft_split(pipex->av[3], ' ');
 	return (0);
 }
