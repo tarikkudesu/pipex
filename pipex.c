@@ -13,13 +13,24 @@
 #include "pipex.h"
 #include <errno.h>
 
+void	print_array_of_strings(char **array)
+{
+	int	i;
+
+	i = 0;
+	while (*(array + i))
+	{
+		printf("%s\n", array[i]);
+		i++;
+	}
+}
+
 int	find_cmd1(t_pipex *pipex, char *cmd, char **path)
 {
 	char	*tmp;
 	int		i;
 
 	i = -1;
-	printf("--- %s\n ---", cmd);
 	while (*(path + ++i))
 	{
 		tmp = ft_strjoin(*(path + i), cmd);
@@ -30,7 +41,7 @@ int	find_cmd1(t_pipex *pipex, char *cmd, char **path)
 			tmp = ft_strjoin(*(path + i), cmd);
 			free(pipex->cmd1[0]);
 			pipex->cmd1[0] = tmp;
-			break ;
+			return (0);
 		}
 		free(tmp);
 	}
@@ -44,9 +55,8 @@ int	check_cmd1(t_pipex *pipex)
 	tmp = ft_strjoin("/", pipex->cmd1[0]);
 	if (!tmp)
 		return (_error(ERR_MAL));
-	printf("---- %s\n", tmp);
-	// if (find_cmd1(pipex, tmp, pipex->paths))
-	// 	return (1);
+	if (find_cmd1(pipex, tmp, pipex->paths))
+		return (1);
 	free(tmp);
 	return (0);
 }
@@ -89,6 +99,9 @@ int	check_cmd2(t_pipex *pipex)
 
 void	*child1_process(t_pipex *pipex)
 {
+	if (check_cmd1(pipex))
+		return (NULL);
+	print_array_of_strings(pipex->cmd1);
 	close(pipex->outfile);
 	close(pipex->pipe_fd[READ_END]);
 	if (-1 == dup2(pipex->infile, STDIN_FILENO))
@@ -97,8 +110,6 @@ void	*child1_process(t_pipex *pipex)
 		return (_error_(ERR_DUP));
 	close(pipex->infile);
 	close(pipex->pipe_fd[WRITE_END]);
-	if (check_cmd1(pipex))
-		return (NULL);
 	execve(pipex->cmd1[0], pipex->cmd1, pipex->env);
 	return (_error_(ERR_EXECVE));
 }
@@ -136,7 +147,7 @@ int	close_fds(t_pipex pipex)
 int	pipe_it(t_pipex *pipex)
 {
 	pid_t	child1;
-	pid_t	child2;
+	// pid_t	child2;
 
 	if (pipe(pipex->pipe_fd) == -1)
 		return (_error(ERR_PIPE));
@@ -146,29 +157,17 @@ int	pipe_it(t_pipex *pipex)
 	if (0 == child1)
 		if (!child1_process(pipex))
 			return (1);
-	child2 = fork();
-	if (-1 == child2)
-		return (_error(ERR_FORK))
-	if (0 == child2)
-		if (!child2_process(pipex))
-			return (1);
+	// child2 = fork();
+	// if (-1 == child2)
+	// 	return (_error(ERR_FORK));
+	// if (0 == child2)
+	// 	if (!child2_process(pipex))
+	// 		return (1);
 	if (!close_fds(*pipex))
 		return (1);
 	waitpid(child1, NULL, 0);
-	waitpid(child2, NULL, 0);
+	// waitpid(child2, NULL, 0);
 	return (0);
-}
-
-void	print_array_of_strings(char **array)
-{
-	int	i;
-
-	i = 0;
-	while (*(array + i))
-	{
-		printf("%s\n", array[i]);
-		i++;
-	}
 }
 
 int	main(int ac, char **av, char **env)
@@ -189,5 +188,5 @@ int	main(int ac, char **av, char **env)
 		_exit_pipex(pipex, 2);
 	if (pipe_it(&pipex))
 		_exit_pipex(pipex, 2);
-	done();
+	// done();
 }
