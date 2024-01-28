@@ -6,22 +6,60 @@
 /*   By: tamehri <tamehri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 16:59:32 by tamehri           #+#    #+#             */
-/*   Updated: 2024/01/28 18:52:16 by tamehri          ###   ########.fr       */
+/*   Updated: 2024/01/28 20:46:26 by tamehri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex_bonus.h"
 
-
-void	pipex_mult_cmd(t_pipex *pipex)
+static int	close_fds(t_pipex *pipex, int fd[pipex->cmd_num][2])
 {
-	int		i;
-	int		pid;
+	int	i;
 
 	i = -1;
 	while (++i < pipex->cmd_num)
-		execute_cmd(pipex->argv[i + 2], pipex);
-	
+	{
+		if (-1 == close(fd[i][0]))
+			return (_error(ERR_CLOSE));
+		if (-1 == close(fd[i][1]))
+			return (_error(ERR_CLOSE));
+	}
+	if (-1 == close(pipex->infile))
+		return (_error(ERR_CLOSE));
+	if (-1 == close(pipex->outfile))
+		return (_error(ERR_CLOSE));
+	return (0);
+}
+
+void	execute(char *cmd, int i, t_pipex *pipex)
+{
+	int	pid;
+
+	pid = fork();
+	if (-1 == pid)
+		_error(ERR_FORK);
+	if (0 == pid)
+	{
+		
+	}
+}
+
+int	pipex_mult_cmd(t_pipex *pipex)
+{
+	int		i;
+	int		pid;
+	int		fd[pipex->cmd_num][2];
+
+	i = -1;
+	while (++i < pipex->cmd_num)
+		if (-1 == pipe(fd[i]))
+			return (_error_(ERR_PIPE));
+	i = -1;
+	while (++i < pipex->cmd_num)
+		execute_cmd(pipex->argv[i + 2], i, pipex);
+	if (close_fds(pipex, fd))
+		return (1);
+	return (0);
 }
 
 int main(int ac, char **av, char **environ)
@@ -37,6 +75,8 @@ int main(int ac, char **av, char **environ)
 	pipex.argv = ac;
 	pipex.environ = environ;
 	pipex.cmd_num = ac - 3;
+	if (parsing(&pipex))
+		_exit_pipex(&pipex, 1);
 	if (0 == ft_strncmp(av[1], "here_doc", 8))
 		pipex_here_doc(&pipex);
 	else

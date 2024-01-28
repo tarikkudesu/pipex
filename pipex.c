@@ -6,7 +6,7 @@
 /*   By: tamehri <tamehri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 12:01:15 by tamehri           #+#    #+#             */
-/*   Updated: 2024/01/28 18:41:32 by tamehri          ###   ########.fr       */
+/*   Updated: 2024/01/28 20:34:41 by tamehri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	*child1_process(t_pipex *pipex)
 	return (_error_(ERR_EXECVE));
 }
 
-int	close_fds(t_pipex pipex)
+static int	close_fds(t_pipex pipex)
 {
 	if (close(pipex.infile) == -1)
 		perror(ERR_CLOSE);

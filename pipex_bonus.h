@@ -6,7 +6,7 @@
 /*   By: tamehri <tamehri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 19:26:39 by tamehri           #+#    #+#             */
-/*   Updated: 2024/01/28 19:26:40 by tamehri          ###   ########.fr       */
+/*   Updated: 2024/01/28 19:45:02 by tamehri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@
 # define COMPILED		"-----------\tCOMPILED_SUCCESSFULLY\t-----------\n"
 
 typedef struct s_pipex	t_pipex;
+typedef struct s_cmd	t_cmd;
 
 struct	s_pipex
 {
@@ -55,6 +56,11 @@ struct	s_pipex
 	char	**environ;
 };
 
+struct t_cmd
+{
+	int	*fd[2];
+};
+
 size_t		ft_strlen(const char *str);
 char		*ft_strjoin(char const *s1, char const *s2);
 char		**ft_split(char const *s, char c);
@@ -64,5 +70,8 @@ void		free_struct(t_pipex *pipex);
 void		_exit_pipex(t_pipex *pipex, int err);
 void		*_error_(char *s);
 int			_error(char *s);
+
+
+int			parsing(t_pipex *pipex);
 
 #endif
