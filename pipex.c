@@ -6,7 +6,7 @@
 /*   By: tamehri <tamehri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 12:01:15 by tamehri           #+#    #+#             */
-/*   Updated: 2024/01/28 12:26:14 by tamehri          ###   ########.fr       */
+/*   Updated: 2024/01/28 17:02:10 by tamehri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ int	pipe_it(t_pipex *pipex)
 	return (0);
 }
 
-int	main(int ac, char **av, char **env)
+int	main(int ac, char **av, char **environ)
 {
 	t_pipex	pipex;
 
@@ -89,7 +89,7 @@ int	main(int ac, char **av, char **env)
 		exit(1);
 	}
 	pipex.av = av;
-	pipex.env = env;
+	pipex.env = environ;
 	pipex.cmd1 = NULL;
 	pipex.cmd2 = NULL;
 	pipex.paths = NULL;

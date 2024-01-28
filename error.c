@@ -6,12 +6,11 @@
 /*   By: tamehri <tamehri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 11:15:01 by tamehri           #+#    #+#             */
-/*   Updated: 2024/01/26 19:01:52 by tamehri          ###   ########.fr       */
+/*   Updated: 2024/01/28 16:58:53 by tamehri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
-
 
 void	free_struct(t_pipex *pipex)
 {
