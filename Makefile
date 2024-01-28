@@ -21,7 +21,7 @@ MAJENTA	=	'\033[1;35m'
 GREEN	=	'\033[32m'
 RESET	=	'\033[0m'
 
-all: $(NAME) clean
+all: $(NAME)
 
 %.o: %.c $(INC)
 	@$(CC) $(CFLAGS) -c $< -o $@

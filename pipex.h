@@ -70,7 +70,7 @@ char		*ft_strjoin(char const *s1, char const *s2);
 char		**ft_split(char const *s, char c);
 int			ft_strncmp(const char *s1, const char *s2, size_t n);
 char		**find_path(char **env);
-int			parcing(t_pipex *pipex);
+int			parsing(t_pipex *pipex);
 int			_error(char *s);
 void		ft_putstr_fd(char *s, int fd);
 void		*child1_process(t_pipex *pipex);

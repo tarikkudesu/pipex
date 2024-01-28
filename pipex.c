@@ -93,7 +93,7 @@ int	main(int ac, char **av, char **env)
 	pipex.cmd1 = NULL;
 	pipex.cmd2 = NULL;
 	pipex.paths = NULL;
-	if (parcing(&pipex))
+	if (parsing(&pipex))
 		_exit_pipex(pipex, 2);
 	if (pipe_it(&pipex))
 		_exit_pipex(pipex, 2);

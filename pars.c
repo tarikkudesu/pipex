@@ -34,7 +34,7 @@ char	**find_path(char **env)
 	return (path);
 }
 
-int	parcing(t_pipex *pipex)
+int	parsing(t_pipex *pipex)
 {
 	pipex->infile = open(pipex->av[1], O_RDONLY);
 	if (pipex->infile == -1)
