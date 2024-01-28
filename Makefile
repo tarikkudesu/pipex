@@ -6,13 +6,11 @@
 #    By: tamehri <tamehri@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/24 12:01:11 by tamehri           #+#    #+#              #
-#    Updated: 2024/01/28 11:07:37 by tamehri          ###   ########.fr        #
+#    Updated: 2024/01/28 12:26:37 by tamehri          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-
-
-SRC		=	pipex.c libft.c parc.c split.c error.c process.c
+SRC		=	pipex.c libft.c pars.c split.c error.c proc.c
 
 OBJ		=	$(SRC:.c=.o)
 INC		=	pipex.h

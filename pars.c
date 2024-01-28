@@ -1,72 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parc.c                                             :+:      :+:    :+:   */
+/*   pars.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tamehri <tamehri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:57:13 by tamehri           #+#    #+#             */
-/*   Updated: 2024/01/26 20:24:53 by tamehri          ###   ########.fr       */
+/*   Updated: 2024/01/28 12:29:54 by tamehri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
-
-// char	**check_cmd(char **cmd, char **path)
-// {
-// 	int		i;
-// 	char	*tmp;
-// 	char	*tmp_cmd;
-
-// 	i = -1;
-// 	while (*(path + ++i))
-// 	{
-// 		tmp_cmd = ft_strjoin(*(path + i), *cmd);
-// 		if (!tmp_cmd)
-// 			return (_error_(ERR_MAL));
-// 		if (access(tmp_cmd, F_OK) == 0 || access(tmp_cmd, X_OK) == 0)
-// 		{
-// 			tmp = *cmd;
-// 			*cmd = tmp_cmd;
-// 			return (free(tmp), cmd);
-// 		}
-// 		free(tmp_cmd);
-// 	}
-// 	return (_error_(CMD_NOT_FOUND));
-// }
-
-// char	**find_cmd(char *cmd_string, t_pipex *pipex)
-// {
-// 	char	**cmd;
-// 	char	**path;
-// 	char	*tmp;
-
-// 	path = find_path(pipex->env);
-// 	if (!path)
-// 		return (NULL);
-// 	cmd = ft_split(cmd_string, ' ');
-// 	if (!cmd)
-// 	{
-// 		ft_error(path);
-// 		return (_error_(ERR_MAL));
-// 	}
-// 	tmp = *cmd;
-// 	*cmd = ft_strjoin("/", *cmd);
-// 	free(tmp);
-// 	if (!*cmd)
-// 	{
-// 		ft_error(path);
-// 		return (_error_(ERR_MAL));
-// 	}
-// 	cmd = check_cmd(cmd, path);
-// 	if (!cmd)
-// 	{
-// 		ft_error(path);
-// 		return (NULL);
-// 	}
-// 	ft_error(path);
-// 	return (cmd);
-// }
 
 char	**find_path(char **env)
 {

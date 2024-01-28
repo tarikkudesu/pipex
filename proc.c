@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   process.c                                          :+:      :+:    :+:   */
+/*   proc.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tamehri <tamehri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 11:03:18 by tamehri           #+#    #+#             */
-/*   Updated: 2024/01/28 11:24:48 by tamehri          ###   ########.fr       */
+/*   Updated: 2024/01/28 12:23:02 by tamehri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ int	find_cmd2(t_pipex *pipex, char *cmd, char **path)
 			tmp = ft_strjoin(*(path + i), cmd);
 			free(pipex->cmd2[0]);
 			pipex->cmd2[0] = tmp;
-			break ;
+			return (0);
 		}
 		free(tmp);
 	}
@@ -83,7 +83,16 @@ int	find_cmd2(t_pipex *pipex, char *cmd, char **path)
 int	check_cmd2(t_pipex *pipex)
 {
 	char	*tmp;
+	int		i;
 
+	if (pipex->cmd2[0][0] == '/')
+	{
+		i = -1;
+		while (pipex->paths[++i])
+			if (access(pipex->cmd2[0], F_OK) == 0 \
+			&& access(pipex->cmd2[0], X_OK) == 0)
+				return (0);
+	}
 	tmp = ft_strjoin("/", pipex->cmd2[0]);
 	if (!tmp)
 		return (_error(ERR_MAL));

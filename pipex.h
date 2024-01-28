@@ -6,7 +6,7 @@
 /*   By: tamehri <tamehri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 12:01:24 by tamehri           #+#    #+#             */
-/*   Updated: 2024/01/26 20:24:11 by tamehri          ###   ########.fr       */
+/*   Updated: 2024/01/28 12:28:22 by tamehri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,12 @@
 # define PIPEX_H
 
 # include <fcntl.h>
+# include <stdio.h>
 # include <unistd.h>
 # include <stdlib.h>
 # include <string.h>
-# include <stdio.h>
 # include <sys/wait.h>
+
 
 # define RED	"\033[1;31m"
 # define GREEN	"\033[1;32m"
@@ -56,6 +57,10 @@ struct	s_pipex
 	char	**av;
 };
 
+int			find_cmd1(t_pipex *pipex, char *cmd, char **path);
+int			check_cmd1(t_pipex *pipex);
+int			find_cmd2(t_pipex *pipex, char *cmd, char **path);
+int			check_cmd2(t_pipex *pipex);
 void		_exit_pipex(t_pipex pipex, int err);
 char		**ft_error(char **tab);
 void		done(void);
@@ -71,13 +76,5 @@ void		ft_putstr_fd(char *s, int fd);
 void		*child1_process(t_pipex *pipex);
 void		*child2_process(t_pipex *pipex);
 int			pipe_it(t_pipex *pipex);
-
-
-
-/* FUNCTIONS */
-int	find_cmd1(t_pipex *pipex, char *cmd, char **path);
-int	check_cmd1(t_pipex *pipex);
-int	find_cmd2(t_pipex *pipex, char *cmd, char **path);
-int	check_cmd2(t_pipex *pipex);
 
 #endif

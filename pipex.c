@@ -6,37 +6,22 @@
 /*   By: tamehri <tamehri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 12:01:15 by tamehri           #+#    #+#             */
-/*   Updated: 2024/01/28 11:36:12 by tamehri          ###   ########.fr       */
+/*   Updated: 2024/01/28 12:26:14 by tamehri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
-#include <errno.h>
-
-void	print_array_of_strings(char **array)
-{
-	int	i;
-
-	i = 0;
-	while (*(array + i))
-	{
-		printf("%s\n", array[i]);
-		i++;
-	}
-}
 
 void	*child2_process(t_pipex *pipex)
 {
-	close(pipex->pipe_fd[WRITE_END]);
+	if (check_cmd2(pipex))
+		return (NULL);
 	close(pipex->infile);
+	close(pipex->pipe_fd[WRITE_END]);
 	if (-1 == dup2(pipex->outfile, STDOUT_FILENO))
 		return (_error_(ERR_DUP));
 	if (-1 == dup2(pipex->pipe_fd[READ_END], STDIN_FILENO))
 		return (_error_(ERR_DUP));
-	close(pipex->outfile);
-	close(pipex->pipe_fd[READ_END]);
-	if (check_cmd2(pipex))
-		return (NULL);
 	execve(pipex->cmd2[0], pipex->cmd2, pipex->env);
 	return (_error_(ERR_EXECVE));
 }
