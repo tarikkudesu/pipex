@@ -6,15 +6,15 @@
 #    By: tamehri <tamehri@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/24 12:01:11 by tamehri           #+#    #+#              #
-#    Updated: 2024/01/28 18:28:18 by tamehri          ###   ########.fr        #
+#    Updated: 2024/01/29 12:03:41 by tamehri          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 SRC		=	pipex.c pars.c libft.c split.c error.c utils.c
-SRC_B	=	pipex_bonus.c pars_bonus.c libft.c split.c error.c
+SRC_B	=	pipex_bonus.c pars_bonus.c libft.c split.c error.c utils_bonus.c
 
 OBJ		=	$(SRC:.c=.o)
-OBJ_B	=	$(SRC:.c=.o)
+OBJ_B	=	$(SRC_B:.c=.o)
 INC		=	pipex.h
 INC_B	=	pipex_bonus.h
 CC		= 	cc
@@ -27,9 +27,7 @@ RESET	=	'\033[0m'
 
 all: $(NAME)
 
-%.o: %.c $(INC)
-	@$(CC) $(CFLAGS) -c $< -o $@
-	@echo $(GREEN) "... Compiling\t$<\t[OK]" $(RESET)
+bonus: $(BONUS)
 
 $(NAME): $(OBJ)
 	@$(CC) $(CFLAGS) $(OBJ) -o $(NAME)
@@ -40,6 +38,10 @@ $(BONUS): $(OBJ_B)
 	@$(CC) $(CFLAGS) $(OBJ_B) -o $(BONUS)
 	@echo $(GREEN) "\n Linking Bonus\t<<< $(BONUS) >>>" $(RESET)
 	@echo $(GREEN) "Done" $(RESET)
+
+%.o: %.c $(INC) $(INC_B)
+	@$(CC) $(CFLAGS) -c $< -o $@
+	@echo $(GREEN) "... Compiling\t$<\t[OK]" $(RESET)
 
 clean:
 	@rm -f $(OBJ) $(OBJ_B)

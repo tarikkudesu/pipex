@@ -6,7 +6,7 @@
 /*   By: tamehri <tamehri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 16:59:32 by tamehri           #+#    #+#             */
-/*   Updated: 2024/01/28 20:46:26 by tamehri          ###   ########.fr       */
+/*   Updated: 2024/01/29 12:13:43 by tamehri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,16 +31,25 @@ static int	close_fds(t_pipex *pipex, int fd[pipex->cmd_num][2])
 	return (0);
 }
 
-void	execute(char *cmd, int i, t_pipex *pipex)
+void	execute(t_pipex *pipex, char *cmd_string, int i, int fd[pipex->cmd_num - 1][2])
 {
-	int	pid;
+	int		pid;
+	char	**cmd;
 
 	pid = fork();
 	if (-1 == pid)
 		_error(ERR_FORK);
 	if (0 == pid)
 	{
-		
+		if (i == 0)
+			first_child(pipex, fd);
+		if (i == pipex->cmd_num - 1)
+			last_child(pipex, fd);
+		else
+			middle_children(i - 1, pipex, fd);
+		cmd = cmd_check(cmd_string, pipex);
+		execve(cmd[0], cmd, pipex->environ);
+		_error(ERR_EXECVE);
 	}
 }
 
@@ -48,15 +57,15 @@ int	pipex_mult_cmd(t_pipex *pipex)
 {
 	int		i;
 	int		pid;
-	int		fd[pipex->cmd_num][2];
+	int		fd[pipex->cmd_num - 1][2];
 
 	i = -1;
-	while (++i < pipex->cmd_num)
+	while (++i < pipex->cmd_num - 1)
 		if (-1 == pipe(fd[i]))
 			return (_error_(ERR_PIPE));
 	i = -1;
 	while (++i < pipex->cmd_num)
-		execute_cmd(pipex->argv[i + 2], i, pipex);
+		execute_cmd(pipex, pipex->argv[i + 2], i, fd);
 	if (close_fds(pipex, fd))
 		return (1);
 	return (0);

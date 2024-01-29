@@ -6,7 +6,7 @@
 /*   By: tamehri <tamehri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 19:26:39 by tamehri           #+#    #+#             */
-/*   Updated: 2024/01/28 19:45:02 by tamehri          ###   ########.fr       */
+/*   Updated: 2024/01/29 12:13:13 by tamehri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ char		*ft_strjoin(char const *s1, char const *s2);
 char		**ft_split(char const *s, char c);
 int			ft_strncmp(const char *s1, const char *s2, size_t n);
 
+void		free_array(char **array);
 void		free_struct(t_pipex *pipex);
 void		_exit_pipex(t_pipex *pipex, int err);
 void		*_error_(char *s);
@@ -73,5 +74,17 @@ int			_error(char *s);
 
 
 int			parsing(t_pipex *pipex);
+
+
+/* FUNCTIONS */
+int	first_child(t_pipex *pipex, int fd[pipex->cmd_num - 1][2]);
+int	last_child(t_pipex *pipex, int fd[pipex->cmd_num - 1][2]);
+void	middle_children(int i, t_pipex *pipex, int fd[pipex->cmd_num - 1][2]);
+char	*cmd_find(t_pipex *pipex, char **cmd, char **path);
+char	**cmd_check(char *cmd_string, t_pipex *pipex);
+static int	close_fds(t_pipex *pipex, int fd[pipex->cmd_num][2]);
+void	execute(t_pipex *pipex, char *cmd_string, int i, int fd[pipex->cmd_num - 1]);
+int	pipex_mult_cmd(t_pipex *pipex);
+char	**find_path(char **env);
 
 #endif

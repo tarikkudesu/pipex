@@ -6,7 +6,7 @@
 /*   By: tamehri <tamehri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 11:03:18 by tamehri           #+#    #+#             */
-/*   Updated: 2024/01/28 18:27:57 by tamehri          ###   ########.fr       */
+/*   Updated: 2024/01/29 13:11:18 by tamehri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ int	find_cmd1(t_pipex *pipex, char *cmd, char **path)
 			return (_error(ERR_MAL));
 		if (access(tmp, F_OK) == 0 && access(tmp, X_OK) == 0)
 		{
-			tmp = ft_strjoin(*(path + i), cmd);
 			free(pipex->cmd1[0]);
 			pipex->cmd1[0] = tmp;
 			return (0);
@@ -40,14 +39,10 @@ int	check_cmd1(t_pipex *pipex)
 	char	*tmp;
 	int		i;
 
+	i = -1;
 	if (pipex->cmd1[0][0] == '/')
-	{
-		i = -1;
-		while (pipex->paths[++i])
-			if (access(pipex->cmd1[0], F_OK) == 0 \
-			&& access(pipex->cmd1[0], X_OK) == 0)
-				return (0);
-	}
+		if (!access(pipex->cmd1[0], F_OK | X_OK))
+			return (0);
 	tmp = ft_strjoin("/", pipex->cmd1[0]);
 	if (!tmp)
 		return (_error(ERR_MAL));
@@ -70,7 +65,6 @@ int	find_cmd2(t_pipex *pipex, char *cmd, char **path)
 			return (_error(ERR_MAL));
 		if (access(tmp, F_OK) == 0 && access(tmp, X_OK) == 0)
 		{
-			tmp = ft_strjoin(*(path + i), cmd);
 			free(pipex->cmd2[0]);
 			pipex->cmd2[0] = tmp;
 			return (0);
@@ -85,14 +79,10 @@ int	check_cmd2(t_pipex *pipex)
 	char	*tmp;
 	int		i;
 
-	if (pipex->cmd2[0][0] == '/')
-	{
-		i = -1;
-		while (pipex->paths[++i])
-			if (access(pipex->cmd2[0], F_OK) == 0 \
-			&& access(pipex->cmd2[0], X_OK) == 0)
-				return (0);
-	}
+	i = -1;
+	if (pipex->cmd2[0][0] == '/' || pipex->cmd2[0][0] == '.')
+		if (!access(pipex->cmd2[0], F_OK | X_OK))
+			return (0);
 	tmp = ft_strjoin("/", pipex->cmd2[0]);
 	if (!tmp)
 		return (_error(ERR_MAL));
