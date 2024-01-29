@@ -45,7 +45,11 @@ int	check_cmd1(t_pipex *pipex)
 	if (!tmp)
 		return (_error(ERR_MAL));
 	if (find_cmd1(pipex, tmp, pipex->paths))
-		return (free(tmp), 1);
+	{
+		free(tmp);
+		free_struct(pipex);
+		exit(127);
+	}
 	free(tmp);
 	return (0);
 }
@@ -83,7 +87,11 @@ int	check_cmd2(t_pipex *pipex)
 	if (!tmp)
 		return (_error(ERR_MAL));
 	if (find_cmd2(pipex, tmp, pipex->paths))
-		return (free(tmp), 1);
+	{
+		free(tmp);
+		free_struct(pipex);
+		exit(127);
+	}
 	free(tmp);
 	return (0);
 }

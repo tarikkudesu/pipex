@@ -56,23 +56,22 @@ struct	s_pipex
 	char	**av;
 };
 
-int			find_cmd1(t_pipex *pipex, char *cmd, char **path);
-int			check_cmd1(t_pipex *pipex);
-int			find_cmd2(t_pipex *pipex, char *cmd, char **path);
-int			check_cmd2(t_pipex *pipex);
-void		free_struct(t_pipex *pipex);
-void		_exit_pipex(t_pipex *pipex, int err);
-void		*_error_(char *s);
-int			_error(char *s);
 size_t		ft_strlen(const char *str);
 char		*ft_strjoin(char const *s1, char const *s2);
 char		**ft_split(char const *s, char c);
 int			ft_strncmp(const char *s1, const char *s2, size_t n);
+void		ft_putstr_fd(char *s, int fd);
+
+void		free_struct(t_pipex *pipex);
+int			_error(char *s);
+int			find_cmd1(t_pipex *pipex, char *cmd, char **path);
+int			check_cmd1(t_pipex *pipex);
+int			find_cmd2(t_pipex *pipex, char *cmd, char **path);
+int			check_cmd2(t_pipex *pipex);
+int			child1_process(t_pipex *pipex);
+int			child2_process(t_pipex *pipex);
+int			pipe_it(t_pipex *pipex);
 char		**find_path(char **env);
 int			parsing(t_pipex *pipex);
-void		ft_putstr_fd(char *s, int fd);
-void		*child1_process(t_pipex *pipex);
-void		*child2_process(t_pipex *pipex);
-int			pipe_it(t_pipex *pipex);
 
 #endif
