@@ -6,7 +6,7 @@
 /*   By: tamehri <tamehri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 19:26:39 by tamehri           #+#    #+#             */
-/*   Updated: 2024/01/29 12:13:13 by tamehri          ###   ########.fr       */
+/*   Updated: 2024/01/29 13:18:53 by tamehri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,14 +77,13 @@ int			parsing(t_pipex *pipex);
 
 
 /* FUNCTIONS */
-int	first_child(t_pipex *pipex, int fd[pipex->cmd_num - 1][2]);
-int	last_child(t_pipex *pipex, int fd[pipex->cmd_num - 1][2]);
-void	middle_children(int i, t_pipex *pipex, int fd[pipex->cmd_num - 1][2]);
-char	*cmd_find(t_pipex *pipex, char **cmd, char **path);
-char	**cmd_check(char *cmd_string, t_pipex *pipex);
-static int	close_fds(t_pipex *pipex, int fd[pipex->cmd_num][2]);
-void	execute(t_pipex *pipex, char *cmd_string, int i, int fd[pipex->cmd_num - 1]);
-int	pipex_mult_cmd(t_pipex *pipex);
-char	**find_path(char **env);
+int			first_child(t_pipex *pipex, int fd[pipex->cmd_num - 1][2]);
+int			last_child(t_pipex *pipex, int fd[pipex->cmd_num - 1][2]);
+int			middle_children(int i, t_pipex *pipex, int fd[pipex->cmd_num - 1][2]);
+char		**cmd_find(char **cmd, char **path);
+char		**cmd_check(char *cmd_string, t_pipex *pipex);
+void		execute(t_pipex *pipex, char *cmd_string, int i, int fd[pipex->cmd_num - 1][2]);
+int			pipex_mult_cmd(t_pipex *pipex);
+char		**find_path(char **env);
 
 #endif

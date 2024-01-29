@@ -6,7 +6,7 @@
 /*   By: tamehri <tamehri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 16:59:32 by tamehri           #+#    #+#             */
-/*   Updated: 2024/01/29 12:13:43 by tamehri          ###   ########.fr       */
+/*   Updated: 2024/01/29 13:16:22 by tamehri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,19 +56,24 @@ void	execute(t_pipex *pipex, char *cmd_string, int i, int fd[pipex->cmd_num - 1]
 int	pipex_mult_cmd(t_pipex *pipex)
 {
 	int		i;
-	int		pid;
 	int		fd[pipex->cmd_num - 1][2];
 
 	i = -1;
 	while (++i < pipex->cmd_num - 1)
 		if (-1 == pipe(fd[i]))
-			return (_error_(ERR_PIPE));
+			return (_error(ERR_PIPE));
 	i = -1;
 	while (++i < pipex->cmd_num)
-		execute_cmd(pipex, pipex->argv[i + 2], i, fd);
+		execute(pipex, pipex->argv[i + 2], i, fd);
 	if (close_fds(pipex, fd))
 		return (1);
 	return (0);
+}
+
+void	pipex_here_doc(t_pipex *pipex)
+{
+	(void)pipex;
+	printf("This section is under Construction");
 }
 
 int main(int ac, char **av, char **environ)
@@ -81,7 +86,7 @@ int main(int ac, char **av, char **environ)
 		exit(1);
 	}
 	pipex.argv = av;
-	pipex.argv = ac;
+	pipex.argc = ac;
 	pipex.environ = environ;
 	pipex.cmd_num = ac - 3;
 	if (parsing(&pipex))

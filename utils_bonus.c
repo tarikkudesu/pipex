@@ -6,7 +6,7 @@
 /*   By: tamehri <tamehri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 10:10:57 by tamehri           #+#    #+#             */
-/*   Updated: 2024/01/29 12:13:03 by tamehri          ###   ########.fr       */
+/*   Updated: 2024/01/29 13:18:45 by tamehri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int	last_child(t_pipex *pipex, int fd[pipex->cmd_num - 1][2])
 	return (1);
 }
 
-void	middle_children(int i, t_pipex *pipex, int fd[pipex->cmd_num - 1][2])
+int	middle_children(int i, t_pipex *pipex, int fd[pipex->cmd_num - 1][2])
 {
 	int	j;
 
@@ -81,7 +81,7 @@ void	middle_children(int i, t_pipex *pipex, int fd[pipex->cmd_num - 1][2])
 	return (1);
 }
 
-char	*cmd_find(t_pipex *pipex, char **cmd, char **path)
+char	**cmd_find(char **cmd, char **path)
 {
 	char	*tmp;
 	char	*temp;
@@ -95,7 +95,7 @@ char	*cmd_find(t_pipex *pipex, char **cmd, char **path)
 	{
 		temp = ft_strjoin(*(path + i), tmp);
 		if (!temp)
-			return (free_arr(cmd), free(tmp), _error(ERR_MAL));
+			return (free_array(cmd), free(tmp), _error_(ERR_MAL));
 		if (!access(temp, F_OK | X_OK))
 		{
 			free(cmd[0]);
@@ -104,7 +104,7 @@ char	*cmd_find(t_pipex *pipex, char **cmd, char **path)
 		}
 		free(temp);
 	}
-	return (free_arr(cmd), free(tmp), _error(CMD_NOT_FOUND));
+	return (free_array(cmd), free(tmp), _error_(CMD_NOT_FOUND));
 }
 
 char	**cmd_check(char *cmd_string, t_pipex *pipex)
@@ -118,7 +118,7 @@ char	**cmd_check(char *cmd_string, t_pipex *pipex)
 		return (_error_(ERR_MAL));
 	if (!access(cmd[0], F_OK | X_OK))
 		return (cmd);
-	cmd = cmd_find(pipex, cmd, pipex->paths);
+	cmd = cmd_find(cmd, pipex->paths);
 	if (!cmd)
 		return (cmd = NULL, NULL);
 	return (cmd);
