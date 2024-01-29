@@ -89,7 +89,11 @@ int	main(int ac, char **av, char **environ)
 
 	if (ac != 5)
 	{
-		_error(ERR_ARG);
+		ft_putstr_fd(RED, STDERR_FILENO);
+		ft_putstr_fd(LINE_, STDERR_FILENO);
+		ft_putstr_fd(ERR_ARG, STDERR_FILENO);
+		ft_putstr_fd(LINE_, STDERR_FILENO);
+		ft_putstr_fd(RESET, STDERR_FILENO);
 		exit(1);
 	}
 	pipex.av = av;

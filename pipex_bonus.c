@@ -12,13 +12,6 @@
 
 #include "pipex_bonus.h"
 
-void	print_arr(char **arr)
-{
-	int i = -1;
-	while (*(arr + ++i))
-		printf("%s\n", *(arr + i));
-}
-
 static int	close_fds(t_pipex *pipex, int fd[pipex->cmd_num][2])
 {
 	int	i;
@@ -38,7 +31,7 @@ static int	close_fds(t_pipex *pipex, int fd[pipex->cmd_num][2])
 	return (0);
 }
 
-void	execute(t_pipex *pipex, char *cmd_string, int i, int fd[pipex->cmd_num - 1][2])
+int	execute(t_pipex *pipex, char *cmd_string, int i, int fd[pipex->cmd_num - 1][2])
 {
 	int		pid;
 	char	**cmd;
@@ -46,7 +39,7 @@ void	execute(t_pipex *pipex, char *cmd_string, int i, int fd[pipex->cmd_num - 1]
 	(void)fd;
 	pid = fork();
 	if (-1 == pid)
-		_error(ERR_FORK);
+		return (_error(ERR_FORK));
 	if (0 == pid)
 	{
 		if (i == 0)
@@ -57,8 +50,9 @@ void	execute(t_pipex *pipex, char *cmd_string, int i, int fd[pipex->cmd_num - 1]
 			middle_children(i - 1, pipex, fd);
 		cmd = cmd_check(cmd_string, pipex);
 		execve(cmd[0], cmd, pipex->environ);
-		_error(ERR_EXECVE);
+		return (_error(ERR_EXECVE));
 	}
+	return (0);
 }
 
 int	pipex_mult_cmd(t_pipex *pipex)
@@ -70,24 +64,25 @@ int	pipex_mult_cmd(t_pipex *pipex)
 	while (++i < pipex->cmd_num - 1)
 		if (-1 == pipe(fd[i]))
 			return (_error(ERR_PIPE));
+	if (close_fds(pipex, fd))
+		return (_error(ERR_CLOSE));
 	i = -1;
 	while (++i < pipex->cmd_num)
-		execute(pipex, pipex->argv[i + 2], i, fd);
-	if (close_fds(pipex, fd))
-		return (1);
+		if (execute(pipex, pipex->argv[i + 2], i, fd))
+			return (1);
 	return (0);
 }
 
 void	pipex_here_doc(t_pipex *pipex)
 {
 	(void)pipex;
-	printf("This section is under Construction");
+	printf("This section is under Construction\n");
 }
 
 int main(int ac, char **av, char **environ)
 {
 	t_pipex	pipex;
-	
+
 	if (ac < 5)
 	{
 		_error(ERR_ARG);
@@ -95,14 +90,16 @@ int main(int ac, char **av, char **environ)
 	}
 	pipex.argv = av;
 	pipex.argc = ac;
-	pipex.environ = environ;
 	pipex.cmd_num = ac - 3;
+	pipex.environ = environ;
 	if (parsing(&pipex))
-		_exit_pipex(&pipex, 1);
+	{
+		free_struct_bonus(&pipex);
+		exit(1);
+	}
 	if (0 == ft_strncmp(av[1], "here_doc", 8))
 		pipex_here_doc(&pipex);
 	else
 		pipex_mult_cmd(&pipex);
-	// free_struct_bonus(&pipex);
 	exit(EXIT_SUCCESS);
 }

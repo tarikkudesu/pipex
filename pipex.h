@@ -27,7 +27,7 @@
 # define READ_END		0
 # define WRITE_END		1
 # define LINE_			"---------------------------------------------------\n"
-# define ERR_ARG		"WRONG ARGUMENTS"
+# define ERR_ARG		"WRONG ARGUMENTS\n"
 # define ERR_MAL		"MALLOC ERROR"
 # define ERR_PATH		"PATH ERROR"
 # define ERR_FORK		"FORK ERROR"

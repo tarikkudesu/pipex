@@ -11,7 +11,7 @@
 # **************************************************************************** #
 
 SRC		=	pipex.c pars.c libft.c split.c error.c utils.c
-SRC_B	=	pipex_bonus.c pars_bonus.c libft.c split.c error.c utils_bonus.c
+SRC_B	=	pipex_bonus.c pars_bonus.c utils_bonus.c libft.c split.c error.c
 
 OBJ		=	$(SRC:.c=.o)
 OBJ_B	=	$(SRC_B:.c=.o)

@@ -84,7 +84,7 @@ int			last_child(t_pipex *pipex, int fd[pipex->cmd_num - 1][2]);
 int			middle_children(int i, t_pipex *pipex, int fd[pipex->cmd_num - 1][2]);
 char		**cmd_find(char **cmd, char **path);
 char		**cmd_check(char *cmd_string, t_pipex *pipex);
-void		execute(t_pipex *pipex, char *cmd_string, int i, int fd[pipex->cmd_num - 1][2]);
+int			execute(t_pipex *pipex, char *cmd_string, int i, int fd[pipex->cmd_num - 1][2]);
 int			pipex_mult_cmd(t_pipex *pipex);
 char		**find_path(char **env);
 

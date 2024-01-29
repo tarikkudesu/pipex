@@ -38,22 +38,6 @@ void	free_struct(t_pipex *pipex)
 		free_array(pipex->cmd2);
 }
 
-void	_exit_pipex(t_pipex *pipex, int err)
-{
-	// free_struct(pipex);
-	exit(err);
-}
-
-void	*_error_(char *s)
-{
-	ft_putstr_fd(RED, STDERR_FILENO);
-	ft_putstr_fd(LINE_, STDERR_FILENO);
-	perror(s);
-	ft_putstr_fd(LINE_, STDERR_FILENO);
-	ft_putstr_fd(RESET, STDERR_FILENO);
-	return (NULL);
-}
-
 int	_error(char *s)
 {
 	ft_putstr_fd(RED, STDERR_FILENO);
