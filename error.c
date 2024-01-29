@@ -22,6 +22,12 @@ void	free_array(char **array)
 	free(array);
 }
 
+void	free_struct_bonus(t_pipex *pipex)
+{
+	if (pipex->paths)
+		free_array(pipex->paths);
+}
+
 void	free_struct(t_pipex *pipex)
 {
 	if (pipex->paths)
@@ -34,7 +40,7 @@ void	free_struct(t_pipex *pipex)
 
 void	_exit_pipex(t_pipex *pipex, int err)
 {
-	free_struct(pipex);
+	// free_struct(pipex);
 	exit(err);
 }
 

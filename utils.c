@@ -38,7 +38,7 @@ int	check_cmd1(t_pipex *pipex)
 {
 	char	*tmp;
 
-	if (pipex->cmd1[0][0] == '/')
+	if (pipex->cmd1[0][0] == '/' || pipex->cmd2[0][0] == '.')
 		if (!access(pipex->cmd1[0], F_OK | X_OK))
 			return (0);
 	tmp = ft_strjoin("/", pipex->cmd1[0]);

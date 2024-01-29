@@ -16,7 +16,7 @@ int	first_child(t_pipex *pipex, int fd[pipex->cmd_num - 1][2])
 {
 	int	j;
 
-	j = 0;
+	j = -1;
 	while (++j < pipex->cmd_num - 1)
 	{
 		if (-1 == close(fd[j][0]))
@@ -38,7 +38,7 @@ int	last_child(t_pipex *pipex, int fd[pipex->cmd_num - 1][2])
 {
 	int	j;
 
-	j = 0; 
+	j = -1;
 	while (++j < pipex->cmd_num - 1)
 	{
 		if (-1 == close(fd[j][1]))
@@ -60,7 +60,7 @@ int	middle_children(int i, t_pipex *pipex, int fd[pipex->cmd_num - 1][2])
 {
 	int	j;
 
-	j = 0;
+	j = -1;
 	while (++j < pipex->cmd_num - 1)
 	{
 		if (j != i)
@@ -118,6 +118,6 @@ char	**cmd_check(char *cmd_string, t_pipex *pipex)
 		return (cmd);
 	cmd = cmd_find(cmd, pipex->paths);
 	if (!cmd)
-		return (cmd = NULL, NULL);
+		return (NULL);
 	return (cmd);
 }

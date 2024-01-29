@@ -18,12 +18,13 @@ void	print_arr(char **arr)
 	while (*(arr + ++i))
 		printf("%s\n", *(arr + i));
 }
+
 static int	close_fds(t_pipex *pipex, int fd[pipex->cmd_num][2])
 {
 	int	i;
 
 	i = -1;
-	while (++i < pipex->cmd_num)
+	while (++i < pipex->cmd_num - 1)
 	{
 		if (-1 == close(fd[i][0]))
 			return (_error(ERR_CLOSE));
@@ -42,6 +43,7 @@ void	execute(t_pipex *pipex, char *cmd_string, int i, int fd[pipex->cmd_num - 1]
 	int		pid;
 	char	**cmd;
 
+	(void)fd;
 	pid = fork();
 	if (-1 == pid)
 		_error(ERR_FORK);
@@ -49,7 +51,7 @@ void	execute(t_pipex *pipex, char *cmd_string, int i, int fd[pipex->cmd_num - 1]
 	{
 		if (i == 0)
 			first_child(pipex, fd);
-		if (i == pipex->cmd_num - 1)
+		else if (i == pipex->cmd_num - 1)
 			last_child(pipex, fd);
 		else
 			middle_children(i - 1, pipex, fd);
@@ -64,8 +66,6 @@ int	pipex_mult_cmd(t_pipex *pipex)
 	int		i;
 	int		fd[pipex->cmd_num - 1][2];
 
-	print_arr(pipex->paths);
-	printf("%d\t%d\n", pipex->infile, pipex->outfile);
 	i = -1;
 	while (++i < pipex->cmd_num - 1)
 		if (-1 == pipe(fd[i]))
@@ -103,6 +103,6 @@ int main(int ac, char **av, char **environ)
 		pipex_here_doc(&pipex);
 	else
 		pipex_mult_cmd(&pipex);
-	free_struct(&pipex);
+	// free_struct_bonus(&pipex);
 	exit(EXIT_SUCCESS);
 }

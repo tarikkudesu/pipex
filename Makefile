@@ -30,17 +30,17 @@ all: $(NAME)
 bonus: $(BONUS)
 
 $(NAME): $(OBJ)
-	@$(CC) $(CFLAGS) $(OBJ) -o $(NAME)
+	@$(CC) $(OBJ) -o $(NAME)
 	@echo $(GREEN) "\n Linking\t<<< $(NAME) >>>" $(RESET)
 	@echo $(GREEN) "Done" $(RESET)
 
 $(BONUS): $(OBJ_B)
-	@$(CC) $(CFLAGS) $(OBJ_B) -o $(BONUS)
+	@$(CC) $(OBJ_B) -o $(BONUS)
 	@echo $(GREEN) "\n Linking Bonus\t<<< $(BONUS) >>>" $(RESET)
 	@echo $(GREEN) "Done" $(RESET)
 
 %.o: %.c $(INC) $(INC_B)
-	@$(CC) $(CFLAGS) -c $< -o $@
+	@$(CC) -c $< -o $@
 	@echo $(GREEN) "... Compiling\t$<\t[OK]" $(RESET)
 
 clean:
