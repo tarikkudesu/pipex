@@ -110,9 +110,7 @@ char	**cmd_find(char **cmd, char **path)
 char	**cmd_check(char *cmd_string, t_pipex *pipex)
 {
 	char	**cmd;
-	int		i;
 
-	i = -1;
 	cmd = ft_split(cmd_string, ' ');
 	if (!cmd)
 		return (_error_(ERR_MAL));

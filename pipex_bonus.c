@@ -12,6 +12,12 @@
 
 #include "pipex_bonus.h"
 
+void	print_arr(char **arr)
+{
+	int i = -1;
+	while (*(arr + ++i))
+		printf("%s\n", *(arr + i));
+}
 static int	close_fds(t_pipex *pipex, int fd[pipex->cmd_num][2])
 {
 	int	i;
@@ -58,6 +64,8 @@ int	pipex_mult_cmd(t_pipex *pipex)
 	int		i;
 	int		fd[pipex->cmd_num - 1][2];
 
+	print_arr(pipex->paths);
+	printf("%d\t%d\n", pipex->infile, pipex->outfile);
 	i = -1;
 	while (++i < pipex->cmd_num - 1)
 		if (-1 == pipe(fd[i]))

@@ -37,9 +37,7 @@ int	find_cmd1(t_pipex *pipex, char *cmd, char **path)
 int	check_cmd1(t_pipex *pipex)
 {
 	char	*tmp;
-	int		i;
 
-	i = -1;
 	if (pipex->cmd1[0][0] == '/')
 		if (!access(pipex->cmd1[0], F_OK | X_OK))
 			return (0);
@@ -77,9 +75,7 @@ int	find_cmd2(t_pipex *pipex, char *cmd, char **path)
 int	check_cmd2(t_pipex *pipex)
 {
 	char	*tmp;
-	int		i;
 
-	i = -1;
 	if (pipex->cmd2[0][0] == '/' || pipex->cmd2[0][0] == '.')
 		if (!access(pipex->cmd2[0], F_OK | X_OK))
 			return (0);

@@ -80,7 +80,6 @@ int	pipe_it(t_pipex *pipex)
 	waitpid(child2, &status2, 0);
 	return (0);
 }
-// void f(void) {system("lsof -c pipex");}
 
 int	main(int ac, char **av, char **environ)
 {
@@ -91,7 +90,6 @@ int	main(int ac, char **av, char **environ)
 		_error(ERR_ARG);
 		exit(1);
 	}
-	// atexit(f);
 	pipex.av = av;
 	pipex.env = environ;
 	pipex.cmd1 = NULL;
