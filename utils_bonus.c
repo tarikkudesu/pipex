@@ -12,7 +12,7 @@
 
 #include "pipex_bonus.h"
 
-int	first_child(t_pipex *pipex)
+void	first_child(t_pipex *pipex)
 {
 	int	j;
 
@@ -34,7 +34,7 @@ int	first_child(t_pipex *pipex)
 	return (0);
 }
 
-int	last_child(t_pipex *pipex)
+void	last_child(t_pipex *pipex)
 {
 	int	j;
 
@@ -53,10 +53,9 @@ int	last_child(t_pipex *pipex)
 		(_error(ERR_DUP), free_array(pipex->paths), exit(1));
 	if (-1 == dup2(pipex->pipes[pipex->cmd_num - 2][READ_END], STDIN_FILENO))
 		(_error(ERR_DUP), free_array(pipex->paths), exit(1));
-	return (0);
 }
 
-int	middle_children(int i, t_pipex *pipex)
+void	middle_children(int i, t_pipex *pipex)
 {
 	int	j;
 
@@ -78,7 +77,6 @@ int	middle_children(int i, t_pipex *pipex)
 		(_error(ERR_DUP), free_array(pipex->paths), exit(1));
 	if (-1 == dup2(pipex->pipes[i + 1][WRITE_END], STDOUT_FILENO))
 		(_error(ERR_DUP), free_array(pipex->paths), exit(1));
-	return (0);
 }
 
 char	**cmd_find(char **cmd, char **path)
@@ -104,7 +102,7 @@ char	**cmd_find(char **cmd, char **path)
 		}
 		free(temp);
 	}
-	return (free_array(cmd), free(tmp), print_error(CMD_NOT_FOUND), NULL);
+	return (free_array(cmd), free(tmp), p_error(CMD_NOT_FOUND), NULL);
 }
 
 char	**cmd_check(char *cmd_string, t_pipex *pipex)
@@ -118,7 +116,7 @@ char	**cmd_check(char *cmd_string, t_pipex *pipex)
 		return (cmd);
 	if (cmd[0][0] == '/' || cmd[0][0] == '.')
 		if (!access(cmd[0], F_OK | X_OK))
-			return (0);
+			return (cmd);
 	cmd = cmd_find(cmd, pipex->paths);
 	if (!cmd)
 		return (NULL);

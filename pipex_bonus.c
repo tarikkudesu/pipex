@@ -12,7 +12,7 @@
 
 #include "pipex_bonus.h"
 
-static int	close_fds(t_pipex *pipex)
+static void	close_fds(t_pipex *pipex)
 {
 	int	i;
 
@@ -20,18 +20,17 @@ static int	close_fds(t_pipex *pipex)
 	while (++i < pipex->cmd_num - 1)
 	{
 		if (-1 == close(pipex->pipes[i][READ_END]))
-			return (_error(ERR_CLOSE));
+			(free_struct_bonus(pipex), p_error(ERR_CLOSE), exit(1));
 		if (-1 == close(pipex->pipes[i][WRITE_END]))
-			return (_error(ERR_CLOSE));
+			(free_struct_bonus(pipex), p_error(ERR_CLOSE), exit(1));
 	}
 	if (-1 == close(pipex->infile))
-		return (_error(ERR_CLOSE));
+		(free_struct_bonus(pipex), p_error(ERR_CLOSE), exit(1));
 	if (-1 == close(pipex->outfile))
-		return (_error(ERR_CLOSE));
-	return (0);
+		(free_struct_bonus(pipex), p_error(ERR_CLOSE), exit(1));
 }
 
-int	execute(t_pipex *pipex, char *cmd_string, int i)
+void	execute(t_pipex *pipex, char *cmd_string, int i)
 {
 	char	**cmd;
 
@@ -43,37 +42,33 @@ int	execute(t_pipex *pipex, char *cmd_string, int i)
 		middle_children(i - 1, pipex);
 	cmd = cmd_check(cmd_string, pipex);
 	if (!cmd)
-		return (1);
+		(_error(ERR_EXECVE), free_array(pipex->paths), exit(127));
 	execve(cmd[0], cmd, pipex->environ);
 	(_error(ERR_EXECVE), free_array(pipex->paths), exit(127));
-	return (0);
 }
 
-int	pipex_mult_cmd(t_pipex *pipex)
+void	pipex_mult_cmd(t_pipex *pipex)
 {
 	int		i;
 
 	i = -1;
 	while (++i < pipex->cmd_num - 1)
 		if (-1 == pipe(pipex->pipes[i]))
-			return (_error(ERR_PIPE));
+			(free_struct_bonus(pipex), p_error(ERR_PIPE), exit(1));
 	i = -1;
 	while (++i < pipex->cmd_num)
 	{
 		pipex->pid[i] = fork();
 		if (-1 == pipex->pid[i])
-			return (_error(ERR_FORK));
+			(free_struct_bonus(pipex), p_error(ERR_FORK), exit(1));
 		if (pipex->pid[i] == 0)
-			if (execute(pipex, pipex->argv[i + 2], i))
-				return (1);
+			execute(pipex, pipex->argv[i + 2], i);
 	}
 	i = -1;
 	while (i < pipex->cmd_num)
 		if (-1 == waitpid(pipex->pid[i], NULL, 0))
-			return (_error(ERR_WAIT));
-	if (close_fds(pipex))
-		return (_error(ERR_CLOSE));
-	return (0);
+			(free_struct_bonus(pipex), p_error(ERR_WAIT), exit(1));
+	close_fds(pipex);
 }
 
 int	pipex_here_doc(t_pipex *pipex)
@@ -94,17 +89,14 @@ int	main(int ac, char **av, char **environ)
 	pipex.cmd_num = ac - 3;
 	pipex.environ = environ;
 	if (parsing(&pipex))
-		return (free_array(pipex.paths), 1);
+		return (free_struct_bonus(&pipex), 1);
 	if (0 == ft_strncmp(av[1], "here_doc", 8))
 	{
 		if (pipex_here_doc(&pipex))
-			return (free_array(pipex.paths), 1);
+			return (free_struct_bonus(&pipex), 1);
 	}
 	else
-	{
-		if (pipex_mult_cmd(&pipex))
-			return (free_array(pipex.paths), 1);
-	}
-	free_array(pipex.paths);
+		pipex_mult_cmd(&pipex);
+	free_struct_bonus(&pipex);
 	exit(EXIT_SUCCESS);
 }

@@ -12,6 +12,16 @@
 
 #include "pipex.h"
 
+void	free_array(char **array)
+{
+	int	i;
+
+	i = -1;
+	while (*(array + ++i))
+		free(*(array + i));
+	free(array);
+}
+
 void	free_struct_bonus(t_pipex *pipex)
 {
 	int	i;

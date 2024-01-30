@@ -64,21 +64,5 @@ char		*ft_strjoin(char const *s1, char const *s2);
 char		**ft_split(char const *s, char c);
 int			ft_strncmp(const char *s1, const char *s2, size_t n);
 
-void		print_error(char *s);
-void		free_array(char **array);
-void		free_struct(t_pipex *pipex);
-void		free_struct_bonus(t_pipex *pipex);
-int			_error(char *s);
-
-int			parsing(t_pipex *pipex);
-
-int			first_child(t_pipex *pipex);
-int			last_child(t_pipex *pipex);
-int			middle_children(int i, t_pipex *pipex);
-char		**cmd_find(char **cmd, char **path);
-char		**cmd_check(char *cmd_string, t_pipex *pipex);
-int			execute(t_pipex *pipex, char *cmd_string, int i);
-int			pipex_mult_cmd(t_pipex *pipex);
-char		**find_path(char **env);
 
 #endif
