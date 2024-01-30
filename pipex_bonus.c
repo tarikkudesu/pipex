@@ -88,8 +88,11 @@ void	pipex_mult_cmd(t_pip *pipex)
 	}
 	i = -1;
 	while (++i < pipex->cmd_num)
-		if (-1 == waitpid(pipex->pid[i], NULL, 0))
-			(free_struct_bonus(pipex), p_error(ERR_WAIT), exit(1));
+	{
+		printf("%d\n", pipex->pid[i]);
+		// if (-1 == waitpid(pipex->pid[i], NULL, 0))
+		// 	(free_struct_bonus(pipex), p_error(ERR_WAIT), exit(1));
+	}
 	close_fds(pipex);
 }
 
