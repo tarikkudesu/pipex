@@ -47,3 +47,12 @@ int	_error(char *s)
 	ft_putstr_fd(RESET, STDERR_FILENO);
 	return (1);
 }
+
+void	print_error(char *s)
+{
+	ft_putstr_fd(RED, STDERR_FILENO);
+	ft_putstr_fd(LINE_, STDERR_FILENO);
+	ft_putstr_fd(s, STDERR_FILENO);
+	ft_putstr_fd(LINE_, STDERR_FILENO);
+	ft_putstr_fd(RESET, STDERR_FILENO);
+}

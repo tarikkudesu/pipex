@@ -63,6 +63,7 @@ int			ft_strncmp(const char *s1, const char *s2, size_t n);
 void		ft_putstr_fd(char *s, int fd);
 
 void		free_struct(t_pipex *pipex);
+void		print_error(char *s);
 int			_error(char *s);
 int			find_cmd1(t_pipex *pipex, char *cmd, char **path);
 int			check_cmd1(t_pipex *pipex);

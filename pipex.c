@@ -88,28 +88,15 @@ int	main(int ac, char **av, char **environ)
 	t_pipex	pipex;
 
 	if (ac != 5)
-	{
-		ft_putstr_fd(RED, STDERR_FILENO);
-		ft_putstr_fd(LINE_, STDERR_FILENO);
-		ft_putstr_fd(ERR_ARG, STDERR_FILENO);
-		ft_putstr_fd(LINE_, STDERR_FILENO);
-		ft_putstr_fd(RESET, STDERR_FILENO);
-		exit(1);
-	}
+		return (print_error(ERR_ARG), 1);
 	pipex.av = av;
 	pipex.env = environ;
 	pipex.cmd1 = NULL;
 	pipex.cmd2 = NULL;
 	pipex.paths = NULL;
 	if (parsing(&pipex))
-	{
-		free_struct(&pipex);
-		exit(1);
-	}
+		return (free_struct(&pipex), 1);
 	if (pipe_it(&pipex))
-	{
-		free_struct(&pipex);
-		exit(1);
-	}
+		return (free_struct(&pipex), 1);
 	free_struct(&pipex);
 }

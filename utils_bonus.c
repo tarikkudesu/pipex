@@ -31,7 +31,7 @@ int	first_child(t_pipex *pipex, int fd[pipex->cmd_num - 1][2])
 		return (_error(ERR_DUP));
 	if (-1 == dup2(fd[0][1], 1))
 		return (_error(ERR_DUP));
-	return (1);
+	return (0);
 }
 
 int	last_child(t_pipex *pipex, int fd[pipex->cmd_num - 1][2])
@@ -53,7 +53,7 @@ int	last_child(t_pipex *pipex, int fd[pipex->cmd_num - 1][2])
 		return (_error(ERR_DUP));
 	if (-1 == dup2(fd[pipex->cmd_num - 2][0], 0))
 		return (_error(ERR_DUP));
-	return (1);
+	return (0);
 }
 
 int	middle_children(int i, t_pipex *pipex, int fd[pipex->cmd_num - 1][2])
@@ -61,6 +61,7 @@ int	middle_children(int i, t_pipex *pipex, int fd[pipex->cmd_num - 1][2])
 	int	j;
 
 	j = -1;
+	printf("middle child\n");
 	while (++j < pipex->cmd_num - 1)
 	{
 		if (j != i)
@@ -78,7 +79,7 @@ int	middle_children(int i, t_pipex *pipex, int fd[pipex->cmd_num - 1][2])
 		return (_error(ERR_DUP));
 	if (-1 == dup2(fd[i + 1][1], 1))
 		return (_error(ERR_DUP));
-	return (1);
+	return (0);
 }
 
 char	**cmd_find(char **cmd, char **path)
@@ -90,12 +91,12 @@ char	**cmd_find(char **cmd, char **path)
 	i = -1;
 	tmp = ft_strjoin("/", cmd[0]);
 	if (!tmp)
-		return (free_array(cmd), _error_(ERR_MAL));
+		return (free_array(cmd), print_error(ERR_MAL), NULL);
 	while (*(path + ++i))
 	{
 		temp = ft_strjoin(*(path + i), tmp);
 		if (!temp)
-			return (free_array(cmd), free(tmp), _error_(ERR_MAL));
+			return (free_array(cmd), free(tmp), print_error(ERR_MAL), NULL);
 		if (!access(temp, F_OK | X_OK))
 		{
 			free(cmd[0]);
@@ -104,7 +105,7 @@ char	**cmd_find(char **cmd, char **path)
 		}
 		free(temp);
 	}
-	return (free_array(cmd), free(tmp), _error_(CMD_NOT_FOUND));
+	return (free_array(cmd), free(tmp), print_error(CMD_NOT_FOUND), NULL);
 }
 
 char	**cmd_check(char *cmd_string, t_pipex *pipex)
@@ -113,7 +114,7 @@ char	**cmd_check(char *cmd_string, t_pipex *pipex)
 
 	cmd = ft_split(cmd_string, ' ');
 	if (!cmd)
-		return (_error_(ERR_MAL));
+		return (_error(ERR_MAL), NULL);
 	if (!access(cmd[0], F_OK | X_OK))
 		return (cmd);
 	cmd = cmd_find(cmd, pipex->paths);

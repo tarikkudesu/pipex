@@ -12,7 +12,7 @@
 
 #include "pipex_bonus.h"
 
-static int	close_fds(t_pipex *pipex, int fd[pipex->cmd_num][2])
+static int	close_fds(t_pipex *pipex, int fd[pipex->cmd_num - 1][2])
 {
 	int	i;
 
@@ -36,19 +36,23 @@ int	execute(t_pipex *pipex, char *cmd_string, int i, int fd[pipex->cmd_num - 1][
 	int		pid;
 	char	**cmd;
 
-	(void)fd;
 	pid = fork();
 	if (-1 == pid)
 		return (_error(ERR_FORK));
 	if (0 == pid)
 	{
 		if (i == 0)
-			first_child(pipex, fd);
+			if (first_child(pipex, fd))
+				return (1);
 		else if (i == pipex->cmd_num - 1)
-			last_child(pipex, fd);
+			if (last_child(pipex, fd))
+				return (1);
 		else
-			middle_children(i - 1, pipex, fd);
+			if (middle_children(i - 1, pipex, fd))
+				return (1);
 		cmd = cmd_check(cmd_string, pipex);
+		if (!cmd)
+			return (1);
 		execve(cmd[0], cmd, pipex->environ);
 		return (_error(ERR_EXECVE));
 	}
@@ -73,10 +77,11 @@ int	pipex_mult_cmd(t_pipex *pipex)
 	return (0);
 }
 
-void	pipex_here_doc(t_pipex *pipex)
+int	pipex_here_doc(t_pipex *pipex)
 {
 	(void)pipex;
 	printf("This section is under Construction\n");
+	return 1;
 }
 
 int main(int ac, char **av, char **environ)
@@ -84,22 +89,23 @@ int main(int ac, char **av, char **environ)
 	t_pipex	pipex;
 
 	if (ac < 5)
-	{
-		_error(ERR_ARG);
-		exit(1);
-	}
+		return (print_error(ERR_ARG), 1);
 	pipex.argv = av;
 	pipex.argc = ac;
 	pipex.cmd_num = ac - 3;
 	pipex.environ = environ;
 	if (parsing(&pipex))
-	{
-		free_struct_bonus(&pipex);
-		exit(1);
-	}
+		return (free_array(pipex.paths), 1);
 	if (0 == ft_strncmp(av[1], "here_doc", 8))
-		pipex_here_doc(&pipex);
+	{
+		if (pipex_here_doc(&pipex))
+			return (free_array(pipex.paths), 1);
+	}
 	else
-		pipex_mult_cmd(&pipex);
+	{
+		if (pipex_mult_cmd(&pipex))
+			return (free_array(pipex.paths), 1);
+	}
+	free_array(pipex.paths);
 	exit(EXIT_SUCCESS);
 }
