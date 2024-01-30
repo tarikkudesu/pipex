@@ -64,7 +64,7 @@ void		ft_putstr_fd(char *s, int fd);
 
 void		free_struct(t_pipex *pipex);
 void		print_error(char *s);
-int			_error(char *s);
+int			p_error(char *s);
 int			find_cmd1(t_pipex *pipex, char *cmd, char **path);
 int			check_cmd1(t_pipex *pipex);
 int			find_cmd2(t_pipex *pipex, char *cmd, char **path);

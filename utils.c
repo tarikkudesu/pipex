@@ -22,7 +22,7 @@ int	find_cmd1(t_pipex *pipex, char *cmd, char **path)
 	{
 		tmp = ft_strjoin(*(path + i), cmd);
 		if (!tmp)
-			return (_error(ERR_MAL));
+			return (p_error(ERR_MAL));
 		if (access(tmp, F_OK) == 0 && access(tmp, X_OK) == 0)
 		{
 			free(pipex->cmd1[0]);
@@ -31,7 +31,7 @@ int	find_cmd1(t_pipex *pipex, char *cmd, char **path)
 		}
 		free(tmp);
 	}
-	return (_error(CMD_NOT_FOUND));
+	return (p_error(CMD_NOT_FOUND));
 }
 
 int	check_cmd1(t_pipex *pipex)
@@ -43,15 +43,10 @@ int	check_cmd1(t_pipex *pipex)
 			return (0);
 	tmp = ft_strjoin("/", pipex->cmd1[0]);
 	if (!tmp)
-		return (_error(ERR_MAL));
+		return (p_error(ERR_MAL));
 	if (find_cmd1(pipex, tmp, pipex->paths))
-	{
-		free(tmp);
-		free_struct(pipex);
-		exit(127);
-	}
-	free(tmp);
-	return (0);
+		(free(tmp), free_struct(pipex), exit(127));
+	return (free(tmp), 0);
 }
 
 int	find_cmd2(t_pipex *pipex, char *cmd, char **path)
@@ -64,7 +59,7 @@ int	find_cmd2(t_pipex *pipex, char *cmd, char **path)
 	{
 		tmp = ft_strjoin(*(path + i), cmd);
 		if (!tmp)
-			return (_error(ERR_MAL));
+			return (p_error(ERR_MAL));
 		if (access(tmp, F_OK) == 0 && access(tmp, X_OK) == 0)
 		{
 			free(pipex->cmd2[0]);
@@ -73,25 +68,22 @@ int	find_cmd2(t_pipex *pipex, char *cmd, char **path)
 		}
 		free(tmp);
 	}
-	return (_error(CMD_NOT_FOUND));
+	return (p_error(CMD_NOT_FOUND));
 }
 
 int	check_cmd2(t_pipex *pipex)
 {
 	char	*tmp;
 
+	if (!access(pipex->cmd2[0], F_OK | X_OK))
+		return (0);
 	if (pipex->cmd2[0][0] == '/' || pipex->cmd2[0][0] == '.')
 		if (!access(pipex->cmd2[0], F_OK | X_OK))
 			return (0);
 	tmp = ft_strjoin("/", pipex->cmd2[0]);
 	if (!tmp)
-		return (_error(ERR_MAL));
+		return (p_error(ERR_MAL));
 	if (find_cmd2(pipex, tmp, pipex->paths))
-	{
-		free(tmp);
-		free_struct(pipex);
-		exit(127);
-	}
-	free(tmp);
-	return (0);
+		(free(tmp), free_struct(pipex), exit(127));
+	return (free(tmp), 0);
 }

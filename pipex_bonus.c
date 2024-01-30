@@ -12,16 +12,16 @@
 
 #include "pipex_bonus.h"
 
-static int	close_fds(t_pipex *pipex, int fd[pipex->cmd_num - 1][2])
+static int	close_fds(t_pipex *pipex)
 {
 	int	i;
 
 	i = -1;
 	while (++i < pipex->cmd_num - 1)
 	{
-		if (-1 == close(fd[i][READ_END]))
+		if (-1 == close(pipex->pipes[i][READ_END]))
 			return (_error(ERR_CLOSE));
-		if (-1 == close(fd[i][WRITE_END]))
+		if (-1 == close(pipex->pipes[i][WRITE_END]))
 			return (_error(ERR_CLOSE));
 	}
 	if (-1 == close(pipex->infile))
@@ -31,17 +31,16 @@ static int	close_fds(t_pipex *pipex, int fd[pipex->cmd_num - 1][2])
 	return (0);
 }
 
-int	execute(t_pipex *pipex, char *cmd_string, int i, \
-int fd[pipex->cmd_num - 1][2])
+int	execute(t_pipex *pipex, char *cmd_string, int i)
 {
 	char	**cmd;
 
 	if (i == 0)
-		first_child(pipex, fd);
+		first_child(pipex);
 	else if (i == pipex->cmd_num - 1)
-		last_child(pipex, fd);
+		last_child(pipex);
 	else
-		middle_children(i - 1, pipex, fd);
+		middle_children(i - 1, pipex);
 	cmd = cmd_check(cmd_string, pipex);
 	if (!cmd)
 		return (1);
@@ -53,28 +52,26 @@ int fd[pipex->cmd_num - 1][2])
 int	pipex_mult_cmd(t_pipex *pipex)
 {
 	int		i;
-	int		pid[pipex->cmd_num];
-	int		fd[pipex->cmd_num - 1][2];
 
 	i = -1;
 	while (++i < pipex->cmd_num - 1)
-		if (-1 == pipe(fd[i]))
+		if (-1 == pipe(pipex->pipes[i]))
 			return (_error(ERR_PIPE));
 	i = -1;
 	while (++i < pipex->cmd_num)
 	{
-		pid[i] = fork();
-		if (-1 == pid[i])
+		pipex->pid[i] = fork();
+		if (-1 == pipex->pid[i])
 			return (_error(ERR_FORK));
-		if (pid[i] == 0)
-			if (execute(pipex, pipex->argv[i + 2], i, fd))
+		if (pipex->pid[i] == 0)
+			if (execute(pipex, pipex->argv[i + 2], i))
 				return (1);
 	}
 	i = -1;
 	while (i < pipex->cmd_num)
-		if (-1 == waitpid(pid[i], NULL, 0))
+		if (-1 == waitpid(pipex->pid[i], NULL, 0))
 			return (_error(ERR_WAIT));
-	if (close_fds(pipex, fd))
+	if (close_fds(pipex))
 		return (_error(ERR_CLOSE));
 	return (0);
 }

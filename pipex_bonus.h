@@ -51,8 +51,10 @@ struct	s_pipex
 	int		infile;
 	int		outfile;
 	int		cmd_num;
+	int		*pid;
 	char	**argv;
 	char	**paths;
+	int		**pipes;
 	char	**environ;
 };
 
@@ -70,14 +72,12 @@ int			_error(char *s);
 
 int			parsing(t_pipex *pipex);
 
-int			first_child(t_pipex *pipex, int fd[pipex->cmd_num - 1][2]);
-int			last_child(t_pipex *pipex, int fd[pipex->cmd_num - 1][2]);
-int			middle_children(int i, t_pipex *pipex, \
-int fd[pipex->cmd_num - 1][2]);
+int			first_child(t_pipex *pipex);
+int			last_child(t_pipex *pipex);
+int			middle_children(int i, t_pipex *pipex);
 char		**cmd_find(char **cmd, char **path);
 char		**cmd_check(char *cmd_string, t_pipex *pipex);
-int			execute(t_pipex *pipex, char *cmd_string, int i, \
-int fd[pipex->cmd_num - 1][2]);
+int			execute(t_pipex *pipex, char *cmd_string, int i);
 int			pipex_mult_cmd(t_pipex *pipex);
 char		**find_path(char **env);
 

@@ -12,51 +12,51 @@
 
 #include "pipex_bonus.h"
 
-int	first_child(t_pipex *pipex, int fd[pipex->cmd_num - 1][2])
+int	first_child(t_pipex *pipex)
 {
 	int	j;
 
 	j = -1;
 	while (++j < pipex->cmd_num - 1)
 	{
-		if (-1 == close(fd[j][READ_END]))
+		if (-1 == close(pipex->pipes[j][READ_END]))
 			(_error(ERR_CLOSE), free_array(pipex->paths), exit(1));
 		if (j != 0)
-			if (-1 == close(fd[j][READ_END]))
+			if (-1 == close(pipex->pipes[j][READ_END]))
 				(_error(ERR_CLOSE), free_array(pipex->paths), exit(1));
 	}
 	if (-1 == close(pipex->outfile))
 		(_error(ERR_CLOSE), free_array(pipex->paths), exit(1));
 	if (-1 == dup2(pipex->infile, STDIN_FILENO))
 		(_error(ERR_CLOSE), free_array(pipex->paths), exit(1));
-	if (-1 == dup2(fd[0][WRITE_END], STDOUT_FILENO))
+	if (-1 == dup2(pipex->pipes[0][WRITE_END], STDOUT_FILENO))
 		(_error(ERR_CLOSE), free_array(pipex->paths), exit(1));
 	return (0);
 }
 
-int	last_child(t_pipex *pipex, int fd[pipex->cmd_num - 1][2])
+int	last_child(t_pipex *pipex)
 {
 	int	j;
 
 	j = -1;
 	while (++j < pipex->cmd_num - 1)
 	{
-		if (-1 == close(fd[j][WRITE_END]))
+		if (-1 == close(pipex->pipes[j][WRITE_END]))
 			(_error(ERR_CLOSE), free_array(pipex->paths), exit(1));
 		if (j != pipex->cmd_num - 2)
-			if (-1 == close(fd[j][READ_END]))
+			if (-1 == close(pipex->pipes[j][READ_END]))
 				(_error(ERR_CLOSE), free_array(pipex->paths), exit(1));
 	}
 	if (-1 == close(pipex->infile))
 		(_error(ERR_CLOSE), free_array(pipex->paths), exit(1));
 	if (-1 == dup2(pipex->outfile, STDOUT_FILENO))
 		(_error(ERR_DUP), free_array(pipex->paths), exit(1));
-	if (-1 == dup2(fd[pipex->cmd_num - 2][READ_END], STDIN_FILENO))
+	if (-1 == dup2(pipex->pipes[pipex->cmd_num - 2][READ_END], STDIN_FILENO))
 		(_error(ERR_DUP), free_array(pipex->paths), exit(1));
 	return (0);
 }
 
-int	middle_children(int i, t_pipex *pipex, int fd[pipex->cmd_num - 1][2])
+int	middle_children(int i, t_pipex *pipex)
 {
 	int	j;
 
@@ -64,19 +64,19 @@ int	middle_children(int i, t_pipex *pipex, int fd[pipex->cmd_num - 1][2])
 	while (++j < pipex->cmd_num - 1)
 	{
 		if (j != i)
-			if (-1 == close(fd[j][READ_END]))
+			if (-1 == close(pipex->pipes[j][READ_END]))
 				(_error(ERR_CLOSE), free_array(pipex->paths), exit(1));
 		if (j != i + 1)
-			if (-1 == close(fd[j][WRITE_END]))
+			if (-1 == close(pipex->pipes[j][WRITE_END]))
 				(_error(ERR_CLOSE), free_array(pipex->paths), exit(1));
 	}
 	if (-1 == close(pipex->infile))
 		(_error(ERR_CLOSE), free_array(pipex->paths), exit(1));
 	if (-1 == close(pipex->outfile))
 		(_error(ERR_CLOSE), free_array(pipex->paths), exit(1));
-	if (-1 == dup2(fd[i][READ_END], STDIN_FILENO))
+	if (-1 == dup2(pipex->pipes[i][READ_END], STDIN_FILENO))
 		(_error(ERR_DUP), free_array(pipex->paths), exit(1));
-	if (-1 == dup2(fd[i + 1][WRITE_END], STDOUT_FILENO))
+	if (-1 == dup2(pipex->pipes[i + 1][WRITE_END], STDOUT_FILENO))
 		(_error(ERR_DUP), free_array(pipex->paths), exit(1));
 	return (0);
 }
@@ -116,6 +116,9 @@ char	**cmd_check(char *cmd_string, t_pipex *pipex)
 		return (_error(ERR_MAL), NULL);
 	if (!access(cmd[0], F_OK | X_OK))
 		return (cmd);
+	if (cmd[0][0] == '/' || cmd[0][0] == '.')
+		if (!access(cmd[0], F_OK | X_OK))
+			return (0);
 	cmd = cmd_find(cmd, pipex->paths);
 	if (!cmd)
 		return (NULL);

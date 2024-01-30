@@ -12,24 +12,26 @@
 
 #include "pipex.h"
 
-void	free_array(char **array)
+void	free_struct_bonus(t_pipex *pipex)
 {
 	int	i;
 
 	i = -1;
-	while (*(array + ++i))
-		free(*(array + i));
-	free(array);
-}
-
-void	free_struct(t_pipex *pipex)
-{
 	if (pipex->paths)
-		free_array(pipex->paths);
-	if (pipex->cmd1)
-		free_array(pipex->cmd1);
-	if (pipex->cmd2)
-		free_array(pipex->cmd2);
+	{
+		while (*(pipex->paths + ++i))
+			free(*(pipex->paths + i));
+		free(pipex->paths);
+	}
+	i = -1
+	if (pipex->pipes)
+	{
+		while (*(pipex->pipes + ++i))
+			free(*(pipex->pipes + i));
+		free(pipex->pipes);
+	}
+	if (pipex->pid)
+		free(pipex->pid);
 }
 
 int	p_error(char *s)

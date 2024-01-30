@@ -15,33 +15,33 @@
 int	child2_process(t_pipex *pipex)
 {
 	if (-1 == close(pipex->infile))
-		return (_error(ERR_CLOSE));
+		return (p_error(ERR_CLOSE));
 	if (-1 == close(pipex->pipe_fd[WRITE_END]))
-		return (_error(ERR_CLOSE));
+		return (p_error(ERR_CLOSE));
 	if (-1 == dup2(pipex->outfile, STDOUT_FILENO))
-		return (_error(ERR_DUP));
+		return (p_error(ERR_DUP));
 	if (-1 == dup2(pipex->pipe_fd[READ_END], STDIN_FILENO))
-		return (_error(ERR_DUP));
+		return (p_error(ERR_DUP));
 	if (check_cmd2(pipex))
 		return (1);
 	execve(pipex->cmd2[0], pipex->cmd2, pipex->env);
-	return (_error(ERR_EXECVE));
+	return (p_error(ERR_EXECVE));
 }
 
 int	child1_process(t_pipex *pipex)
 {
 	if (-1 == close(pipex->outfile))
-		return (_error(ERR_CLOSE));
+		return (p_error(ERR_CLOSE));
 	if (-1 == close(pipex->pipe_fd[READ_END]))
-		return (_error(ERR_CLOSE));
+		return (p_error(ERR_CLOSE));
 	if (-1 == dup2(pipex->infile, STDIN_FILENO))
-		return (_error(ERR_DUP));
+		return (p_error(ERR_DUP));
 	if (-1 == dup2(pipex->pipe_fd[WRITE_END], STDOUT_FILENO))
-		return (_error(ERR_DUP));
+		return (p_error(ERR_DUP));
 	if (check_cmd1(pipex))
 		return (1);
 	execve(pipex->cmd1[0], pipex->cmd1, pipex->env);
-	return (_error(ERR_EXECVE));
+	return (p_error(ERR_EXECVE));
 }
 
 static int	close_fds(t_pipex pipex)
@@ -63,16 +63,16 @@ int	pipe_it(t_pipex *pipex)
 	pid_t	child2;
 
 	if (pipe(pipex->pipe_fd) == -1)
-		return (_error(ERR_PIPE));
+		return (p_error(ERR_PIPE));
 	child1 = fork();
 	if (-1 == child1)
-		return (_error(ERR_FORK));
+		return (p_error(ERR_FORK));
 	if (0 == child1)
 		if (child1_process(pipex))
 			return (1);
 	child2 = fork();
 	if (-1 == child2)
-		return (_error(ERR_FORK));
+		return (p_error(ERR_FORK));
 	if (0 == child2)
 		if (child2_process(pipex))
 			return (1);
