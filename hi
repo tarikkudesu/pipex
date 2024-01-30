@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex_bonus.h                                      :+:      :+:    :+:   */
+/*   pipex.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tamehri <tamehri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/28 19:26:39 by tamehri           #+#    #+#             */
-/*   Updated: 2024/01/30 15:25:31 by tamehri          ###   ########.fr       */
+/*   Created: 2024/01/24 12:01:24 by tamehri           #+#    #+#             */
+/*   Updated: 2024/01/28 19:40:44 by tamehri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PIPEX_BONUS_H
-# define PIPEX_BONUS_H
+#ifndef PIPEX_H
+# define PIPEX_H
 
 # include <fcntl.h>
 # include <stdio.h>
@@ -27,7 +27,7 @@
 # define READ_END		0
 # define WRITE_END		1
 # define LINE_			"---------------------------------------------------\n"
-# define ERR_ARG		"WRONG ARGUMENTS"
+# define ERR_ARG		"WRONG ARGUMENTS\n"
 # define ERR_MAL		"MALLOC ERROR"
 # define ERR_PATH		"PATH ERROR"
 # define ERR_FORK		"FORK ERROR"
@@ -43,47 +43,36 @@
 # define COMPILED		"-----------\tCOMPILED_SUCCESSFULLY\t-----------\n"
 
 typedef struct s_pipex	t_pipex;
-typedef struct s_cmd	t_cmd;
 
 struct	s_pipex
 {
-	int		argc;
-	int		infile;
+	int		pipe_fd[2];
 	int		outfile;
-	int		cmd_num;
-	char	**argv;
+	int		infile;
 	char	**paths;
-	char	**environ;
-};
-
-struct s_cmd
-{
-	int	*fd[2];
+	char	**cmd1;
+	char	**cmd2;
+	char	**env;
+	char	**av;
 };
 
 size_t		ft_strlen(const char *str);
-void		ft_putstr_fd(char *s, int fd);
 char		*ft_strjoin(char const *s1, char const *s2);
 char		**ft_split(char const *s, char c);
 int			ft_strncmp(const char *s1, const char *s2, size_t n);
+void		ft_putstr_fd(char *s, int fd);
 
-void		print_error(char *s);
-void		free_array(char **array);
 void		free_struct(t_pipex *pipex);
-void		free_struct_bonus(t_pipex *pipex);
+void		print_error(char *s);
 int			_error(char *s);
-
-int			parsing(t_pipex *pipex);
-
-int			first_child(t_pipex *pipex, int fd[pipex->cmd_num - 1][2]);
-int			last_child(t_pipex *pipex, int fd[pipex->cmd_num - 1][2]);
-int			middle_children(int i, t_pipex *pipex, \
-int fd[pipex->cmd_num - 1][2]);
-char		**cmd_find(char **cmd, char **path);
-char		**cmd_check(char *cmd_string, t_pipex *pipex);
-int			execute(t_pipex *pipex, char *cmd_string, int i, \
-int fd[pipex->cmd_num - 1][2]);
-int			pipex_mult_cmd(t_pipex *pipex);
+int			find_cmd1(t_pipex *pipex, char *cmd, char **path);
+int			check_cmd1(t_pipex *pipex);
+int			find_cmd2(t_pipex *pipex, char *cmd, char **path);
+int			check_cmd2(t_pipex *pipex);
+int			child1_process(t_pipex *pipex);
+int			child2_process(t_pipex *pipex);
+int			pipe_it(t_pipex *pipex);
 char		**find_path(char **env);
+int			parsing(t_pipex *pipex);
 
 #endif

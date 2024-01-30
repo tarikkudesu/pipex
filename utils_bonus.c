@@ -6,7 +6,7 @@
 /*   By: tamehri <tamehri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 10:10:57 by tamehri           #+#    #+#             */
-/*   Updated: 2024/01/29 13:18:45 by tamehri          ###   ########.fr       */
+/*   Updated: 2024/01/30 13:40:09 by tamehri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,18 +19,18 @@ int	first_child(t_pipex *pipex, int fd[pipex->cmd_num - 1][2])
 	j = -1;
 	while (++j < pipex->cmd_num - 1)
 	{
-		if (-1 == close(fd[j][0]))
-			return (_error(ERR_CLOSE));
+		if (-1 == close(fd[j][READ_END]))
+			(_error(ERR_CLOSE), free_array(pipex->paths), exit(1));
 		if (j != 0)
-			if (-1 == close(fd[j][1]))
-				return (_error(ERR_CLOSE));
+			if (-1 == close(fd[j][READ_END]))
+				(_error(ERR_CLOSE), free_array(pipex->paths), exit(1));
 	}
 	if (-1 == close(pipex->outfile))
-		return (_error(ERR_CLOSE));
-	if (-1 == dup2(pipex->infile, 0))
-		return (_error(ERR_DUP));
-	if (-1 == dup2(fd[0][1], 1))
-		return (_error(ERR_DUP));
+		(_error(ERR_CLOSE), free_array(pipex->paths), exit(1));
+	if (-1 == dup2(pipex->infile, STDIN_FILENO))
+		(_error(ERR_CLOSE), free_array(pipex->paths), exit(1));
+	if (-1 == dup2(fd[0][WRITE_END], STDOUT_FILENO))
+		(_error(ERR_CLOSE), free_array(pipex->paths), exit(1));
 	return (0);
 }
 
@@ -41,18 +41,18 @@ int	last_child(t_pipex *pipex, int fd[pipex->cmd_num - 1][2])
 	j = -1;
 	while (++j < pipex->cmd_num - 1)
 	{
-		if (-1 == close(fd[j][1]))
-			return (_error(ERR_CLOSE));
+		if (-1 == close(fd[j][WRITE_END]))
+			(_error(ERR_CLOSE), free_array(pipex->paths), exit(1));
 		if (j != pipex->cmd_num - 2)
-			if (-1 == close(fd[j][0]))
-				return (_error(ERR_CLOSE));
+			if (-1 == close(fd[j][READ_END]))
+				(_error(ERR_CLOSE), free_array(pipex->paths), exit(1));
 	}
 	if (-1 == close(pipex->infile))
-		return (_error(ERR_CLOSE));
-	if (-1 == dup2(pipex->outfile, 1))
-		return (_error(ERR_DUP));
-	if (-1 == dup2(fd[pipex->cmd_num - 2][0], 0))
-		return (_error(ERR_DUP));
+		(_error(ERR_CLOSE), free_array(pipex->paths), exit(1));
+	if (-1 == dup2(pipex->outfile, STDOUT_FILENO))
+		(_error(ERR_DUP), free_array(pipex->paths), exit(1));
+	if (-1 == dup2(fd[pipex->cmd_num - 2][READ_END], STDIN_FILENO))
+		(_error(ERR_DUP), free_array(pipex->paths), exit(1));
 	return (0);
 }
 
@@ -61,24 +61,23 @@ int	middle_children(int i, t_pipex *pipex, int fd[pipex->cmd_num - 1][2])
 	int	j;
 
 	j = -1;
-	printf("middle child\n");
 	while (++j < pipex->cmd_num - 1)
 	{
 		if (j != i)
-			if (-1 == close(fd[j][0]))
-				return (_error(ERR_CLOSE));
+			if (-1 == close(fd[j][READ_END]))
+				(_error(ERR_CLOSE), free_array(pipex->paths), exit(1));
 		if (j != i + 1)
-			if (-1 == close(fd[j][1]))
-				return (_error(ERR_CLOSE));
+			if (-1 == close(fd[j][WRITE_END]))
+				(_error(ERR_CLOSE), free_array(pipex->paths), exit(1));
 	}
 	if (-1 == close(pipex->infile))
-		return (_error(ERR_CLOSE));
+		(_error(ERR_CLOSE), free_array(pipex->paths), exit(1));
 	if (-1 == close(pipex->outfile))
-		return (_error(ERR_CLOSE));
-	if (-1 == dup2(fd[i][0], 0))
-		return (_error(ERR_DUP));
-	if (-1 == dup2(fd[i + 1][1], 1))
-		return (_error(ERR_DUP));
+		(_error(ERR_CLOSE), free_array(pipex->paths), exit(1));
+	if (-1 == dup2(fd[i][READ_END], STDIN_FILENO))
+		(_error(ERR_DUP), free_array(pipex->paths), exit(1));
+	if (-1 == dup2(fd[i + 1][WRITE_END], STDOUT_FILENO))
+		(_error(ERR_DUP), free_array(pipex->paths), exit(1));
 	return (0);
 }
 

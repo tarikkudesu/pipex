@@ -6,13 +6,13 @@
 /*   By: tamehri <tamehri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 12:01:15 by tamehri           #+#    #+#             */
-/*   Updated: 2024/01/29 12:38:42 by tamehri          ###   ########.fr       */
+/*   Updated: 2024/01/30 15:22:13 by tamehri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-int child2_process(t_pipex *pipex)
+int	child2_process(t_pipex *pipex)
 {
 	if (-1 == close(pipex->infile))
 		return (_error(ERR_CLOSE));
@@ -28,7 +28,7 @@ int child2_process(t_pipex *pipex)
 	return (_error(ERR_EXECVE));
 }
 
-int child1_process(t_pipex *pipex)
+int	child1_process(t_pipex *pipex)
 {
 	if (-1 == close(pipex->outfile))
 		return (_error(ERR_CLOSE));
