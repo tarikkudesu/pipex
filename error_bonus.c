@@ -17,9 +17,13 @@ void	free_array(char **array)
 	int	i;
 
 	i = -1;
-	while (*(array + ++i))
-		free(*(array + i));
-	free(array);
+	if (array)
+	{
+		while (*(array + ++i))
+			free(*(array + i));
+		free(array);
+		array = NULL;
+	}
 }
 
 int	p_error(char *s)

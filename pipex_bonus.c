@@ -30,8 +30,6 @@ void	free_struct_bonus(t_pip *pipex)
 	// 		free(pipex->pipes[i]);
 	// 	free(pipex->pipes);
 	// }
-	if (pipex->pid)
-		free(pipex->pid);
 }
 
 static void	close_fds(t_pip *pipex)
@@ -52,23 +50,55 @@ static void	close_fds(t_pip *pipex)
 		(free_struct_bonus(pipex), p_error(ERR_CLOSE), exit(1));
 }
 
-void	execute(t_pip *pipex, char **cmd, int i)
+void	execute(t_pip *pipex, char **cmd, char *path, int i)
 {
+	int	pid;
 
-	if (i == 0)
-		first_child(pipex);
-	else if (i == pipex->cmd_num - 1)
-		last_child(pipex);
-	else
-		middle_children(i - 1, pipex);
-	execve(cmd[0], cmd, pipex->environ);
-	(free_struct_bonus(pipex), p_error(ERR_EXECVE), exit(127));
+	pid = fork();
+	if (-1 == pid)
+		(free(path), free_array(cmd), free_struct_bonus(pipex), \
+		p_error(ERR_FORK), exit(1));
+	if (0 == pid)
+	{
+		if (0 == i)
+			first_child(pipex);
+		else if (i == pipex->cmd_num - 1)
+			last_child(pipex);
+		else
+			middle_children(i - 1, pipex);
+		execve(path, cmd, pipex->environ);
+		(free_struct_bonus(pipex), p_error(ERR_EXECVE), exit(127));
+	}
+}
+
+char	*get_path(char *cmd, char **path)
+{
+	char	*temp;
+	char	*tmp;
+	int		i;
+
+	i = -1;
+	tmp = ft_strjoin("/", cmd);
+	if (!tmp)
+		return (print_error(ERR_MAL), NULL);
+	while (*(path + ++i))
+	{
+		temp = ft_strjoin(*(path + i), tmp);
+		if (!temp)
+			return (free(tmp), print_error(ERR_MAL), NULL);
+		if (!access(temp, F_OK | X_OK))
+			return (free(tmp), temp);
+		free(temp);
+	}
+	free(tmp);
+	return (NULL);
 }
 
 void	pipex_mult_cmd(t_pip *pipex)
 {
 	char	**cmd;
 	char	*path;
+	int		pid;
 	int		i;
 
 	i = -1;
@@ -79,17 +109,18 @@ void	pipex_mult_cmd(t_pip *pipex)
 	while (++i < pipex->cmd_num)
 	{
 		cmd = cmd_check(pipex->argv[i + 2], pipex);
-		if (!cmd)
-			(free_struct_bonus(pipex), p_error(CMD_NOT_FOUND), exit(127));
-		pipex->pid[i] = fork();
-		if (-1 == pipex->pid[i])
-			(free_struct_bonus(pipex), p_error(ERR_FORK), exit(1));
-		if (pipex->pid[i] == 0)
-			execute(pipex, cmd, i);
+		path = get_path(pipex->argv[i + 2], pipex->paths);
+		if (!cmd || !path);
+		{
+			free_array(cmd);
+			break ;
+		}
+		dprintf(2, "%s\t%s\n", cmd[0], path);
+		execute(pipex, cmd, path, i);
 	}
 	i = 1;
-	while (i)
-		i = waitpid(-1, NULL, WNOHANG);
+	// while (i)
+	// 	i = waitpid(-1, NULL, WNOHANG);
 	close_fds(pipex);
 }
 
@@ -119,5 +150,4 @@ int	main(int ac, char **av, char **environ)
 	else
 		pipex_mult_cmd(&pipex);
 	free_struct_bonus(&pipex);
-	exit(EXIT_SUCCESS);
 }

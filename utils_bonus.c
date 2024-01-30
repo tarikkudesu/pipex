@@ -90,20 +90,13 @@ int	cmd_find(char *cmd, char **path)
 		if (!temp)
 			return (free(cmd), print_error(ERR_MAL), 1);
 		if (!access(temp, F_OK | X_OK))
+		{
+			dprintf(2, "%s\n", temp);
 			return (free(temp), free(cmd), 0);
+		}
 		free(temp);
 	}
-	return (free_array(cmd), 1);
-}
-
-void	w_f_t_e(t_pip *pipex)
-{
-	int	i;
-
-	i = 1;
-	while (i)
-		i = waitpid(-1, NULL, WNOHANG);
-	free_struct_bonus(pipex);
+	return (free(cmd), 1);
 }
 
 char	**cmd_check(char *cmd_string, t_pip *pipex)
@@ -113,7 +106,7 @@ char	**cmd_check(char *cmd_string, t_pip *pipex)
 
 	cmd = ft_split(cmd_string, ' ');
 	if (!cmd)
-		(free_struct_bonus(pipex), p_error(ERR_MAL), exit(1));
+		return (p_error(ERR_MAL), NULL);
 	if (!access(cmd[0], F_OK | X_OK))
 		return (cmd);
 	if (cmd[0][0] == '/' || cmd[0][0] == '.')
@@ -121,8 +114,8 @@ char	**cmd_check(char *cmd_string, t_pip *pipex)
 			return (cmd);
 	tmp = ft_strjoin("/", cmd[0]);
 	if (!tmp)
-		(free_array(cmd), free_struct_bonus(pipex), print_error(ERR_MAL), exit(1));
-	if (cmd_find(tmp, pipex->paths));
-		return (free_array(cmd), NULL);
+		return (free_array(cmd), print_error(ERR_MAL), NULL);
+	if (cmd_find(tmp, pipex->paths))
+		return (free_array(cmd), p_error(CMD_NOT_FOUND), NULL);
 	return (cmd);
 }

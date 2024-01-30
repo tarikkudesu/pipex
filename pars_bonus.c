@@ -82,7 +82,4 @@ void	parsing(t_pip *pipex)
 	pipex->pipes = init_pipes(pipex->cmd_num - 1);
 	if (!pipex->pipes)
 		(p_error(ERR_CLOSE), free_struct_bonus(pipex), exit(1));
-	pipex->pid = init_pid(pipex->cmd_num);
-	if (!pipex->pid)
-		(p_error(ERR_CLOSE), free_struct_bonus(pipex), exit(1));
 }

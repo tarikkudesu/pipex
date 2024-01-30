@@ -51,7 +51,6 @@ struct	s_pip
 	int		infile;
 	int		outfile;
 	int		cmd_num;
-	int		*pid;
 	char	**argv;
 	char	**paths;
 	int		**pipes;
@@ -69,7 +68,7 @@ void		parsing(t_pip *pipex);
 char		**find_path(char **env);
 int			**init_pipes(int size);
 int			*init_pid(int size);
-void		execute(t_pip *pipex, char **cmd, int i);
+void		execute(t_pip *pipex, char **cmd, char *path, int i);
 char		**cmd_check(char *cmd_string, t_pip *pipex);
 int			cmd_find(char *cmd, char **path);
 void		first_child(t_pip *pipex);
