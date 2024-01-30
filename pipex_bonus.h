@@ -27,7 +27,7 @@
 # define READ_END		0
 # define WRITE_END		1
 # define LINE_			"---------------------------------------------------\n"
-# define ERR_ARG		"WRONG ARGUMENTS\n"
+# define ERR_ARG		"WRONG NUMBER OF ARGUMENTS\n"
 # define ERR_MAL		"MALLOC ERROR"
 # define ERR_PATH		"PATH ERROR"
 # define ERR_FORK		"FORK ERROR"
@@ -69,9 +69,9 @@ void		parsing(t_pip *pipex);
 char		**find_path(char **env);
 int			**init_pipes(int size);
 int			*init_pid(int size);
-void		execute(t_pip *pipex, char *cmd_string, int i);
+void		execute(t_pip *pipex, char **cmd, int i);
 char		**cmd_check(char *cmd_string, t_pip *pipex);
-char		**cmd_find(char **cmd, char **path);
+int			cmd_find(char *cmd, char **path);
 void		first_child(t_pip *pipex);
 void		middle_children(int i, t_pip *pipex);
 void		last_child(t_pip *pipex);

@@ -52,9 +52,8 @@ static void	close_fds(t_pip *pipex)
 		(free_struct_bonus(pipex), p_error(ERR_CLOSE), exit(1));
 }
 
-void	execute(t_pip *pipex, char *cmd_string, int i)
+void	execute(t_pip *pipex, char **cmd, int i)
 {
-	char	**cmd;
 
 	if (i == 0)
 		first_child(pipex);
@@ -62,15 +61,14 @@ void	execute(t_pip *pipex, char *cmd_string, int i)
 		last_child(pipex);
 	else
 		middle_children(i - 1, pipex);
-	cmd = cmd_check(cmd_string, pipex);
-	if (!cmd)
-		(free_struct_bonus(pipex), p_error(CMD_NOT_FOUND), exit(127));
 	execve(cmd[0], cmd, pipex->environ);
-	(free_struct_bonus(pipex), p_error(CMD_NOT_FOUND), exit(127));
+	(free_struct_bonus(pipex), p_error(ERR_EXECVE), exit(127));
 }
 
 void	pipex_mult_cmd(t_pip *pipex)
 {
+	char	**cmd;
+	char	*path;
 	int		i;
 
 	i = -1;
@@ -80,19 +78,18 @@ void	pipex_mult_cmd(t_pip *pipex)
 	i = -1;
 	while (++i < pipex->cmd_num)
 	{
+		cmd = cmd_check(pipex->argv[i + 2], pipex);
+		if (!cmd)
+			(free_struct_bonus(pipex), p_error(CMD_NOT_FOUND), exit(127));
 		pipex->pid[i] = fork();
 		if (-1 == pipex->pid[i])
 			(free_struct_bonus(pipex), p_error(ERR_FORK), exit(1));
 		if (pipex->pid[i] == 0)
-			execute(pipex, pipex->argv[i + 2], i);
+			execute(pipex, cmd, i);
 	}
-	i = -1;
-	while (++i < pipex->cmd_num)
-	{
-		printf("%d\n", pipex->pid[i]);
-		// if (-1 == waitpid(pipex->pid[i], NULL, 0))
-		// 	(free_struct_bonus(pipex), p_error(ERR_WAIT), exit(1));
-	}
+	i = 1;
+	while (i)
+		i = waitpid(-1, NULL, WNOHANG);
 	close_fds(pipex);
 }
 

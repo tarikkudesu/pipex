@@ -78,46 +78,51 @@ void	middle_children(int i, t_pip *pipex)
 		(p_error(ERR_DUP), free_struct_bonus(pipex), exit(1));
 }
 
-char	**cmd_find(char **cmd, char **path)
+int	cmd_find(char *cmd, char **path)
 {
-	char	*tmp;
 	char	*temp;
 	int		i;
 
 	i = -1;
-	tmp = ft_strjoin("/", cmd[0]);
-	if (!tmp)
-		return (free_array(cmd), print_error(ERR_MAL), NULL);
 	while (*(path + ++i))
 	{
-		temp = ft_strjoin(*(path + i), tmp);
+		temp = ft_strjoin(*(path + i), cmd);
 		if (!temp)
-			return (free_array(cmd), free(tmp), print_error(ERR_MAL), NULL);
+			return (free(cmd), print_error(ERR_MAL), 1);
 		if (!access(temp, F_OK | X_OK))
-		{
-			free(cmd[0]);
-			cmd[0] = temp;
-			return (free(tmp), cmd);
-		}
+			return (free(temp), free(cmd), 0);
 		free(temp);
 	}
-	return (free_array(cmd), free(tmp), p_error(CMD_NOT_FOUND), NULL);
+	return (free_array(cmd), 1);
+}
+
+void	w_f_t_e(t_pip *pipex)
+{
+	int	i;
+
+	i = 1;
+	while (i)
+		i = waitpid(-1, NULL, WNOHANG);
+	free_struct_bonus(pipex);
 }
 
 char	**cmd_check(char *cmd_string, t_pip *pipex)
 {
 	char	**cmd;
+	char	*tmp;
 
 	cmd = ft_split(cmd_string, ' ');
 	if (!cmd)
-		return (p_error(ERR_MAL), NULL);
+		(free_struct_bonus(pipex), p_error(ERR_MAL), exit(1));
 	if (!access(cmd[0], F_OK | X_OK))
 		return (cmd);
 	if (cmd[0][0] == '/' || cmd[0][0] == '.')
 		if (!access(cmd[0], F_OK | X_OK))
 			return (cmd);
-	cmd = cmd_find(cmd, pipex->paths);
-	if (!cmd)
-		return (NULL);
+	tmp = ft_strjoin("/", cmd[0]);
+	if (!tmp)
+		(free_array(cmd), free_struct_bonus(pipex), print_error(ERR_MAL), exit(1));
+	if (cmd_find(tmp, pipex->paths));
+		return (free_array(cmd), NULL);
 	return (cmd);
 }
