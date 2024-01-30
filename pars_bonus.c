@@ -50,7 +50,7 @@ int	**init_pipes(int size)
 		{
 			while (i-- >= 0)
 				free(*(pipes + i));
-			return(free(pipes), _error(ERR_MAL), NULL);
+			return(free(pipes), p_error(ERR_MAL), NULL);
 		}
 	}
 	*(pipes + i) = NULL;
@@ -63,27 +63,26 @@ int	*init_pid(int size)
 
 	pid = malloc(sizeof(int) * size);
 	if (!pid)
-		return (_error(ERR_MAL), NULL);
+		return (p_error(ERR_MAL), NULL);
 	return (pid);
 }
 
-int	parsing(t_pipex *pipex)
+void	parsing(t_pip *pipex)
 {
 	pipex->infile = open(pipex->argv[1], O_RDONLY);
 	if (pipex->infile == -1)
-		return (_error(ERR_OPEN));
+		(p_error(ERR_OPEN), exit(1));
 	pipex->outfile = open(pipex->argv[pipex->argc - 1], \
 	O_WRONLY | O_TRUNC | O_CREAT, 0777);
 	if (pipex->outfile == -1)
-		return (_error(ERR_OPEN));
+		(p_error(ERR_OPEN), exit(1));
 	pipex->paths = find_path(pipex->environ);
 	if (!pipex->paths)
-		return (_error(ERR_PATH));
+		(p_error(ERR_MAL), exit(1));
 	pipex->pipes = init_pipes(pipex->cmd_num - 1);
 	if (!pipex->pipes)
-		return (free_array (pipex->paths), _error(ERR_MAL));
+		(p_error(ERR_CLOSE), free_struct_bonus(pipex), exit(1));
 	pipex->pid = init_pid(pipex->cmd_num);
 	if (!pipex->pid)
-		(free_int_array(pipex->pipes), free_array (pipex->paths), return (_error(ERR_MAL)));
-	return (0);
+		(p_error(ERR_CLOSE), free_struct_bonus(pipex), exit(1));
 }

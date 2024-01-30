@@ -27,7 +27,7 @@
 # define READ_END		0
 # define WRITE_END		1
 # define LINE_			"---------------------------------------------------\n"
-# define ERR_ARG		"WRONG ARGUMENTS"
+# define ERR_ARG		"WRONG ARGUMENTS\n"
 # define ERR_MAL		"MALLOC ERROR"
 # define ERR_PATH		"PATH ERROR"
 # define ERR_FORK		"FORK ERROR"
@@ -42,10 +42,10 @@
 # define CMD_NOT_FOUND	"COMMAND NOT FOUND"
 # define COMPILED		"-----------\tCOMPILED_SUCCESSFULLY\t-----------\n"
 
-typedef struct s_pipex	t_pipex;
+typedef struct s_pip	t_pip;
 typedef struct s_cmd	t_cmd;
 
-struct	s_pipex
+struct	s_pip
 {
 	int		argc;
 	int		infile;
@@ -64,5 +64,21 @@ char		*ft_strjoin(char const *s1, char const *s2);
 char		**ft_split(char const *s, char c);
 int			ft_strncmp(const char *s1, const char *s2, size_t n);
 
+void		pipex_mult_cmd(t_pip *pipex);
+void		parsing(t_pip *pipex);
+char		**find_path(char **env);
+int			**init_pipes(int size);
+int			*init_pid(int size);
+void		execute(t_pip *pipex, char *cmd_string, int i);
+char		**cmd_check(char *cmd_string, t_pip *pipex);
+char		**cmd_find(char **cmd, char **path);
+void		first_child(t_pip *pipex);
+void		middle_children(int i, t_pip *pipex);
+void		last_child(t_pip *pipex);
+static void	close_fds(t_pip *pipex);
+void		print_error(char *s);
+int			p_error(char *s);
+void		free_struct_bonus(t_pip *pipex);
+void		free_array(char **array);
 
 #endif

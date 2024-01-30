@@ -12,7 +12,7 @@
 
 #include "pipex_bonus.h"
 
-void	first_child(t_pipex *pipex)
+void	first_child(t_pip *pipex)
 {
 	int	j;
 
@@ -20,21 +20,20 @@ void	first_child(t_pipex *pipex)
 	while (++j < pipex->cmd_num - 1)
 	{
 		if (-1 == close(pipex->pipes[j][READ_END]))
-			(_error(ERR_CLOSE), free_array(pipex->paths), exit(1));
+			(p_error(ERR_CLOSE), free_struct_bonus(pipex), exit(1));
 		if (j != 0)
-			if (-1 == close(pipex->pipes[j][READ_END]))
-				(_error(ERR_CLOSE), free_array(pipex->paths), exit(1));
+			if (-1 == close(pipex->pipes[j][WRITE_END]))
+				(p_error(ERR_CLOSE), free_struct_bonus(pipex), exit(1));
 	}
 	if (-1 == close(pipex->outfile))
-		(_error(ERR_CLOSE), free_array(pipex->paths), exit(1));
+		(p_error(ERR_CLOSE), free_struct_bonus(pipex), exit(1));
 	if (-1 == dup2(pipex->infile, STDIN_FILENO))
-		(_error(ERR_CLOSE), free_array(pipex->paths), exit(1));
+		(p_error(ERR_DUP), free_struct_bonus(pipex), exit(1));
 	if (-1 == dup2(pipex->pipes[0][WRITE_END], STDOUT_FILENO))
-		(_error(ERR_CLOSE), free_array(pipex->paths), exit(1));
-	return (0);
+		(p_error(ERR_DUP), free_struct_bonus(pipex), exit(1));
 }
 
-void	last_child(t_pipex *pipex)
+void	last_child(t_pip *pipex)
 {
 	int	j;
 
@@ -42,20 +41,20 @@ void	last_child(t_pipex *pipex)
 	while (++j < pipex->cmd_num - 1)
 	{
 		if (-1 == close(pipex->pipes[j][WRITE_END]))
-			(_error(ERR_CLOSE), free_array(pipex->paths), exit(1));
+			(p_error(ERR_CLOSE), free_struct_bonus(pipex), exit(1));
 		if (j != pipex->cmd_num - 2)
 			if (-1 == close(pipex->pipes[j][READ_END]))
-				(_error(ERR_CLOSE), free_array(pipex->paths), exit(1));
+				(p_error(ERR_CLOSE), free_struct_bonus(pipex), exit(1));
 	}
 	if (-1 == close(pipex->infile))
-		(_error(ERR_CLOSE), free_array(pipex->paths), exit(1));
+		(p_error(ERR_CLOSE), free_struct_bonus(pipex), exit(1));
 	if (-1 == dup2(pipex->outfile, STDOUT_FILENO))
-		(_error(ERR_DUP), free_array(pipex->paths), exit(1));
+		(p_error(ERR_DUP), free_struct_bonus(pipex), exit(1));
 	if (-1 == dup2(pipex->pipes[pipex->cmd_num - 2][READ_END], STDIN_FILENO))
-		(_error(ERR_DUP), free_array(pipex->paths), exit(1));
+		(p_error(ERR_DUP), free_struct_bonus(pipex), exit(1));
 }
 
-void	middle_children(int i, t_pipex *pipex)
+void	middle_children(int i, t_pip *pipex)
 {
 	int	j;
 
@@ -64,19 +63,19 @@ void	middle_children(int i, t_pipex *pipex)
 	{
 		if (j != i)
 			if (-1 == close(pipex->pipes[j][READ_END]))
-				(_error(ERR_CLOSE), free_array(pipex->paths), exit(1));
+				(p_error(ERR_CLOSE), free_struct_bonus(pipex), exit(1));
 		if (j != i + 1)
 			if (-1 == close(pipex->pipes[j][WRITE_END]))
-				(_error(ERR_CLOSE), free_array(pipex->paths), exit(1));
+				(p_error(ERR_CLOSE), free_struct_bonus(pipex), exit(1));
 	}
 	if (-1 == close(pipex->infile))
-		(_error(ERR_CLOSE), free_array(pipex->paths), exit(1));
+		(p_error(ERR_CLOSE), free_array(pipex->paths), exit(1));
 	if (-1 == close(pipex->outfile))
-		(_error(ERR_CLOSE), free_array(pipex->paths), exit(1));
+		(p_error(ERR_CLOSE), free_struct_bonus(pipex), exit(1));
 	if (-1 == dup2(pipex->pipes[i][READ_END], STDIN_FILENO))
-		(_error(ERR_DUP), free_array(pipex->paths), exit(1));
+		(p_error(ERR_DUP), free_struct_bonus(pipex), exit(1));
 	if (-1 == dup2(pipex->pipes[i + 1][WRITE_END], STDOUT_FILENO))
-		(_error(ERR_DUP), free_array(pipex->paths), exit(1));
+		(p_error(ERR_DUP), free_struct_bonus(pipex), exit(1));
 }
 
 char	**cmd_find(char **cmd, char **path)
@@ -105,13 +104,13 @@ char	**cmd_find(char **cmd, char **path)
 	return (free_array(cmd), free(tmp), p_error(CMD_NOT_FOUND), NULL);
 }
 
-char	**cmd_check(char *cmd_string, t_pipex *pipex)
+char	**cmd_check(char *cmd_string, t_pip *pipex)
 {
 	char	**cmd;
 
 	cmd = ft_split(cmd_string, ' ');
 	if (!cmd)
-		return (_error(ERR_MAL), NULL);
+		return (p_error(ERR_MAL), NULL);
 	if (!access(cmd[0], F_OK | X_OK))
 		return (cmd);
 	if (cmd[0][0] == '/' || cmd[0][0] == '.')

@@ -22,28 +22,6 @@ void	free_array(char **array)
 	free(array);
 }
 
-void	free_struct_bonus(t_pipex *pipex)
-{
-	int	i;
-
-	i = -1;
-	if (pipex->paths)
-	{
-		while (*(pipex->paths + ++i))
-			free(*(pipex->paths + i));
-		free(pipex->paths);
-	}
-	i = -1
-	if (pipex->pipes)
-	{
-		while (*(pipex->pipes + ++i))
-			free(*(pipex->pipes + i));
-		free(pipex->pipes);
-	}
-	if (pipex->pid)
-		free(pipex->pid);
-}
-
 int	p_error(char *s)
 {
 	ft_putstr_fd(RED, STDERR_FILENO);
