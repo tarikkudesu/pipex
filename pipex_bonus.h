@@ -6,7 +6,7 @@
 /*   By: tamehri <tamehri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 19:26:39 by tamehri           #+#    #+#             */
-/*   Updated: 2024/01/30 15:25:31 by tamehri          ###   ########.fr       */
+/*   Updated: 2024/01/30 15:35:36 by tamehri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,11 +54,6 @@ struct	s_pipex
 	char	**argv;
 	char	**paths;
 	char	**environ;
-};
-
-struct s_cmd
-{
-	int	*fd[2];
 };
 
 size_t		ft_strlen(const char *str);
