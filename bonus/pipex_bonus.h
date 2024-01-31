@@ -73,6 +73,7 @@ char	**cmd_check(char *cmd_string, t_pip *pipex);
 char	**find_path(char **env);
 void	parsing(t_pip *pipex);
 void	execute_cmd(char *cmd_string, t_pip *pipex);
+void	last_child(t_pip *pipex);
 void	execute(t_pip *pipex, int i);
 void	pipex_mult_cmd(t_pip *pipex);
 int		pipex_here_doc(t_pip *pipex);
