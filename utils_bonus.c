@@ -6,76 +6,37 @@
 /*   By: tamehri <tamehri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 10:10:57 by tamehri           #+#    #+#             */
-/*   Updated: 2024/01/30 13:40:09 by tamehri          ###   ########.fr       */
+/*   Updated: 2024/01/31 12:07:37 by tamehri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex_bonus.h"
 
-void	first_child(t_pip *pipex)
+void	last_process(t_pip *pipex, int fd[2])
 {
-	int	j;
-
-	j = -1;
-	while (++j < pipex->cmd_num - 1)
-	{
-		if (-1 == close(pipex->pipes[j][READ_END]))
-			(p_error(ERR_CLOSE), free_struct_bonus(pipex), exit(1));
-		if (j != 0)
-			if (-1 == close(pipex->pipes[j][WRITE_END]))
-				(p_error(ERR_CLOSE), free_struct_bonus(pipex), exit(1));
-	}
-	if (-1 == close(pipex->outfile))
-		(p_error(ERR_CLOSE), free_struct_bonus(pipex), exit(1));
+	pipex->outfile = open(pipex->argv[pipex->argc - 1], \
+	O_WRONLY | O_TRUNC | O_CREAT, 0777);
+	if (pipex->outfile == -1)
+		(p_error(ERR_OPEN), exit(1));
 	if (-1 == dup2(pipex->infile, STDIN_FILENO))
 		(p_error(ERR_DUP), free_struct_bonus(pipex), exit(1));
-	if (-1 == dup2(pipex->pipes[0][WRITE_END], STDOUT_FILENO))
-		(p_error(ERR_DUP), free_struct_bonus(pipex), exit(1));
-}
-
-void	last_child(t_pip *pipex)
-{
-	int	j;
-
-	j = -1;
-	while (++j < pipex->cmd_num - 1)
-	{
-		if (-1 == close(pipex->pipes[j][WRITE_END]))
-			(p_error(ERR_CLOSE), free_struct_bonus(pipex), exit(1));
-		if (j != pipex->cmd_num - 2)
-			if (-1 == close(pipex->pipes[j][READ_END]))
-				(p_error(ERR_CLOSE), free_struct_bonus(pipex), exit(1));
-	}
-	if (-1 == close(pipex->infile))
-		(p_error(ERR_CLOSE), free_struct_bonus(pipex), exit(1));
 	if (-1 == dup2(pipex->outfile, STDOUT_FILENO))
 		(p_error(ERR_DUP), free_struct_bonus(pipex), exit(1));
-	if (-1 == dup2(pipex->pipes[pipex->cmd_num - 2][READ_END], STDIN_FILENO))
-		(p_error(ERR_DUP), free_struct_bonus(pipex), exit(1));
+	// dprintf(1, "shiiiiiiiiiiit\n");
+	// if (-1 == close(fd[WRITE_END]))
+	// 	(p_error(ERR_CLOSE), free_struct_bonus(pipex), exit(1));
+	// if (-1 == close(fd[READ_END]))
+	// 	(p_error(ERR_CLOSE), free_struct_bonus(pipex), exit(1));
 }
 
-void	middle_children(int i, t_pip *pipex)
+void	processes(t_pip *pipex, int fd[2])
 {
-	int	j;
-
-	j = -1;
-	while (++j < pipex->cmd_num - 1)
-	{
-		if (j != i)
-			if (-1 == close(pipex->pipes[j][READ_END]))
-				(p_error(ERR_CLOSE), free_struct_bonus(pipex), exit(1));
-		if (j != i + 1)
-			if (-1 == close(pipex->pipes[j][WRITE_END]))
-				(p_error(ERR_CLOSE), free_struct_bonus(pipex), exit(1));
-	}
-	if (-1 == close(pipex->infile))
-		(p_error(ERR_CLOSE), free_array(pipex->paths), exit(1));
-	if (-1 == close(pipex->outfile))
-		(p_error(ERR_CLOSE), free_struct_bonus(pipex), exit(1));
-	if (-1 == dup2(pipex->pipes[i][READ_END], STDIN_FILENO))
+	if (-1 == dup2(pipex->infile, STDIN_FILENO))
 		(p_error(ERR_DUP), free_struct_bonus(pipex), exit(1));
-	if (-1 == dup2(pipex->pipes[i + 1][WRITE_END], STDOUT_FILENO))
+	if (-1 == dup2(fd[WRITE_END], STDOUT_FILENO))
 		(p_error(ERR_DUP), free_struct_bonus(pipex), exit(1));
+	// if (-1 == close(fd[WRITE_END]))
+	// 	(p_error(ERR_CLOSE), free_struct_bonus(pipex), exit(1));
 }
 
 int	cmd_find(char *cmd, char **path)
@@ -90,10 +51,7 @@ int	cmd_find(char *cmd, char **path)
 		if (!temp)
 			return (free(cmd), print_error(ERR_MAL), 1);
 		if (!access(temp, F_OK | X_OK))
-		{
-			dprintf(2, "%s\n", temp);
 			return (free(temp), free(cmd), 0);
-		}
 		free(temp);
 	}
 	return (free(cmd), 1);
