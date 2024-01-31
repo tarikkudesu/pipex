@@ -6,37 +6,33 @@
 /*   By: tamehri <tamehri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 10:10:57 by tamehri           #+#    #+#             */
-/*   Updated: 2024/01/31 12:07:37 by tamehri          ###   ########.fr       */
+/*   Updated: 2024/01/31 16:02:19 by tamehri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex_bonus.h"
 
-void	last_process(t_pip *pipex, int fd[2])
+char	*get_path(char *cmd, char **path)
 {
-	pipex->outfile = open(pipex->argv[pipex->argc - 1], \
-	O_WRONLY | O_TRUNC | O_CREAT, 0777);
-	if (pipex->outfile == -1)
-		(p_error(ERR_OPEN), exit(1));
-	if (-1 == dup2(pipex->infile, STDIN_FILENO))
-		(p_error(ERR_DUP), free_struct_bonus(pipex), exit(1));
-	if (-1 == dup2(pipex->outfile, STDOUT_FILENO))
-		(p_error(ERR_DUP), free_struct_bonus(pipex), exit(1));
-	// dprintf(1, "shiiiiiiiiiiit\n");
-	// if (-1 == close(fd[WRITE_END]))
-	// 	(p_error(ERR_CLOSE), free_struct_bonus(pipex), exit(1));
-	// if (-1 == close(fd[READ_END]))
-	// 	(p_error(ERR_CLOSE), free_struct_bonus(pipex), exit(1));
-}
+	char	*temp;
+	char	*tmp;
+	int		i;
 
-void	processes(t_pip *pipex, int fd[2])
-{
-	if (-1 == dup2(pipex->infile, STDIN_FILENO))
-		(p_error(ERR_DUP), free_struct_bonus(pipex), exit(1));
-	if (-1 == dup2(fd[WRITE_END], STDOUT_FILENO))
-		(p_error(ERR_DUP), free_struct_bonus(pipex), exit(1));
-	// if (-1 == close(fd[WRITE_END]))
-	// 	(p_error(ERR_CLOSE), free_struct_bonus(pipex), exit(1));
+	i = -1;
+	tmp = ft_strjoin("/", cmd);
+	if (!tmp)
+		return (print_error(ERR_MAL), NULL);
+	while (*(path + ++i))
+	{
+		temp = ft_strjoin(*(path + i), tmp);
+		if (!temp)
+			return (free(tmp), print_error(ERR_MAL), NULL);
+		if (!access(temp, F_OK | X_OK))
+			return (free(tmp), temp);
+		free(temp);
+	}
+	free(tmp);
+	return (NULL);
 }
 
 int	cmd_find(char *cmd, char **path)

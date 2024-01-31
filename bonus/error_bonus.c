@@ -1,16 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error.c                                            :+:      :+:    :+:   */
+/*   error_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tamehri <tamehri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 11:15:01 by tamehri           #+#    #+#             */
-/*   Updated: 2024/01/30 15:09:53 by tamehri          ###   ########.fr       */
+/*   Updated: 2024/01/31 16:01:00 by tamehri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "pipex_bonus.h"
+
+void	free_struct_bonus(t_pip *pipex)
+{
+	int	i;
+
+	i = -1;
+	if (pipex->paths)
+	{
+		while (*(pipex->paths + ++i))
+			free(*(pipex->paths + i));
+		free(pipex->paths);
+	}
+}
 
 void	free_array(char **array)
 {

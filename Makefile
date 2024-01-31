@@ -6,22 +6,22 @@
 #    By: tamehri <tamehri@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/24 12:01:11 by tamehri           #+#    #+#              #
-#    Updated: 2024/01/29 12:03:41 by tamehri          ###   ########.fr        #
+#    Updated: 2024/01/31 17:07:56 by tamehri          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-SRC		=	pipex.c pars.c libft.c split.c error.c utils.c
-SRC_B	=	pipex_bonus.c pars_bonus.c utils_bonus.c error_bonus.c libft.c split.c
+SRC		=	mand/pipex.c mand/pars.c mand/libft.c mand/split.c mand/error.c mand/utils.c
+SRC_B	=	bonus/pipex_bonus.c bonus/pars_bonus.c bonus/utils_bonus.c bonus/error_bonus.c bonus/libft_bonus.c bonus/split_bonus.c
 
 OBJ		=	$(SRC:.c=.o)
 OBJ_B	=	$(SRC_B:.c=.o)
-INC		=	pipex.h
-INC_B	=	pipex_bonus.h
+INC		=	mand/pipex.h
+INC_B	=	bonus/pipex_bonus.h
 CC		= 	cc
 NAME	=	pipex
 BONUS	=	pipex_bonus
 CFLAGS	=	-Wall -Wextra -Werror
-MAJENTA	=	'\033[1;35m'
+MAJENTA	=	'\033[35m'
 GREEN	=	'\033[32m'
 RESET	=	'\033[0m'
 
@@ -52,5 +52,9 @@ fclean: clean
 	@rm -f $(NAME) $(BONUS)
 
 re: fclean all
-	@echo $(GREEN) "\n... Recompiling" $(RESET)
-	@echo $(MAJENTA) "Done" $(RESET)
+	@echo $(GREEN) "\n ... Recompiling" $(RESET)
+	@echo $(GREEN) "Done" $(RESET)
+
+re_bonus: fclean bonus
+	@echo $(GREEN) "\n ... Recompiling" $(RESET)
+	@echo $(GREEN) "Done" $(RESET)

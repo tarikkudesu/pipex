@@ -6,7 +6,7 @@
 /*   By: tamehri <tamehri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 19:26:39 by tamehri           #+#    #+#             */
-/*   Updated: 2024/01/31 12:02:32 by tamehri          ###   ########.fr       */
+/*   Updated: 2024/01/31 16:05:23 by tamehri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ struct	s_pip
 	int		infile;
 	int		outfile;
 	int		cmd_num;
-	int		*fd;
+	int		fd[2];
 	char	**argv;
 	char	**paths;
 	char	**environ;
@@ -63,18 +63,18 @@ char		*ft_strjoin(char const *s1, char const *s2);
 char		**ft_split(char const *s, char c);
 int			ft_strncmp(const char *s1, const char *s2, size_t n);
 
-void		pipex_mult_cmd(t_pip *pipex);
-void		parsing(t_pip *pipex);
-char		**find_path(char **env);
-void		execute(t_pip *pipex, int fd[2], char **cmd, int i);
-char		**cmd_check(char *cmd_string, t_pip *pipex);
-void		last_process(t_pip *pipex, int fd[2]);
-void		processes(t_pip *pipex, int fd[2]);
-int			cmd_find(char *cmd, char **path);
-static void	close_fds(t_pip *pipex);
-void		print_error(char *s);
-int			p_error(char *s);
-void		free_struct_bonus(t_pip *pipex);
-void		free_array(char **array);
+void	free_struct_bonus(t_pip *pipex);
+void	free_array(char **array);
+int		p_error(char *s);
+void	print_error(char *s);
+char	*get_path(char *cmd, char **path);
+int		cmd_find(char *cmd, char **path);
+char	**cmd_check(char *cmd_string, t_pip *pipex);
+char	**find_path(char **env);
+void	parsing(t_pip *pipex);
+void	execute_cmd(char *cmd_string, t_pip *pipex);
+void	execute(t_pip *pipex, int i);
+void	pipex_mult_cmd(t_pip *pipex);
+int		pipex_here_doc(t_pip *pipex);
 
 #endif
