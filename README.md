@@ -43,7 +43,7 @@ in order for us to redirect the input we will use the function dup2() to do the 
 * child 1 : infile -> stdin, pipe[1] -> stdout
 * child 2 : pipe[0] -> stdin, outfile -> stdout
 
-all unused file descriptor should be closed
+all unused file descriptor must be closed
 * child 1 : close(outfile), close(pipe[0])
 * child 1 : close(infile), close(pipe[1])
 * parent : close(infile), close(outfile, close(pipe[0]), close(pipe[1])
@@ -59,21 +59,22 @@ but in terminal it will wait 8 seconds, that is the biggest value
 
 
 Parent :
+
 		|
 		|pipe()
 		|
 		|fork()
 		|
-		|__________ child 1 ________
-		|							|
-		|							|close()
-		|fork()						|dup2()
-		|							|execve()
-		|_____ child 2 _____
-		|					|
-		|					|close()
-		|					|dup2()
-		|					|execve()
+		|__________ child 1 ____________
+		|				|
+		|				|close()
+		|fork()				|dup2()
+		|				|execve()
+		|_____ child 2 _________
+		|			|
+		|			|close()
+		|			|dup2()
+		|			|execve()
 		|
 		|waitpid()
 		|closefds()
@@ -100,3 +101,5 @@ if (-1 == exit(1))
 	kill(getpid());
 ```
 
+process image
+process

@@ -6,7 +6,7 @@
 /*   By: tamehri <tamehri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 19:26:39 by tamehri           #+#    #+#             */
-/*   Updated: 2024/02/01 11:39:04 by tamehri          ###   ########.fr       */
+/*   Updated: 2024/02/01 14:17:09 by tamehri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 # define WRITE_END		1
 # define LINE_			"---------------------------------------------------\n"
 # define ERR_ARG		"WRONG NUMBER OF ARGUMENTS\n"
+# define ERR_GNL		"GET_NEXT_LINE\n"
 # define ERR_MAL		"MALLOC ERROR"
 # define ERR_PATH		"PATH ERROR"
 # define ERR_FORK		"FORK ERROR"
@@ -63,7 +64,6 @@ char		*ft_strjoin(char const *s1, char const *s2);
 char		**ft_split(char const *s, char c);
 int			ft_strncmp(const char *s1, const char *s2, size_t n);
 
-int			pipex_here_doc(t_pip *pipex);
 void		free_struct_bonus(t_pip *pipex);
 void		free_array(char **array);
 int			p_error(char *s);
@@ -72,11 +72,25 @@ char		*get_path(char *cmd, char **path);
 int			cmd_find(char *cmd, char **path);
 char		**cmd_check(char *cmd_string, t_pip *pipex);
 char		**find_path(char **env);
-void		parsing(t_pip *pipex);
+void		parsing(t_pip *pipex, int bool);
 void		execute_cmd(char *cmd_string, t_pip *pipex);
 void		last_child(t_pip *pipex);
 void		execute(t_pip *pipex, int i);
 void		pipex_mult_cmd(t_pip *pipex);
-int			pipex_here_doc(t_pip *pipex);
+
+
+/* Get_next_line */
+size_t	ft_strlen_g(const char *s);
+char	*ft_strdup_g(const char *s1);
+char	*ft_strchr_g(const char *s);
+char	*ft_strjoin_g(char *s1, char *s2);
+char	*get_next_line(int fd);
+char	*read_to_nl(char *stat, int fd);
+char	*ft_before_nl(char *stat);
+char	*ft_after_nl(char *stat);
+
+
+/* FUNCTIONS */
+void	pipex_here_doc(t_pip *pipex);
 
 #endif

@@ -6,11 +6,29 @@
 /*   By: tamehri <tamehri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 10:10:57 by tamehri           #+#    #+#             */
-/*   Updated: 2024/01/31 16:02:19 by tamehri          ###   ########.fr       */
+/*   Updated: 2024/02/01 14:54:32 by tamehri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex_bonus.h"
+
+int	cmd_find(char *cmd, char **path)
+{
+	char	*temp;
+	int		i;
+
+	i = -1;
+	while (*(path + ++i))
+	{
+		temp = ft_strjoin(*(path + i), cmd);
+		if (!temp)
+			return (free(cmd), print_error(ERR_MAL), 1);
+		if (!access(temp, F_OK | X_OK))
+			return (free(temp), free(cmd), 0);
+		free(temp);
+	}
+	return (free(cmd), 1);
+}
 
 char	*get_path(char *cmd, char **path)
 {
@@ -35,24 +53,6 @@ char	*get_path(char *cmd, char **path)
 	return (NULL);
 }
 
-int	cmd_find(char *cmd, char **path)
-{
-	char	*temp;
-	int		i;
-
-	i = -1;
-	while (*(path + ++i))
-	{
-		temp = ft_strjoin(*(path + i), cmd);
-		if (!temp)
-			return (free(cmd), print_error(ERR_MAL), 1);
-		if (!access(temp, F_OK | X_OK))
-			return (free(temp), free(cmd), 0);
-		free(temp);
-	}
-	return (free(cmd), 1);
-}
-
 char	**cmd_check(char *cmd_string, t_pip *pipex)
 {
 	char	**cmd;
@@ -72,4 +72,19 @@ char	**cmd_check(char *cmd_string, t_pip *pipex)
 	if (cmd_find(tmp, pipex->paths))
 		return (free_array(cmd), p_error(CMD_NOT_FOUND), NULL);
 	return (cmd);
+}
+void	execute_cmd(char *cmd_string, t_pip *pipex)
+{
+	char	**cmd;
+	char	*path;
+
+	cmd = cmd_check(cmd_string, pipex);
+	if (!cmd)
+		(free_struct_bonus(pipex), exit(1));
+	path = get_path(cmd[0], pipex->paths);
+	if (!path)
+		(free_array(cmd), free_struct_bonus(pipex), exit(1));
+	execve(path, cmd, pipex->environ);
+	(free(path), free_array(cmd), \
+	free_struct_bonus(pipex), p_error(ERR_EXECVE), exit(1));
 }
