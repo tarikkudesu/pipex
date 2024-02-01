@@ -60,10 +60,15 @@ but in terminal it will wait 8 seconds, that is the biggest value
 
 Parent :
 		|
+  
 		|pipe()
+  
 		|
+  
 		|fork()
+  
 		|
+  
 		|__________ child 1 ________
 		|							|
 		|							|close()
