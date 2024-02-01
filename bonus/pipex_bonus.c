@@ -6,7 +6,7 @@
 /*   By: tamehri <tamehri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 16:59:32 by tamehri           #+#    #+#             */
-/*   Updated: 2024/02/01 15:57:25 by tamehri          ###   ########.fr       */
+/*   Updated: 2024/02/01 16:43:24 by tamehri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,24 +88,26 @@ void	pipex_here_doc(t_pip *pipex)
 		(free_struct_bonus(pipex), p_error(ERR_OPEN), exit(1));
 	pipex->infile = infile;
 	pipe_it(pipex);
+	if (-1 == unlink(".tmp"))
+		(free_struct_bonus(pipex), p_error(ERR_UNLINK), exit(1));
 }
-
-// void f(void) {system("lsof -c pipex_bonus");}
 
 int	main(int ac, char **av, char **environ)
 {
 	t_pip	pipex;
-	// atexit(f);
+
 	if (ac < 5)
 		return (print_error(ERR_ARG), 1);
 	pipex.argc = ac;
 	pipex.cmd1 = NULL;
 	pipex.cmd2 = NULL;
-	pipex.argv = av + 2;
+	pipex.argv = av;
 	pipex.cmd_num = ac - 3;
 	pipex.environ = environ;
 	if (0 == ft_strncmp(av[1], "here_doc", 8))
 	{
+		if (ac != 6)
+			return (print_error(ERR_ARG), 1);
 		parsing_here_doc(&pipex);
 		pipex_here_doc(&pipex);
 	}

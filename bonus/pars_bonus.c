@@ -6,7 +6,7 @@
 /*   By: tamehri <tamehri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 18:28:28 by tamehri           #+#    #+#             */
-/*   Updated: 2024/02/01 16:13:22 by tamehri          ###   ########.fr       */
+/*   Updated: 2024/02/01 16:36:24 by tamehri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ char	**find_path(char **env)
 
 void	parsing_here_doc(t_pip *pipex)
 {
+	pipex->argv = pipex->argv + 2;
 	pipex->outfile = open(pipex->argv[3], \
 	O_WRONLY | O_APPEND | O_CREAT, 0777);
 	if (pipex->outfile == -1)
@@ -63,4 +64,5 @@ void	parsing(t_pip *pipex)
 	pipex->paths = find_path(pipex->environ);
 	if (!pipex->paths)
 		(p_error(ERR_MAL), exit(1));
+	pipex->argv = pipex->argv + 2;
 }

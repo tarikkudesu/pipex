@@ -6,7 +6,7 @@
 /*   By: tamehri <tamehri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 19:26:39 by tamehri           #+#    #+#             */
-/*   Updated: 2024/02/01 16:26:26 by tamehri          ###   ########.fr       */
+/*   Updated: 2024/02/01 16:40:55 by tamehri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@
 # define ERR_OPEN		"OPEN ERROR"
 # define ERR_CLOSE		"CLOSE ERROR"
 # define ERR_WRITE		"WRITE ERROR"
+# define ERR_UNLINK		"UNLINK ERROR"
 # define ERR_EXECVE		"EXECVE ERROR"
 # define ERR_PERM		"PERMISSION ERROR"
 # define CMD_NOT_FOUND	"COMMAND NOT FOUND"
@@ -49,10 +50,10 @@ typedef struct s_cmd	t_cmd;
 struct	s_pip
 {
 	int		argc;
+	int		fd[2];
 	int		infile;
 	int		outfile;
 	int		cmd_num;
-	int		fd[2];
 	char	**argv;
 	char	**cmd1;
 	char	**cmd2;
@@ -60,12 +61,14 @@ struct	s_pip
 	char	**environ;
 };
 
+/* LIBFT */
 size_t		ft_strlen(const char *str);
 void		ft_putstr_fd(char *s, int fd);
 char		*ft_strjoin(char const *s1, char const *s2);
 char		**ft_split(char const *s, char c);
 int			ft_strncmp(const char *s1, const char *s2, size_t n);
 
+/* MUT_CMD */
 void		free_struct_bonus(t_pip *pipex);
 void		free_array(char **array);
 int			p_error(char *s);
@@ -80,7 +83,7 @@ void		last_child(t_pip *pipex);
 void		execute(t_pip *pipex, int i);
 void		pipex_mult_cmd(t_pip *pipex);
 
-/* Get_next_line */
+/* GET_NEXT_LINE */
 size_t		ft_strlen_g(const char *s);
 char		*ft_strdup_g(const char *s1);
 char		*ft_strchr_g(const char *s);
@@ -90,7 +93,7 @@ char		*read_to_nl(char *stat, int fd);
 char		*ft_before_nl(char *stat);
 char		*ft_after_nl(char *stat);
 
-/* FUNCTIONS */
+/* HERE_DOC */
 int			find_cmd1(t_pip *pipex, char *cmd, char **path);
 int			check_cmd1(t_pip *pipex);
 int			find_cmd2(t_pip *pipex, char *cmd, char **path);
