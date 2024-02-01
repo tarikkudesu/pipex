@@ -6,7 +6,7 @@
 /*   By: tamehri <tamehri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 19:26:39 by tamehri           #+#    #+#             */
-/*   Updated: 2024/01/31 16:05:23 by tamehri          ###   ########.fr       */
+/*   Updated: 2024/02/01 11:39:04 by tamehri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,19 +63,20 @@ char		*ft_strjoin(char const *s1, char const *s2);
 char		**ft_split(char const *s, char c);
 int			ft_strncmp(const char *s1, const char *s2, size_t n);
 
-void	free_struct_bonus(t_pip *pipex);
-void	free_array(char **array);
-int		p_error(char *s);
-void	print_error(char *s);
-char	*get_path(char *cmd, char **path);
-int		cmd_find(char *cmd, char **path);
-char	**cmd_check(char *cmd_string, t_pip *pipex);
-char	**find_path(char **env);
-void	parsing(t_pip *pipex);
-void	execute_cmd(char *cmd_string, t_pip *pipex);
-void	last_child(t_pip *pipex);
-void	execute(t_pip *pipex, int i);
-void	pipex_mult_cmd(t_pip *pipex);
-int		pipex_here_doc(t_pip *pipex);
+int			pipex_here_doc(t_pip *pipex);
+void		free_struct_bonus(t_pip *pipex);
+void		free_array(char **array);
+int			p_error(char *s);
+void		print_error(char *s);
+char		*get_path(char *cmd, char **path);
+int			cmd_find(char *cmd, char **path);
+char		**cmd_check(char *cmd_string, t_pip *pipex);
+char		**find_path(char **env);
+void		parsing(t_pip *pipex);
+void		execute_cmd(char *cmd_string, t_pip *pipex);
+void		last_child(t_pip *pipex);
+void		execute(t_pip *pipex, int i);
+void		pipex_mult_cmd(t_pip *pipex);
+int			pipex_here_doc(t_pip *pipex);
 
 #endif
