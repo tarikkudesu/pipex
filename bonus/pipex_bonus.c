@@ -6,7 +6,7 @@
 /*   By: tamehri <tamehri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 16:59:32 by tamehri           #+#    #+#             */
-/*   Updated: 2024/02/01 15:37:57 by tamehri          ###   ########.fr       */
+/*   Updated: 2024/02/01 15:57:25 by tamehri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	execute(t_pip *pipex, int i)
 	}
 }
 
-void	mult_cmd(t_pip *pipex)
+void	pipex_mult_cmd(t_pip *pipex)
 {
 	int		i;
 
@@ -78,6 +78,18 @@ void	mult_cmd(t_pip *pipex)
 		i = waitpid(-1, NULL, WNOHANG);
 }
 
+void	pipex_here_doc(t_pip *pipex)
+{
+	int	infile;
+
+	here_doc(pipex);
+	infile = open(".tmp", O_RDONLY);
+	if (-1 == infile)
+		(free_struct_bonus(pipex), p_error(ERR_OPEN), exit(1));
+	pipex->infile = infile;
+	pipe_it(pipex);
+}
+
 // void f(void) {system("lsof -c pipex_bonus");}
 
 int	main(int ac, char **av, char **environ)
@@ -86,22 +98,21 @@ int	main(int ac, char **av, char **environ)
 	// atexit(f);
 	if (ac < 5)
 		return (print_error(ERR_ARG), 1);
-	pipex.argv = av;
 	pipex.argc = ac;
+	pipex.cmd1 = NULL;
+	pipex.cmd2 = NULL;
+	pipex.argv = av + 2;
 	pipex.cmd_num = ac - 3;
 	pipex.environ = environ;
 	if (0 == ft_strncmp(av[1], "here_doc", 8))
 	{
-		parsing(&pipex, 0);
+		parsing_here_doc(&pipex);
 		pipex_here_doc(&pipex);
 	}
 	else
 	{
-		parsing(&pipex, 1);
-		pipex.argv = av + 2;
-		mult_cmd(&pipex);
+		parsing(&pipex);
+		pipex_mult_cmd(&pipex);
 	}
 	free_struct_bonus(&pipex);
 }
-// ./pipex file1 cmd1 cmd2 cmd3 file2
-// ./pipex here_doc LIMITER cmd cmd1 file

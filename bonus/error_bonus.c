@@ -6,7 +6,7 @@
 /*   By: tamehri <tamehri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 11:15:01 by tamehri           #+#    #+#             */
-/*   Updated: 2024/01/31 16:01:00 by tamehri          ###   ########.fr       */
+/*   Updated: 2024/02/01 15:47:10 by tamehri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,20 @@ void	free_struct_bonus(t_pip *pipex)
 		while (*(pipex->paths + ++i))
 			free(*(pipex->paths + i));
 		free(pipex->paths);
+	}
+	i = -1;
+	if (pipex->cmd2)
+	{
+		while (*(pipex->cmd2 + ++i))
+			free(*(pipex->cmd2 + i));
+		free(pipex->cmd2);
+	}
+	i = -1;
+	if (pipex->cmd1)
+	{
+		while (*(pipex->cmd1 + ++i))
+			free(*(pipex->cmd1 + i));
+		free(pipex->cmd1);
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: tamehri <tamehri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 12:01:24 by tamehri           #+#    #+#             */
-/*   Updated: 2024/01/28 19:40:44 by tamehri          ###   ########.fr       */
+/*   Updated: 2024/02/01 16:00:55 by tamehri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,8 @@ int			find_cmd1(t_pipex *pipex, char *cmd, char **path);
 int			check_cmd1(t_pipex *pipex);
 int			find_cmd2(t_pipex *pipex, char *cmd, char **path);
 int			check_cmd2(t_pipex *pipex);
-int			child1_process(t_pipex *pipex);
-int			child2_process(t_pipex *pipex);
+void		child1_process(t_pipex *pipex);
+void		child2_process(t_pipex *pipex);
 int			pipe_it(t_pipex *pipex);
 char		**find_path(char **env);
 int			parsing(t_pipex *pipex);

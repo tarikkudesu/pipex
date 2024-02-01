@@ -6,7 +6,7 @@
 /*   By: tamehri <tamehri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 19:26:39 by tamehri           #+#    #+#             */
-/*   Updated: 2024/02/01 14:17:09 by tamehri          ###   ########.fr       */
+/*   Updated: 2024/02/01 16:03:39 by tamehri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,8 @@ struct	s_pip
 	int		cmd_num;
 	int		fd[2];
 	char	**argv;
+	char	**cmd1;
+	char	**cmd2;
 	char	**paths;
 	char	**environ;
 };
@@ -72,7 +74,7 @@ char		*get_path(char *cmd, char **path);
 int			cmd_find(char *cmd, char **path);
 char		**cmd_check(char *cmd_string, t_pip *pipex);
 char		**find_path(char **env);
-void		parsing(t_pip *pipex, int bool);
+void		parsing(t_pip *pipex);
 void		execute_cmd(char *cmd_string, t_pip *pipex);
 void		last_child(t_pip *pipex);
 void		execute(t_pip *pipex, int i);
@@ -80,17 +82,28 @@ void		pipex_mult_cmd(t_pip *pipex);
 
 
 /* Get_next_line */
-size_t	ft_strlen_g(const char *s);
-char	*ft_strdup_g(const char *s1);
-char	*ft_strchr_g(const char *s);
-char	*ft_strjoin_g(char *s1, char *s2);
-char	*get_next_line(int fd);
-char	*read_to_nl(char *stat, int fd);
-char	*ft_before_nl(char *stat);
-char	*ft_after_nl(char *stat);
+size_t		ft_strlen_g(const char *s);
+char		*ft_strdup_g(const char *s1);
+char		*ft_strchr_g(const char *s);
+char		*ft_strjoin_g(char *s1, char *s2);
+char		*get_next_line(int fd);
+char		*read_to_nl(char *stat, int fd);
+char		*ft_before_nl(char *stat);
+char		*ft_after_nl(char *stat);
 
 
 /* FUNCTIONS */
-void	pipex_here_doc(t_pip *pipex);
+int			find_cmd1(t_pip *pipex, char *cmd, char **path);
+int			check_cmd1(t_pip *pipex);
+int			find_cmd2(t_pip *pipex, char *cmd, char **path);
+int			check_cmd2(t_pip *pipex);
+void		parsing_here_doc(t_pip *pipex);
+void		child2_process(t_pip *pipex);
+void		child1_process(t_pip *pipex);
+void		close_fds(t_pip *pipex);
+int			pipe_it(t_pip *pipex);
+void		here_doc(t_pip *pipex);
+void		pipex_here_doc(t_pip *pipex);
+void		pipex_here_doc(t_pip *pipex);
 
 #endif

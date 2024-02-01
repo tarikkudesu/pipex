@@ -2,7 +2,8 @@
 	"files.associations": {
 		"h": "c",
 		"pipex_bonus": "c",
-		"stdlib.h": "c"
+		"stdlib.h": "c",
+		"pipex_bonus.h": "c"
 	},
 	"functionHeaderExtension.headerFilePath": "/Users/tamehri/Desktop/RANK02/pipex/bonus/pipex_bonus.h"
 }
