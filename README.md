@@ -65,16 +65,16 @@ Parent :
 		|
 		|fork()
 		|
-		|__________ child 1 ________
-		|							|
-		|							|close()
-		|fork()						|dup2()
-		|							|execve()
-		|_____ child 2 _____
-		|					|
-		|					|close()
-		|					|dup2()
-		|					|execve()
+		|__________ child 1 ____________
+		|				|
+		|				|close()
+		|fork()				|dup2()
+		|				|execve()
+		|_____ child 2 _________
+		|			|
+		|			|close()
+		|			|dup2()
+		|			|execve()
 		|
 		|waitpid()
 		|closefds()
