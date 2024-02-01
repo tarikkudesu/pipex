@@ -25,9 +25,10 @@ the main function has to be declared as follows :
 ```main
 int	main(int ac, char **av, char **environ)
 ```
-"Each process has an associated array of strings called the environment list, or simply the environment. Each of these strings is a definition of the form name=value. Thus, the environment represents a set of name-value pairs that can be used to hold arbitrary information. The names in the list are referred to as environment variables."
 
-the environ variable an array that contains the envirement varibles (it is null terminated)
+the environ variable is an array that contains the envirement varibles (it is null terminated)
+
+"Each process has an associated array of strings called the environment list, or simply the environment. Each of these strings is a definition of the form name=value. Thus, the environment represents a set of name-value pairs that can be used to hold arbitrary information. The names in the list are referred to as environment variables."
 
 ## MANDATORY :
 
