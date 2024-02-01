@@ -30,6 +30,8 @@ the environ variable is an array that contains the envirement varibles (it is nu
 
 "Each process has an associated array of strings called the environment list, or simply the environment. Each of these strings is a definition of the form name=value. Thus, the environment represents a set of name-value pairs that can be used to hold arbitrary information. The names in the list are referred to as environment variables."
 
+we are going to use this variable called array to extract the paths. these paths are going to be used whenever we want to execute a command.
+
 ## MANDATORY :
 
 the parsing part is very easy, all i did was open the files (input and output) and store their file descriptors in a structure, along side with the paths that i got from the environ variables. the first command and the second command splited with ft_split and stored in an array, and the last thing to is a two integer array that will be used with pipe().
