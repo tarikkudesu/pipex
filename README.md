@@ -16,7 +16,7 @@ the main functions you are going to use are :
 
 PLEASE TAKE YOUR TIME AND READ THE MAN PAGES OF ALL THE FUNCTIONS
 
-Understanding every aspect of these funxtions is crutial
+Understanding every aspect of these functions is crutial
 
 ## parsing
 
