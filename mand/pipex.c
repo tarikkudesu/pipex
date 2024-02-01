@@ -6,7 +6,7 @@
 /*   By: tamehri <tamehri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 12:01:15 by tamehri           #+#    #+#             */
-/*   Updated: 2024/02/01 11:15:29 by tamehri          ###   ########.fr       */
+/*   Updated: 2024/02/01 20:42:38 by tamehri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	child2_process(t_pipex *pipex)
 		(p_error(ERR_CLOSE), free_struct(pipex), exit(1));
 	if (-1 == dup2(pipex->outfile, STDOUT_FILENO))
 		(p_error(ERR_DUP), free_struct(pipex), exit(1));
-	if (-1 == dup2(pipex->pipe_fd[READ_END], STDIN_FILENO))
+	if (-1 == dup2(pipex->pipe_fd[READ_END + 1], STDIN_FILENO))
 		(p_error(ERR_DUP), free_struct(pipex), exit(1));
 	if (check_cmd2(pipex))
 		(free_struct(pipex), exit(1));

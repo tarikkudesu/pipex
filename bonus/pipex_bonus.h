@@ -6,7 +6,7 @@
 /*   By: tamehri <tamehri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 19:26:39 by tamehri           #+#    #+#             */
-/*   Updated: 2024/02/01 16:40:55 by tamehri          ###   ########.fr       */
+/*   Updated: 2024/02/01 20:43:18 by tamehri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,10 @@
 # include <string.h>
 # include <sys/wait.h>
 
-# define RED	"\033[1;31m"
-# define GREEN	"\033[1;32m"
-# define BLUE	"\033[1;34m"
-# define RESET	"\033[0m"
+# define RED			"\033[1;31m"
+# define GREEN			"\033[1;32m"
+# define BLUE			"\033[1;34m"
+# define RESET			"\033[0m"
 # define READ_END		0
 # define WRITE_END		1
 # define LINE_			"---------------------------------------------------\n"

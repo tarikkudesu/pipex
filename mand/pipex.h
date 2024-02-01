@@ -6,7 +6,7 @@
 /*   By: tamehri <tamehri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 12:01:24 by tamehri           #+#    #+#             */
-/*   Updated: 2024/02/01 16:00:55 by tamehri          ###   ########.fr       */
+/*   Updated: 2024/02/01 20:41:54 by tamehri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,8 @@
 # include <string.h>
 # include <sys/wait.h>
 
-# define RED	"\033[1;31m"
-# define GREEN	"\033[1;32m"
-# define BLUE	"\033[1;34m"
-# define RESET	"\033[0m"
 # define READ_END		0
 # define WRITE_END		1
-# define LINE_			"---------------------------------------------------\n"
 # define ERR_ARG		"WRONG ARGUMENTS\n"
 # define ERR_MAL		"MALLOC ERROR"
 # define ERR_PATH		"PATH ERROR"
@@ -40,7 +35,6 @@
 # define ERR_EXECVE		"EXECVE ERROR"
 # define ERR_PERM		"PERMISSION ERROR"
 # define CMD_NOT_FOUND	"COMMAND NOT FOUND"
-# define COMPILED		"-----------\tCOMPILED_SUCCESSFULLY\t-----------\n"
 
 typedef struct s_pipex	t_pipex;
 

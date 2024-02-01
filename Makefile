@@ -6,7 +6,7 @@
 #    By: tamehri <tamehri@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/24 12:01:11 by tamehri           #+#    #+#              #
-#    Updated: 2024/02/01 16:02:46 by tamehri          ###   ########.fr        #
+#    Updated: 2024/02/01 20:37:35 by tamehri          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,7 +40,11 @@ $(BONUS): $(OBJ_B)
 	@echo $(GREEN) "\n Linking Bonus\t<<< $(BONUS) >>>" $(RESET)
 	@echo $(GREEN) "Done" $(RESET)
 
-%.o: %.c $(INC) $(INC_B)
+mand/%.o: mand/%.c $(INC)
+	@$(CC) -c $< -o $@
+	@echo $(GREEN) "... Compiling\t$<\t[OK]" $(RESET)
+
+bonus/%.o: bonus/%.c $(INC_B)
 	@$(CC) -c $< -o $@
 	@echo $(GREEN) "... Compiling\t$<\t[OK]" $(RESET)
 
