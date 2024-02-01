@@ -6,7 +6,7 @@
 /*   By: tamehri <tamehri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 10:10:57 by tamehri           #+#    #+#             */
-/*   Updated: 2024/02/01 14:54:32 by tamehri          ###   ########.fr       */
+/*   Updated: 2024/02/01 16:26:38 by tamehri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ char	**cmd_check(char *cmd_string, t_pip *pipex)
 		return (free_array(cmd), p_error(CMD_NOT_FOUND), NULL);
 	return (cmd);
 }
+
 void	execute_cmd(char *cmd_string, t_pip *pipex)
 {
 	char	**cmd;

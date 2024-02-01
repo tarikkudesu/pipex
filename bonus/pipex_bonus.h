@@ -6,7 +6,7 @@
 /*   By: tamehri <tamehri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 19:26:39 by tamehri           #+#    #+#             */
-/*   Updated: 2024/02/01 16:03:39 by tamehri          ###   ########.fr       */
+/*   Updated: 2024/02/01 16:26:26 by tamehri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,6 @@ void		last_child(t_pip *pipex);
 void		execute(t_pip *pipex, int i);
 void		pipex_mult_cmd(t_pip *pipex);
 
-
 /* Get_next_line */
 size_t		ft_strlen_g(const char *s);
 char		*ft_strdup_g(const char *s1);
@@ -90,7 +89,6 @@ char		*get_next_line(int fd);
 char		*read_to_nl(char *stat, int fd);
 char		*ft_before_nl(char *stat);
 char		*ft_after_nl(char *stat);
-
 
 /* FUNCTIONS */
 int			find_cmd1(t_pip *pipex, char *cmd, char **path);

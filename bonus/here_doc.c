@@ -6,7 +6,7 @@
 /*   By: tamehri <tamehri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:12:46 by tamehri           #+#    #+#             */
-/*   Updated: 2024/02/01 16:24:57 by tamehri          ###   ########.fr       */
+/*   Updated: 2024/02/01 16:26:06 by tamehri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ void	here_doc(t_pip *pipex)
 	char	*line;
 
 	fd = open(".tmp", O_CREAT | O_RDWR | O_TRUNC, 0777);
-	if ( -1 == fd)
+	if (-1 == fd)
 		(free_struct_bonus(pipex), p_error(ERR_OPEN), exit(1));
 	line = NULL;
 	while (1)
