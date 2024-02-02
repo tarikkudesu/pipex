@@ -6,7 +6,7 @@
 /*   By: tamehri <tamehri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 10:10:57 by tamehri           #+#    #+#             */
-/*   Updated: 2024/02/02 11:03:59 by tamehri          ###   ########.fr       */
+/*   Updated: 2024/02/02 15:03:25 by tamehri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,12 +39,12 @@ char	*get_path(char *cmd, char **path)
 	i = -1;
 	tmp = ft_strjoin("/", cmd);
 	if (!tmp)
-		return (print_error(ERR_MAL), NULL);
+		return (ft_putstr_fd(ERR_MAL, 2), NULL);
 	while (*(path + ++i))
 	{
 		temp = ft_strjoin(*(path + i), tmp);
 		if (!temp)
-			return (free(tmp), print_error(ERR_MAL), NULL);
+			return (free(tmp), ft_putstr_fd(ERR_MAL, 2), NULL);
 		if (!access(temp, F_OK | X_OK))
 			return (free(tmp), temp);
 		free(temp);
@@ -81,11 +81,12 @@ void	execute_cmd(char *cmd_string, t_pip *pipex)
 
 	cmd = cmd_check(cmd_string, pipex);
 	if (!cmd)
-		(free_struct_bonus(pipex), perror(CMD_NOT_FOUND), exit(1));
+		(free_struct_bonus(pipex), perror(CMD_NOT_FOUND), exit(EXIT_FAILURE));
 	path = get_path(cmd[0], pipex->paths);
 	if (!path)
-		(free_array(cmd), free_struct_bonus(pipex), perror(CMD_NOT_FOUND), exit(1));
+		(free_array(cmd), free_struct_bonus(pipex), \
+		perror(CMD_NOT_FOUND), exit(EXIT_FAILURE));
 	execve(path, cmd, pipex->environ);
 	(free(path), free_array(cmd), \
-	free_struct_bonus(pipex), perror(ERR_EXECVE), exit(1));
+	free_struct_bonus(pipex), perror(ERR_EXECVE), exit(EXIT_FAILURE));
 }

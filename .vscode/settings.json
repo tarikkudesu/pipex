@@ -3,7 +3,8 @@
 		"h": "c",
 		"pipex_bonus": "c",
 		"stdlib.h": "c",
-		"pipex_bonus.h": "c"
+		"pipex_bonus.h": "c",
+		"pipex.h": "c"
 	},
 	"functionHeaderExtension.headerFilePath": "/Users/tamehri/Desktop/RANK02/pipex/bonus/pipex_bonus.h"
 }

@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: tamehri <tamehri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/24 12:01:24 by tamehri           #+#    #+#             */
-/*   Updated: 2024/02/01 20:48:47 by tamehri          ###   ########.fr       */
+/*   Created: 2024/01/28 19:26:39 by tamehri           #+#    #+#             */
+/*   Updated: 2024/02/02 14:55:00 by tamehri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,9 @@
 
 # define READ_END		0
 # define WRITE_END		1
-# define ERR_ARG		"WRONG ARGUMENTS\n"
+# define ERR_ARG		"WRONG NUMBER OF ARGUMENTS\n"
+# define ERR_GNL		"GET_NEXT_LINE\n"
 # define ERR_MAL		"MALLOC ERROR"
-# define ERR_PATH		"PATH ERROR"
 # define ERR_FORK		"FORK ERROR"
 # define ERR_PIPE		"PIPE ERROR"
 # define ERR_DUP		"DUP2 ERROR"
@@ -33,40 +33,43 @@
 # define ERR_CLOSE		"CLOSE ERROR"
 # define ERR_WRITE		"WRITE ERROR"
 # define ERR_EXECVE		"EXECVE ERROR"
-# define ERR_PERM		"PERMISSION ERROR"
 # define CMD_NOT_FOUND	"COMMAND NOT FOUND"
 
-typedef struct s_pipex	t_pipex;
+typedef struct s_pip	t_pip;
+typedef struct s_cmd	t_cmd;
 
-struct	s_pipex
+struct	s_pip
 {
-	int		pipe_fd[2];
-	int		outfile;
+	int		argc;
+	int		fd[2];
 	int		infile;
+	int		outfile;
+	int		*pids;
+	char	**argv;
 	char	**paths;
-	char	**cmd1;
-	char	**cmd2;
-	char	**env;
-	char	**av;
+	char	**environ;
 };
 
-int			ft_strncmp(const char *s1, const char *s2, size_t n);
+/* LIBFT */
+size_t		ft_strlen(const char *str);
+void		ft_putstr_fd(char *s, int fd);
 char		*ft_strjoin(char const *s1, char const *s2);
 char		**ft_split(char const *s, char c);
-void		ft_putstr_fd(char *s, int fd);
-size_t		ft_strlen(const char *str);
+int			ft_strncmp(const char *s1, const char *s2, size_t n);
 
-int			find_cmd1(t_pipex *pipex, char *cmd, char **path);
-int			find_cmd2(t_pipex *pipex, char *cmd, char **path);
-void		child1_process(t_pipex *pipex);
-void		child2_process(t_pipex *pipex);
-void		free_struct(t_pipex *pipex);
-int			check_cmd1(t_pipex *pipex);
-int			check_cmd2(t_pipex *pipex);
-int			pipe_it(t_pipex *pipex);
+/* MAND */
+int			cmd_find(char *cmd, char **path);
+char		*get_path(char *cmd, char **path);
+char		**cmd_check(char *cmd_string, t_pip *pipex);
+void		execute_cmd(char *cmd_string, t_pip *pipex);
+void		exit_status(int exit_code, int *j);
+void		free_struct(t_pip *pipex);
+void		free_array(char **array);
 char		**find_path(char **env);
-int			parsing(t_pipex *pipex);
-void		print_error(char *s);
-int			p_error(char *s);
+void		parsing(t_pip *pipex);
+void		second_child(t_pip *pipex);
+void		first_child(t_pip *pipex);
+void		execute(t_pip *pipex);
+void		pipe_it(t_pip *pipex);
 
 #endif

@@ -6,39 +6,36 @@
 /*   By: tamehri <tamehri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 11:15:01 by tamehri           #+#    #+#             */
-/*   Updated: 2024/02/01 20:42:10 by tamehri          ###   ########.fr       */
+/*   Updated: 2024/02/02 14:40:21 by tamehri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
+
+void	exit_status(int exit_code, int *j)
+{
+	if (0 == exit_code)
+		(*j)++;
+}
+
+void	free_struct(t_pip *pipex)
+{
+	if (pipex->paths)
+		free_array(pipex->paths);
+	if (pipex->pids)
+		free(pipex->pids);
+}
 
 void	free_array(char **array)
 {
 	int	i;
 
 	i = -1;
-	while (*(array + ++i))
-		free(*(array + i));
-	free(array);
-}
-
-void	free_struct(t_pipex *pipex)
-{
-	if (pipex->paths)
-		free_array(pipex->paths);
-	if (pipex->cmd1)
-		free_array(pipex->cmd1);
-	if (pipex->cmd2)
-		free_array(pipex->cmd2);
-}
-
-int	p_error(char *s)
-{
-	perror(s);
-	return (1);
-}
-
-void	print_error(char *s)
-{
-	ft_putstr_fd(s, STDERR_FILENO);
+	if (array)
+	{
+		while (*(array + ++i))
+			free(*(array + i));
+		free(array);
+		array = NULL;
+	}
 }

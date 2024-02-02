@@ -6,7 +6,7 @@
 /*   By: tamehri <tamehri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 14:21:59 by tamehri           #+#    #+#             */
-/*   Updated: 2024/01/26 09:59:57 by tamehri          ###   ########.fr       */
+/*   Updated: 2024/02/02 15:02:08 by tamehri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@ void	ft_putstr_fd(char *s, int fd)
 	if (!s || fd < 0)
 		return ;
 	while (*s)
-		write(fd, s++, 1);
+		if (-1 == write(fd, s++, 1))
+			(perror(ERR_WRITE), exit(EXIT_FAILURE));
 }
 
 int	ft_strncmp(const char *s1, const char *s2, size_t n)
