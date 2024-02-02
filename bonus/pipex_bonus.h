@@ -6,7 +6,7 @@
 /*   By: tamehri <tamehri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 19:26:39 by tamehri           #+#    #+#             */
-/*   Updated: 2024/02/02 14:54:08 by tamehri          ###   ########.fr       */
+/*   Updated: 2024/02/02 17:19:53 by tamehri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 
 # define READ_END		0
 # define WRITE_END		1
-# define ERR_ARG		"WRONG NUMBER OF ARGUMENTS\n"
+# define ERR_ARG		"Wrong number of arguments\n"
 # define ERR_GNL		"GET_NEXT_LINE\n"
 # define ERR_MAL		"MALLOC ERROR"
 # define ERR_FORK		"FORK ERROR"
@@ -50,6 +50,9 @@ struct	s_pip
 	char	**argv;
 	char	**paths;
 	char	**environ;
+	char	*delimiter;
+	char	*infilename;
+	char	*outfilename;
 };
 
 /* LIBFT */
@@ -81,13 +84,9 @@ void		last_process(t_pip *pipex);
 void		first_process(t_pip *pipex);
 void		execute(t_pip *pipex, int i);
 void		pipex_mult_cmd(t_pip *pipex);
-void		second_child(t_pip *pipex);
-void		first_child(t_pip *pipex);
-void		execute_here_doc(t_pip *pipex);
-void		pipe_it(t_pip *pipex);
 void		here_doc(t_pip *pipex);
-void		pipex_here_doc(t_pip *pipex);
 char		**find_path(char **env);
-void		parsing(t_pip *pipex);
+void		parsing_here_doc(t_pip *pipex, int ac, char **av, char **environ);
+void		parsing(t_pip *pipex, int ac, char **av, char **environ);
 
 #endif

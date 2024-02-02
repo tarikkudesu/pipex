@@ -6,7 +6,7 @@
 /*   By: tamehri <tamehri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 19:26:39 by tamehri           #+#    #+#             */
-/*   Updated: 2024/02/02 14:55:00 by tamehri          ###   ########.fr       */
+/*   Updated: 2024/02/02 16:18:22 by tamehri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 
 # define READ_END		0
 # define WRITE_END		1
-# define ERR_ARG		"WRONG NUMBER OF ARGUMENTS\n"
+# define ERR_ARG		"Wrong number of arguments\n"
 # define ERR_GNL		"GET_NEXT_LINE\n"
 # define ERR_MAL		"MALLOC ERROR"
 # define ERR_FORK		"FORK ERROR"
