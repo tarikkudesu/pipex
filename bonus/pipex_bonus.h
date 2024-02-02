@@ -6,7 +6,7 @@
 /*   By: tamehri <tamehri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 19:26:39 by tamehri           #+#    #+#             */
-/*   Updated: 2024/02/01 20:43:18 by tamehri          ###   ########.fr       */
+/*   Updated: 2024/02/02 10:23:52 by tamehri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,14 @@
 # include <string.h>
 # include <sys/wait.h>
 
-# define RED			"\033[1;31m"
-# define GREEN			"\033[1;32m"
-# define BLUE			"\033[1;34m"
-# define RESET			"\033[0m"
 # define READ_END		0
 # define WRITE_END		1
-# define LINE_			"---------------------------------------------------\n"
+# define EXIT_MAL		10
+# define EXIT_OPEN		11
+# define EXIT_CLOSE		12
+# define EXIT_DUP		13
+# define EXIT_EXECVE	14
+# define EXIT_CNF		127
 # define ERR_ARG		"WRONG NUMBER OF ARGUMENTS\n"
 # define ERR_GNL		"GET_NEXT_LINE\n"
 # define ERR_MAL		"MALLOC ERROR"
@@ -42,7 +43,6 @@
 # define ERR_EXECVE		"EXECVE ERROR"
 # define ERR_PERM		"PERMISSION ERROR"
 # define CMD_NOT_FOUND	"COMMAND NOT FOUND"
-# define COMPILED		"-----------\tCOMPILED_SUCCESSFULLY\t-----------\n"
 
 typedef struct s_pip	t_pip;
 typedef struct s_cmd	t_cmd;
@@ -54,6 +54,7 @@ struct	s_pip
 	int		infile;
 	int		outfile;
 	int		cmd_num;
+	int		*pid;
 	char	**argv;
 	char	**cmd1;
 	char	**cmd2;

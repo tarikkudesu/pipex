@@ -6,7 +6,7 @@
 /*   By: tamehri <tamehri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 10:10:57 by tamehri           #+#    #+#             */
-/*   Updated: 2024/02/01 16:26:38 by tamehri          ###   ########.fr       */
+/*   Updated: 2024/02/02 11:03:59 by tamehri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	cmd_find(char *cmd, char **path)
 	{
 		temp = ft_strjoin(*(path + i), cmd);
 		if (!temp)
-			return (free(cmd), print_error(ERR_MAL), 1);
+			return (free(cmd), 1);
 		if (!access(temp, F_OK | X_OK))
 			return (free(temp), free(cmd), 0);
 		free(temp);
@@ -60,7 +60,7 @@ char	**cmd_check(char *cmd_string, t_pip *pipex)
 
 	cmd = ft_split(cmd_string, ' ');
 	if (!cmd)
-		return (p_error(ERR_MAL), NULL);
+		return (NULL);
 	if (!access(cmd[0], F_OK | X_OK))
 		return (cmd);
 	if (cmd[0][0] == '/' || cmd[0][0] == '.')
@@ -68,9 +68,9 @@ char	**cmd_check(char *cmd_string, t_pip *pipex)
 			return (cmd);
 	tmp = ft_strjoin("/", cmd[0]);
 	if (!tmp)
-		return (free_array(cmd), print_error(ERR_MAL), NULL);
+		return (free_array(cmd), NULL);
 	if (cmd_find(tmp, pipex->paths))
-		return (free_array(cmd), p_error(CMD_NOT_FOUND), NULL);
+		return (free_array(cmd), NULL);
 	return (cmd);
 }
 
@@ -81,11 +81,11 @@ void	execute_cmd(char *cmd_string, t_pip *pipex)
 
 	cmd = cmd_check(cmd_string, pipex);
 	if (!cmd)
-		(free_struct_bonus(pipex), exit(1));
+		(free_struct_bonus(pipex), perror(CMD_NOT_FOUND), exit(1));
 	path = get_path(cmd[0], pipex->paths);
 	if (!path)
-		(free_array(cmd), free_struct_bonus(pipex), exit(1));
+		(free_array(cmd), free_struct_bonus(pipex), perror(CMD_NOT_FOUND), exit(1));
 	execve(path, cmd, pipex->environ);
 	(free(path), free_array(cmd), \
-	free_struct_bonus(pipex), p_error(ERR_EXECVE), exit(1));
+	free_struct_bonus(pipex), perror(ERR_EXECVE), exit(1));
 }
