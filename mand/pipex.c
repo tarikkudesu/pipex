@@ -6,7 +6,7 @@
 /*   By: tamehri <tamehri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 16:59:32 by tamehri           #+#    #+#             */
-/*   Updated: 2024/02/02 16:13:09 by tamehri          ###   ########.fr       */
+/*   Updated: 2024/02/03 11:23:32 by tamehri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,11 @@ void	second_child(t_pip *pipex)
 	O_WRONLY | O_TRUNC | O_CREAT, 0777);
 	if (pipex->outfile == -1)
 		(free_struct(pipex), perror(ERR_OPEN), exit(EXIT_FAILURE));
-	if (-1 == dup2(pipex->fd[READ_END], 0))
+	if (-1 == dup2(pipex->fd[READ_END], STDIN_FILENO))
 		(free_struct(pipex), perror(ERR_DUP), exit(EXIT_FAILURE));
 	if (-1 == close(pipex->fd[READ_END]))
 		(free_struct(pipex), perror(ERR_CLOSE), exit(EXIT_FAILURE));
-	if (-1 == dup2(pipex->outfile, 1))
+	if (-1 == dup2(pipex->outfile, STDOUT_FILENO))
 		(free_struct(pipex), perror(ERR_DUP), exit(EXIT_FAILURE));
 	if (-1 == close(pipex->outfile))
 		(free_struct(pipex), perror(ERR_CLOSE), exit(EXIT_FAILURE));
@@ -86,10 +86,13 @@ void	pipe_it(t_pip *pipex)
 		(free_struct(pipex), exit(EXIT_SUCCESS));
 }
 
+void f(void) {system("lsof -c pipex");}
+
 int	main(int ac, char **av, char **environ)
 {
 	t_pip	pipex;
 
+	atexit(f);
 	if (ac != 5)
 		return (ft_putstr_fd(ERR_ARG, 2), 1);
 	pipex.argc = ac;
