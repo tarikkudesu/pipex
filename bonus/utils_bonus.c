@@ -6,7 +6,7 @@
 /*   By: tamehri <tamehri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 10:10:57 by tamehri           #+#    #+#             */
-/*   Updated: 2024/02/02 15:03:25 by tamehri          ###   ########.fr       */
+/*   Updated: 2024/02/03 16:16:20 by tamehri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,12 +81,14 @@ void	execute_cmd(char *cmd_string, t_pip *pipex)
 
 	cmd = cmd_check(cmd_string, pipex);
 	if (!cmd)
-		(free_struct_bonus(pipex), perror(CMD_NOT_FOUND), exit(EXIT_FAILURE));
+		(close(STDIN_FILENO), close(STDOUT_FILENO), \
+		free_struct_bonus(pipex), perror(CMD_NOT_FOUND), exit(EXIT_FAILURE));
 	path = get_path(cmd[0], pipex->paths);
 	if (!path)
-		(free_array(cmd), free_struct_bonus(pipex), \
+		(close(STDIN_FILENO), close(STDOUT_FILENO), \
+		free_array(cmd), free_struct_bonus(pipex), \
 		perror(CMD_NOT_FOUND), exit(EXIT_FAILURE));
 	execve(path, cmd, pipex->environ);
-	(free(path), free_array(cmd), \
+	(free(path), free_array(cmd), close(STDIN_FILENO), close(STDOUT_FILENO), \
 	free_struct_bonus(pipex), perror(ERR_EXECVE), exit(EXIT_FAILURE));
 }

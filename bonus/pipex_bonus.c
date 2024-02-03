@@ -6,7 +6,7 @@
 /*   By: tamehri <tamehri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 16:59:32 by tamehri           #+#    #+#             */
-/*   Updated: 2024/02/02 17:34:03 by tamehri          ###   ########.fr       */
+/*   Updated: 2024/02/03 16:33:54 by tamehri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,10 @@ void	here_doc(t_pip *pipex)
 		ft_putstr_fd("pipe heredoc> ", 1);
 		line = get_next_line(STDIN_FILENO);
 		if (!line)
-			(free_struct_bonus(pipex), perror(ERR_GNL), exit(EXIT_FAILURE));
+		{
+			free(line);
+			break ;
+		}
 		if (!ft_strncmp(line, pipex->delimiter, ft_strlen(line) - 1))
 		{
 			free(line);
@@ -34,8 +37,7 @@ void	here_doc(t_pip *pipex)
 		}
 		(ft_putstr_fd(line, fd), free(line));
 	}
-	if (-1 == close(fd))
-		(free_struct_bonus(pipex), perror(ERR_CLOSE), exit(EXIT_FAILURE));
+	close(fd);
 }
 
 int	main(int ac, char **av, char **environ)

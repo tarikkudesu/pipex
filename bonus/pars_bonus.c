@@ -6,7 +6,7 @@
 /*   By: tamehri <tamehri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 18:28:28 by tamehri           #+#    #+#             */
-/*   Updated: 2024/02/02 16:30:30 by tamehri          ###   ########.fr       */
+/*   Updated: 2024/02/03 15:37:15 by tamehri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ char	**find_path(char **env)
 void	parsing_here_doc(t_pip *pipex, int ac, char **av, char **environ)
 {
 	pipex->argc = ac;
+	pipex->here_doc = 1;
 	pipex->argv = av + 3;
 	pipex->environ = environ;
 	pipex->delimiter = av[2];
@@ -55,6 +56,7 @@ void	parsing_here_doc(t_pip *pipex, int ac, char **av, char **environ)
 void	parsing(t_pip *pipex, int ac, char **av, char **environ)
 {
 	pipex->argc = ac;
+	pipex->here_doc = 0;
 	pipex->argv = av + 2;
 	pipex->environ = environ;
 	pipex->infilename = av[1];

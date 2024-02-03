@@ -6,7 +6,7 @@
 /*   By: tamehri <tamehri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 19:26:39 by tamehri           #+#    #+#             */
-/*   Updated: 2024/02/02 17:19:53 by tamehri          ###   ########.fr       */
+/*   Updated: 2024/02/03 15:36:37 by tamehri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ struct	s_pip
 	int		*pids;
 	char	**argv;
 	char	**paths;
+	int		here_doc;
 	char	**environ;
 	char	*delimiter;
 	char	*infilename;
