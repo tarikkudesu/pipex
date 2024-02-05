@@ -6,7 +6,7 @@
 /*   By: tamehri <tamehri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 16:59:32 by tamehri           #+#    #+#             */
-/*   Updated: 2024/02/05 10:14:16 by tamehri          ###   ########.fr       */
+/*   Updated: 2024/02/05 10:19:05 by tamehri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@ void	here_doc(t_pip *pipex)
 			free(line);
 			break ;
 		}
-		if (!ft_strncmp(line, pipex->delimiter, ft_strlen(line) - 1))
+		if (ft_strlen(line) - 1 == ft_strlen(pipex->delimiter) && \
+		!ft_strncmp(line, pipex->delimiter, ft_strlen(line) - 1))
 		{
 			free(line);
 			break ;
@@ -46,7 +47,7 @@ int	main(int ac, char **av, char **environ)
 
 	if (ac < 5)
 		(ft_putstr_fd(ERR_ARG, 2), exit(EXIT_FAILURE));
-	if (ft_strlen(av[1]) >= 8 && 0 == ft_strncmp(av[1], "here_doc", ft_strlen(av[1])))
+	if (ft_strlen(av[1]) == 8 && 0 == ft_strncmp(av[1], "here_doc", ft_strlen(av[1])))
 	{
 		parsing_here_doc(&pipex, ac, av, environ);
 		here_doc(&pipex);
