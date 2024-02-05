@@ -87,18 +87,13 @@ Parent :
 
 ### ERROR MANAGEMENT :
 
-Error management is mandatory, all system calls should be protected in case of failure. then call the perror() fnction the print the corresponding error.
+Error management is mandatory, all system calls should be protected in case of failure. then call the perror() function to print the corresponding error.
 
 that includes :
-* if (-1 == open()) {perror();}
-* if (-1 == close()) {perror();}
 * if (-1 == pipe()) {perror();}
 * if (-1 == fork()) {perror();}
 * if (-1 == dup()) {perror();}
 * if (-1 == dup2()) {perror();}
-* if (-1 == wait()) {perror();}
-* if (-1 == waitpid()) {perror();}
-
 
 LOL 
 ```
@@ -126,4 +121,4 @@ it is quit challenging at first. it will make sence at end ;)
 
 
 process image
-process
+process controle block PCB
