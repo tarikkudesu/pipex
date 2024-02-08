@@ -6,7 +6,7 @@
 /*   By: tamehri <tamehri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 16:59:32 by tamehri           #+#    #+#             */
-/*   Updated: 2024/02/03 15:25:19 by tamehri          ###   ########.fr       */
+/*   Updated: 2024/02/06 10:59:06 by tamehri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,6 @@ void	pipe_it(t_pip *pipex)
 	int		status;
 
 	i = 0;
-	dprintf(2, "Parent : %d\n", getpid());
 	execute(pipex);
 	waitpid(pipex->pids[1], &status, 0);
 	exit_status(WEXITSTATUS(status), &i);

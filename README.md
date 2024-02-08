@@ -34,32 +34,35 @@ we are going to use this variable called array to extract the paths. these paths
 
 ## MANDATORY :
 
-the parsing part is very easy, all i did was open the files (input and output) and store their file descriptors in a structure, along side with the paths that i got from the environ variables. the first command and the second command splited with ft_split and stored in an array, and the last thing to is a two integer array that will be used with pipe().
+the parsing part is very easy, all i did was creat a structure that contains the paths that i got from the environ variables, alongside the first command and the second command splited with ft_split and stored in an array, and the last thing to is a two integer array that will be used with pipe() to hold the file descriptors of the pipe, 0 for the ReadEnd and 1 for WriteEnd.
 
 the main idea is to create two child processes using the function fork(), and have them execute the command using execv(), and the first child has to pass it's output to the second child using a pipe.
 
 Keep in mind the execve() function replaces the current process with a new process, that is the command to be executed, normally each process has it's own stdin, stdout and stderr. but in our case we need to read and write from and to files or pipes. so we should redirect the input and output accordingly. to do just that we will use the function dup2();
 
+### What should each child do :
+
+* child 1 : close pipe[0] as it is of no use, open the infile, turn it into the stdin, turn pipe[1] to stdout, then execute the first cmd.
+* child 2 : close pipe[1] as it is of no use, turn pipe[1] to stdout, open the outfile, turn it into the stdout, then execute the first cmd.
+
 ### Redirecting the input :
-the first child has to read from the infile and write in the writeend pipe[1] of the pipe.
-the second child has to read from the readend pipe[0] of the pipe and write in the outfile.
 
 in order for us to redirect the input we will use the function dup2() to do the following changes :
 * child 1 : infile -> stdin, pipe[1] -> stdout
 * child 2 : pipe[0] -> stdin, outfile -> stdout
 
 all unused file descriptor must be closed. 
-* child 1 : close(outfile), close(pipe[0])
-* child 1 : close(infile), close(pipe[1])
-* parent : close(infile), close(outfile, close(pipe[0]), close(pipe[1])
+* child 1 : close(pipe[0])
+* child 1 : close(pipe[1])
+* parent : close(pipe[0]), close(pipe[1])
 
-The parent has to wait for the two childs to execute after forking both children (! it should not wait after forking the first child and wait again creat the second child and wait for it)
+The parent has to wait for the two childs to execute after forking both children (! it should not wait after forking the first child and then wait again after creating the second child)
 The reason for this is that if you execute
 ```
 sleep 4 | sleep 8
 ```
 it will wait 4 + 8 seconds
-but in terminal it will wait 8 seconds, that is the biggest value
+it should only wait 8 seconds, that is the biggest value.
 
 
 
@@ -84,6 +87,8 @@ Parent :
 		|waitpid()
 		|closefds()
 		|exit()
+
+You could as well creat only one child and have it execute the first cmd and then have the parent execute the second cmd, but i just prefer using two childs.
 
 ### ERROR MANAGEMENT :
 
@@ -110,15 +115,11 @@ for example : say that you have 5 commands, you are only going to need four pipe
 
 infile -> cmd1 <===> cmd2 <===> cmd3 <===> cmd4 <===> cmd5 -> outfile
 
-it is quit challenging at first. it will make sence at end ;)
-
-
-
 
 ### HERE_DOC
 
 
+comming soon
 
-
-process image
-process controle block PCB
+* process image
+* process controle block PCB
