@@ -6,14 +6,14 @@
 #    By: tamehri <tamehri@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/24 12:01:11 by tamehri           #+#    #+#              #
-#    Updated: 2024/02/12 18:07:59 by tamehri          ###   ########.fr        #
+#    Updated: 2024/02/12 20:50:03 by tamehri          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 SRC		=	mand/pipex.c mand/parss.c mand/h_fun.c mand/split.c mand/error.c mand/utils.c
 
 SRC_B	=	bonus/pipex_bonus.c bonus/parss_bonus.c bonus/utils_bonus.c bonus/error_bonus.c \
-			bonus/h_fun_bonus.c bonus/split_bonus.c bonus/gnl_f_bonus.c bonus/gnl_u_bonus.c bonus/multip_cmds.c
+			bonus/h_fun_bonus.c bonus/split_bonus.c bonus/gnl_f_bonus.c bonus/gnl_u_bonus.c bonus/m_cmd_bonus.c
 
 OBJ		=	$(SRC:.c=.o)
 OBJ_B	=	$(SRC_B:.c=.o)

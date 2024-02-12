@@ -6,7 +6,7 @@
 /*   By: tamehri <tamehri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 11:19:15 by tamehri           #+#    #+#             */
-/*   Updated: 2024/02/12 20:40:37 by tamehri          ###   ########.fr       */
+/*   Updated: 2024/02/12 20:46:09 by tamehri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	first_process(t_pip *pipex)
 	if (-1 == dup2(pipex->infile, STDIN_FILENO))
 		(close(pipex->fd[READ_END]), close(pipex->fd[WRITE_END]), \
 		close(pipex->infile), free_struct_bonus(pipex), \
-		perror(ERR_CLOSE), exit(EXIT_FAILURE));
+		perror(ERR_DUP), exit(EXIT_FAILURE));
 	close(pipex->infile);
 	if (-1 == dup2(pipex->fd[WRITE_END], STDOUT_FILENO))
 		(close(pipex->fd[READ_END]), close(pipex->fd[WRITE_END]), \

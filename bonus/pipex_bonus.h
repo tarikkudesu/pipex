@@ -6,7 +6,7 @@
 /*   By: tamehri <tamehri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 19:26:39 by tamehri           #+#    #+#             */
-/*   Updated: 2024/02/03 15:36:37 by tamehri          ###   ########.fr       */
+/*   Updated: 2024/02/12 20:50:53 by tamehri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,21 +17,15 @@
 # include <stdio.h>
 # include <unistd.h>
 # include <stdlib.h>
-# include <string.h>
-# include <sys/wait.h>
 
 # define READ_END		0
 # define WRITE_END		1
 # define ERR_ARG		"Wrong number of arguments\n"
-# define ERR_GNL		"GET_NEXT_LINE\n"
 # define ERR_MAL		"MALLOC ERROR"
 # define ERR_FORK		"FORK ERROR"
 # define ERR_PIPE		"PIPE ERROR"
 # define ERR_DUP		"DUP2 ERROR"
-# define ERR_WAIT		"WAIT ERROR"
 # define ERR_OPEN		"OPEN ERROR"
-# define ERR_CLOSE		"CLOSE ERROR"
-# define ERR_WRITE		"WRITE ERROR"
 # define ERR_UNLINK		"UNLINK ERROR"
 # define ERR_EXECVE		"EXECVE ERROR"
 # define CMD_NOT_FOUND	"COMMAND NOT FOUND"
