@@ -6,7 +6,7 @@
 /*   By: tamehri <tamehri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 19:26:39 by tamehri           #+#    #+#             */
-/*   Updated: 2024/02/02 16:18:22 by tamehri          ###   ########.fr       */
+/*   Updated: 2024/02/12 17:30:05 by tamehri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int			cmd_find(char *cmd, char **path);
 char		*get_path(char *cmd, char **path);
 char		**cmd_check(char *cmd_string, t_pip *pipex);
 void		execute_cmd(char *cmd_string, t_pip *pipex);
-void		exit_status(int exit_code, int *j);
+void		exit_status(int exit_code, int *i);
 void		free_struct(t_pip *pipex);
 void		free_array(char **array);
 char		**find_path(char **env);

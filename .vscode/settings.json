@@ -1,5 +1,8 @@
 {
 	"files.associations": {
-		"pipex_bonus.h": "c"
+		"pipex_bonus.h": "c",
+		"__tuple": "c",
+		"array": "c",
+		"pipex.h": "c"
 	}
 }

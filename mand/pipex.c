@@ -6,7 +6,7 @@
 /*   By: tamehri <tamehri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 16:59:32 by tamehri           #+#    #+#             */
-/*   Updated: 2024/02/06 10:59:06 by tamehri          ###   ########.fr       */
+/*   Updated: 2024/02/12 17:58:48 by tamehri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	second_child(t_pip *pipex)
 		free_struct(pipex), perror(ERR_OPEN), exit(EXIT_FAILURE));
 	if (-1 == dup2(pipex->fd[READ_END], STDIN_FILENO))
 		(close(pipex->fd[READ_END]), close(pipex->fd[WRITE_END]), \
-		free_struct(pipex), close(pipex->outfile), perror(ERR_DUP), \
+		close(pipex->outfile), free_struct(pipex), perror(ERR_DUP), \
 		exit(EXIT_FAILURE));
 	close(pipex->fd[READ_END]);
 	if (-1 == dup2(pipex->outfile, STDOUT_FILENO))
@@ -41,7 +41,7 @@ void	first_child(t_pip *pipex)
 		free_struct(pipex), perror(ERR_OPEN), exit(EXIT_FAILURE));
 	if (-1 == dup2(pipex->infile, STDIN_FILENO))
 		(close(pipex->fd[READ_END]), close(pipex->fd[WRITE_END]), \
-		free_struct(pipex), close(pipex->infile), perror(ERR_DUP), \
+		close(pipex->infile), free_struct(pipex), perror(ERR_DUP), \
 		exit(EXIT_FAILURE));
 	close(pipex->infile);
 	if (-1 == dup2(pipex->fd[WRITE_END], STDOUT_FILENO))
@@ -55,8 +55,6 @@ void	first_child(t_pip *pipex)
 
 void	execute(t_pip *pipex)
 {
-	char	*path;
-
 	if (-1 == pipe(pipex->fd))
 		(free_struct(pipex), perror(ERR_PIPE), exit(EXIT_FAILURE));
 	pipex->pids[0] = fork();

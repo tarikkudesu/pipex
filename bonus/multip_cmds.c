@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   mult_cmds.c                                        :+:      :+:    :+:   */
+/*   multip_cmds.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tamehri <tamehri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 11:19:15 by tamehri           #+#    #+#             */
-/*   Updated: 2024/02/04 18:40:19 by tamehri          ###   ########.fr       */
+/*   Updated: 2024/02/12 20:27:58 by tamehri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,23 +40,22 @@ void	first_process(t_pip *pipex)
 	pipex->infile = open(pipex->infilename, O_RDONLY);
 	if (pipex->infile == -1)
 		(close(pipex->fd[READ_END]), close(pipex->fd[WRITE_END]), \
-		free_struct_bonus(pipex), perror(ERR_OPEN), exit(EXIT_FAILURE));
+		free_struct_bonus(pipex), perror(ERR_OPEN), \
+		exit(EXIT_FAILURE));
 	if (-1 == dup2(pipex->infile, STDIN_FILENO))
 		(close(pipex->fd[READ_END]), close(pipex->fd[WRITE_END]), \
-		free_struct_bonus(pipex), perror(ERR_CLOSE), \
-		close(pipex->infile), exit(EXIT_FAILURE));
+		close(pipex->infile), free_struct_bonus(pipex), \
+		perror(ERR_CLOSE), exit(EXIT_FAILURE));
 	close(pipex->infile);
 	if (-1 == dup2(pipex->fd[WRITE_END], STDOUT_FILENO))
 		(close(pipex->fd[READ_END]), close(pipex->fd[WRITE_END]), \
 		free_struct_bonus(pipex), perror(ERR_DUP), \
-		close(pipex->infile), exit(EXIT_FAILURE));
+		exit(EXIT_FAILURE));
 	execute_cmd(pipex->argv[0], pipex);
 }
 
 void	execute(t_pip *pipex, int i)
 {
-	char	*path;
-
 	if (-1 == pipe(pipex->fd))
 		(free_struct_bonus(pipex), perror(ERR_PIPE), exit(EXIT_FAILURE));
 	pipex->pids[i] = fork();
