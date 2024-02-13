@@ -7,7 +7,7 @@ the main functions you are going to use are :
 * pipe()
 * fork()
 * access()
-* execve
+* execve()
 * dup and dup2()
 * wait and waitpid()
 * unlink()
@@ -74,12 +74,12 @@ Parent :
 		|fork()
 		|
 		|__________ child 1 ____________
-		|				|
+		|				|open()
 		|				|close()
 		|fork()				|dup2()
 		|				|execve()
 		|_____ child 2 _________
-		|			|
+		|			|open()
 		|			|close()
 		|			|dup2()
 		|			|execve()
