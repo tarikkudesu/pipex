@@ -6,7 +6,7 @@
 /*   By: tamehri <tamehri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 19:26:39 by tamehri           #+#    #+#             */
-/*   Updated: 2024/02/12 20:50:53 by tamehri          ###   ########.fr       */
+/*   Updated: 2024/02/13 09:39:36 by tamehri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ struct	s_pip
 	char	*outfilename;
 };
 
-/* LIBFT */
+/* HELP FUNCTIONS */
 size_t		ft_strlen(const char *str);
 void		ft_putstr_fd(char *s, int fd);
 char		*ft_strjoin(char const *s1, char const *s2);

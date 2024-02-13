@@ -6,7 +6,7 @@
 /*   By: tamehri <tamehri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 19:26:39 by tamehri           #+#    #+#             */
-/*   Updated: 2024/02/12 20:50:41 by tamehri          ###   ########.fr       */
+/*   Updated: 2024/02/13 09:41:36 by tamehri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,14 +44,14 @@ struct	s_pip
 	char	**environ;
 };
 
-/* LIBFT */
+/* HELP FUNCTIONS */
 size_t		ft_strlen(const char *str);
 void		ft_putstr_fd(char *s, int fd);
 char		*ft_strjoin(char const *s1, char const *s2);
 char		**ft_split(char const *s, char c);
 int			ft_strncmp(const char *s1, const char *s2, size_t n);
 
-/* MAND */
+/* FUNCTIONS */
 int			cmd_find(char *cmd, char **path);
 char		*get_path(char *cmd, char **path);
 char		**cmd_check(char *cmd_string, t_pip *pipex);
