@@ -100,6 +100,6 @@ void	pipex_mult_cmd(t_pip *pipex)
 	if (pipex->here_doc)
 		if (-1 == unlink(pipex->infilename))
 			(free_struct_bonus(pipex), perror(ERR_UNLINK), exit(EXIT_FAILURE));
-	if (j == pipex->cmd_num - 1)
+	if (j == pipex->cmd_num)
 		(free_struct_bonus(pipex), exit(EXIT_SUCCESS));
 }
