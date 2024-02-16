@@ -43,7 +43,7 @@ Keep in mind the execve() function replaces the current process with a new proce
 ### What should each child do :
 
 * child 1 : close pipe[0] as it is of no use, open the infile, turn it into the stdin, turn pipe[1] to stdout, then execute the first cmd.
-* child 2 : close pipe[1] as it is of no use, turn pipe[1] to stdout, open the outfile, turn it into the stdout, then execute the first cmd.
+* child 2 : close pipe[1] as it is of no use, turn pipe[0] to stdin, open the outfile, turn it into the stdout, then execute the second cmd.
 
 ### Redirecting the input :
 
